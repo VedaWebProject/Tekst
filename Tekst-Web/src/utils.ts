@@ -1,5 +1,7 @@
 import type {
+  AnyResourceRead,
   LocationRead,
+  PlatformStateRead,
   TextRead,
   Translation,
   TranslationLocaleKey,
@@ -212,4 +214,25 @@ export function replaceCurrDatePh(text?: string | null, locale?: string) {
       new Date().toLocaleDateString(getLocaleProfile(locale ?? 'enUS').displayShort)
     ) ?? ''
   ).trim();
+}
+
+export function resourceSortFn(
+  a: AnyResourceRead,
+  b: AnyResourceRead,
+  browseLevel?: number,
+  pfState?: PlatformStateRead
+) {
+  const sameLevelModA = browseLevel === a.level ? 1 : 0;
+  const sameLevelModB = browseLevel === b.level ? 1 : 0;
+  const coverageA = a.coverage != null ? a.coverage[0] / a.coverage[1] : 0;
+  const coverageB = b.coverage != null ? b.coverage[0] / b.coverage[1] : 0;
+  return (
+    // resources from same level as current browse level before
+    // resources from differenz levels
+    (pfState?.prioritizeBrowseLevelResources && sameLevelModA - sameLevelModB) ||
+    // OR high coverage before low coverage
+    (pfState?.sortByCoverage && coverageB - coverageA) ||
+    // OR by sort order value, ascending
+    a.config.general.sortOrder - b.config.general.sortOrder
+  );
 }

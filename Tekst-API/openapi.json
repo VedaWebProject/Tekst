@@ -8536,7 +8536,7 @@
               }
             ],
             "title": "Coverage",
-            "description": "Location coverage of this resource by contents, locations"
+            "description": "Coverage of this resource in covered and total locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -9314,7 +9314,7 @@
               }
             ],
             "title": "Coverage",
-            "description": "Location coverage of this resource by contents, locations"
+            "description": "Coverage of this resource in covered and total locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -10972,7 +10972,7 @@
               }
             ],
             "title": "Coverage",
-            "description": "Location coverage of this resource by contents, locations"
+            "description": "Coverage of this resource in covered and total locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -11953,7 +11953,7 @@
               }
             ],
             "title": "Coverage",
-            "description": "Location coverage of this resource by contents, locations"
+            "description": "Coverage of this resource in covered and total locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -13278,7 +13278,7 @@
               }
             ],
             "title": "Coverage",
-            "description": "Location coverage of this resource by contents, locations"
+            "description": "Coverage of this resource in covered and total locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -14457,7 +14457,7 @@
               }
             ],
             "title": "Coverage",
-            "description": "Location coverage of this resource by contents, locations"
+            "description": "Coverage of this resource in covered and total locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -14875,6 +14875,12 @@
             "description": "Show resource category headings in browse view",
             "default": true
           },
+          "sortByCoverage": {
+            "type": "boolean",
+            "title": "Sortbycoverage",
+            "description": "Sort resources by coverage instead of sort order in browse view",
+            "default": false
+          },
           "prioritizeBrowseLevelResources": {
             "type": "boolean",
             "title": "Prioritizebrowselevelresources",
@@ -15101,6 +15107,12 @@
             "type": "boolean",
             "title": "Showresourcecategoryheadings",
             "description": "Show resource category headings in browse view",
+            "optionalNullable": false
+          },
+          "sortByCoverage": {
+            "type": "boolean",
+            "title": "Sortbycoverage",
+            "description": "Sort resources by coverage instead of sort order in browse view",
             "optionalNullable": false
           },
           "prioritizeBrowseLevelResources": {
@@ -16316,7 +16328,7 @@
               }
             ],
             "title": "Coverage",
-            "description": "Location coverage of this resource by contents, locations"
+            "description": "Coverage of this resource in covered and total locations"
           },
           "contentsChangedAt": {
             "type": "string",
@@ -17622,7 +17634,7 @@
               }
             ],
             "title": "Coverage",
-            "description": "Location coverage of this resource by contents, locations"
+            "description": "Coverage of this resource in covered and total locations"
           },
           "contentsChangedAt": {
             "type": "string",

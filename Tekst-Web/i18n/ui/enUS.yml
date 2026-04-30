@@ -382,7 +382,8 @@ models:
     showTekstFooterHint: Show small hint to Tekst software in footer (Thank you ♥)
     showResourceCategoryHeadings: Show category headings
     globalCitationSuffix: Global suffix for citations
-    prioritizeBrowseLevelResources: Place resources of current browse level before others (inside their category)
+    sortByCoverage: Prefer sorting resources by their coverage (descending)
+    prioritizeBrowseLevelResources: Always display resources of current browse level before others (inside their category)
     showLocationAliases: Show location aliases
     denyResourceTypes: Allow creation of these resource types for administrators only
     fonts: Custom Fonts
@@ -491,6 +492,7 @@ resources:
         searchableAdv: Searchable via Advanced Search
         rtl: Right-to-left content text direction
         collapsibleContents: Collapsible contents if height greater than...
+        sortByCoverageWarning: Sorting by coverage prioritized by global setting
         font: Content Font
       searchReplacements:
         heading: Search Query Replacements

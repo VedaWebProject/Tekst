@@ -157,6 +157,15 @@ class PlatformState(ModelBase):
         Field(description="Show resource category headings in browse view"),
     ] = True
 
+    sort_by_coverage: Annotated[
+        bool,
+        Field(
+            description=(
+                "Sort resources by coverage instead of sort order in browse view"
+            ),
+        ),
+    ] = False
+
     prioritize_browse_level_resources: Annotated[
         bool,
         Field(

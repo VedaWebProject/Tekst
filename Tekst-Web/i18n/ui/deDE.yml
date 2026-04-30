@@ -385,7 +385,8 @@ models:
     showTekstFooterHint: Zeige kleinen Hinweis auf Tekst-Software in Fußzeile (Danke ♥)
     showResourceCategoryHeadings: Zeige Überschriften für Kategorien
     globalCitationSuffix: Globales Suffix für Zitationen
-    prioritizeBrowseLevelResources: Platziere Ressourcen der aktuellen Ebene vor anderen (innerhalb ihrer Kategorien)
+    sortByCoverage: Sortiere Ressourcen bevorzugt nach ihrer Abdeckung (absteigend)
+    prioritizeBrowseLevelResources: Sortiere Ressourcen der aktuellen Ebene immer vor anderen ein (innerhalb ihrer Kategorie)
     showLocationAliases: Zeige Belegstellen-Aliase
     denyResourceTypes: Erstellung dieser Ressourcentypen nur Administrator*innen erlauben
     fonts: Eigene Schritarten
@@ -501,6 +502,7 @@ resources:
         searchableAdv: Durchsuchbar über Erweiterte Suche
         rtl: Rechts-nach-links Textrichtung für Inhalte
         collapsibleContents: Ein-/Ausklappbare Inhalte wenn Höhe größer als...
+        sortByCoverageWarning: Sortierung nach Abdeckung priorisiert durch globale Einstellung
         font: Schriftart für Inhalte
       searchReplacements:
         heading: Ersetzungen in Suchanfragen

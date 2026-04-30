@@ -2,7 +2,7 @@ import type { AnyResourceRead, LocationRead } from '@/api';
 import { GET } from '@/api';
 import { $t } from '@/i18n';
 import { useResourcesStore, useStateStore } from '@/stores';
-import { pickTranslation } from '@/utils';
+import { pickTranslation, resourceSortFn } from '@/utils';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -97,18 +97,11 @@ export const useBrowseStore = defineStore('browse', () => {
 
   /* RESOURCES AND CONTENTS */
 
-  const compareResourceOrder = (a: AnyResourceRead, b: AnyResourceRead) => {
-    const sortOrderA = a.config.general.sortOrder ?? 0;
-    const sortOrderB = b.config.general.sortOrder ?? 0;
-    const modA =
-      state.pf?.state.prioritizeBrowseLevelResources && level.value !== a.level ? 1001 : 0;
-    const modB =
-      state.pf?.state.prioritizeBrowseLevelResources && level.value !== b.level ? 1001 : 0;
-    return sortOrderA + modA - (sortOrderB + modB);
-  };
-
   const resourcesCategorized = computed<
-    { category: { key: string | undefined; translation: string }; resources: AnyResourceRead[] }[]
+    {
+      category: { key: string | undefined; translation: string };
+      resources: AnyResourceRead[];
+    }[]
   >(() => {
     // compute categorized resources
     const categorized =
@@ -121,7 +114,7 @@ export const useBrowseStore = defineStore('browse', () => {
               (showNonPublicResources.value || r.public) &&
               !(r.resourceType === 'locationMetadata' && r.config.special.embedAsTags)
           )
-          .sort(compareResourceOrder),
+          .sort((a, b) => resourceSortFn(a, b, level.value, state.pf?.state)),
       })) || [];
     const uncategorized = [
       {

@@ -410,6 +410,13 @@ watch(
                 :label="$t('models.platformSettings.showResourceCategoryHeadings')"
               />
             </n-form-item>
+            <!-- SORT RESOURCES BY COVERAGE INSTEAD OF SORT ORDER -->
+            <n-form-item :show-label="false" :show-feedback="false">
+              <labeled-switch
+                v-model="formModel.sortByCoverage"
+                :label="$t('models.platformSettings.sortByCoverage')"
+              />
+            </n-form-item>
             <!-- PRIORITIZE BROWSE LEVEL RESOURCES -->
             <n-form-item :show-label="false" :show-feedback="false">
               <labeled-switch
