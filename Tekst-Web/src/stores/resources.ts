@@ -7,7 +7,7 @@ import {
   type ResourceCoverage,
 } from '@/api';
 import { useStateStore } from '@/stores';
-import { hashCode, pickTranslation } from '@/utils';
+import { hashCode, pickTranslation, resourceSortFn } from '@/utils';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -50,7 +50,7 @@ export const useResourcesStore = defineStore('resources', () => {
     return (
       resources
         // sort resources by configured sort order
-        .sort((a, b) => (a.config.general.sortOrder ?? 0) - (b.config.general.sortOrder ?? 0))
+        .sort((a, b) => resourceSortFn(a, b, undefined, state.pf?.state))
         // add additional props for quick use throughout the client
         .map((r) => {
           const existingResource = resourcesAll.value.find((re) => re.id === r.id);

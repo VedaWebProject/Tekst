@@ -226,7 +226,7 @@ class ResourceBase(ModelBase):
         Field(
             min_length=2,
             max_length=2,
-            description="Location coverage of this resource by contents, locations",
+            description="Coverage of this resource in covered and total locations",
         ),
         ExcludeFromModelVariants(update=True, create=True),
     ] = None

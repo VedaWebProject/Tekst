@@ -119,6 +119,9 @@ function renderCCMark(value: number) {
         <n-flex align="center" :wrap="false">
           {{ $t('common.sortOrder') }}
           <help-button-widget help-key="resourceSortOrder" />
+          <span v-if="state.pf?.state.sortByCoverage" style="color: var(--warning-color)">
+            &#9888; {{ $t('resources.settings.config.general.sortByCoverageWarning') }}
+          </span>
         </n-flex>
       </template>
       <n-input-number v-model:value="model.sortOrder" :min="0" :max="1000" style="width: 100%" />

@@ -1818,7 +1818,7 @@ export interface components {
       config: components['schemas']['ApiCallResourceConfig'];
       /**
        * Coverage
-       * @description Location coverage of this resource by contents, locations
+       * @description Coverage of this resource in covered and total locations
        */
       coverage?: number[] | null;
       /**
@@ -2202,7 +2202,7 @@ export interface components {
       config: components['schemas']['AudioResourceConfig'];
       /**
        * Coverage
-       * @description Location coverage of this resource by contents, locations
+       * @description Coverage of this resource in covered and total locations
        */
       coverage?: number[] | null;
       /**
@@ -2514,6 +2514,7 @@ export interface components {
       /**
        * Editormode
        * @description Last used editor mode
+       * @enum {string}
        */
       editorMode?: 'wysiwyg' | 'html';
       /** @description Locale indicating the translation language of this segment */
@@ -2521,6 +2522,7 @@ export interface components {
       /**
        * Restriction
        * @description Whether access is unrestricted or restricted to superusers or users
+       * @enum {string}
        */
       restriction?: 'none' | 'user' | 'superuser';
       /**
@@ -3004,7 +3006,7 @@ export interface components {
       config: components['schemas']['ExternalReferencesResourceConfig'];
       /**
        * Coverage
-       * @description Location coverage of this resource by contents, locations
+       * @description Coverage of this resource in covered and total locations
        */
       coverage?: number[] | null;
       /**
@@ -3495,7 +3497,7 @@ export interface components {
       config: components['schemas']['ImagesResourceConfig'];
       /**
        * Coverage
-       * @description Location coverage of this resource by contents, locations
+       * @description Coverage of this resource in covered and total locations
        */
       coverage?: number[] | null;
       /**
@@ -4135,7 +4137,7 @@ export interface components {
       config: components['schemas']['LocationMetadataResourceConfig'];
       /**
        * Coverage
-       * @description Location coverage of this resource by contents, locations
+       * @description Coverage of this resource in covered and total locations
        */
       coverage?: number[] | null;
       /**
@@ -4735,7 +4737,7 @@ export interface components {
       config: components['schemas']['PlainTextResourceConfig'];
       /**
        * Coverage
-       * @description Location coverage of this resource by contents, locations
+       * @description Coverage of this resource in covered and total locations
        */
       coverage?: number[] | null;
       /**
@@ -4969,6 +4971,12 @@ export interface components {
        */
       showResourceCategoryHeadings: boolean;
       /**
+       * Sortbycoverage
+       * @description Sort resources by coverage instead of sort order in browse view
+       * @default false
+       */
+      sortByCoverage: boolean;
+      /**
        * Prioritizebrowselevelresources
        * @description Display resources of current browse level before others in browse view
        * @default true
@@ -5095,6 +5103,11 @@ export interface components {
        */
       showResourceCategoryHeadings?: boolean;
       /**
+       * Sortbycoverage
+       * @description Sort resources by coverage instead of sort order in browse view
+       */
+      sortByCoverage?: boolean;
+      /**
        * Prioritizebrowselevelresources
        * @description Display resources of current browse level before others in browse view
        */
@@ -5106,6 +5119,7 @@ export interface components {
       showLocationAliases?: boolean;
       /**
        * Uicolor
+       * Format: color
        * @description Primary color used in for client UI
        */
       uiColor?: string;
@@ -5424,6 +5438,7 @@ export interface components {
       /**
        * Editormode
        * @description Last used editor mode for this content
+       * @enum {string}
        */
       editorMode?: 'wysiwyg' | 'html';
     };
@@ -5717,7 +5732,7 @@ export interface components {
       config: components['schemas']['RichTextResourceConfig'];
       /**
        * Coverage
-       * @description Location coverage of this resource by contents, locations
+       * @description Coverage of this resource in covered and total locations
        */
       coverage?: number[] | null;
       /**
@@ -6346,7 +6361,7 @@ export interface components {
       config: components['schemas']['TextAnnotationResourceConfig'];
       /**
        * Coverage
-       * @description Location coverage of this resource by contents, locations
+       * @description Coverage of this resource in covered and total locations
        */
       coverage?: number[] | null;
       /**
@@ -6682,6 +6697,7 @@ export interface components {
       labeledLocation?: boolean;
       /**
        * Color
+       * Format: color
        * @description Accent color used for this text in the client UI
        */
       color?: string;
