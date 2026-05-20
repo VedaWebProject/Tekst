@@ -2,9 +2,8 @@ import type { PlatformData } from '@/api';
 import { usePlatformData } from '@/composables/platformData';
 import { $t } from '@/i18n';
 import { delay } from '@/utils';
-import { driver, type Driver, type DriveStep } from 'driver.js';
+import { type DriveStep } from 'driver.js';
 import 'driver.js/dist/driver.css';
-import { ref } from 'vue';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
 
 type TourStep = DriveStep & {
@@ -223,11 +222,9 @@ export function useGuidedTour() {
     }
   };
 
-  const driverObj = ref<Driver>();
-
-  const start = () => {
+  const start = async () => {
     const steps = getSteps(pf.pfData.value);
-    driverObj.value = driver({
+    const driverObj = (await import('driver.js')).driver({
       steps,
       allowKeyboardControl: true,
       overlayColor: '#000',
@@ -243,15 +240,15 @@ export function useGuidedTour() {
       onNextClick: async (_el, step, _opts) => {
         const tourStep = step as TourStep;
         await stepTransition(tourStep, steps[tourStep.index + 1]);
-        driverObj.value?.moveNext();
+        driverObj?.moveNext();
       },
       onPrevClick: async (_el, step, _opts) => {
         const tourStep = step as TourStep;
         await stepTransition(tourStep, steps[tourStep.index - 1]);
-        driverObj.value?.movePrevious();
+        driverObj?.movePrevious();
       },
       onDestroyed: () => {
-        driverObj.value = undefined;
+        // nothing atm
       },
       onHighlighted: async (_el, step, _opts) => {
         const tourStep = step as TourStep;
@@ -259,7 +256,7 @@ export function useGuidedTour() {
       },
     });
     stepTransition(undefined, steps[0]);
-    driverObj.value.drive();
+    driverObj.drive();
   };
 
   return { start };
