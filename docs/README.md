@@ -8,13 +8,13 @@ To run the development server for locally previewing changes in the documentatio
 docker run --rm -it -p 127.0.0.1:8080:8000 -v ${PWD}/docs:/docs zensical/zensical
 ```
 
+Then, visit **`http://127.0.0.1:8080`** using your web browser.
+
 To update the locally used Zensical image:
 
 ```
 docker pull zensical/zensical
 ```
-
-Then, visit **`http://127.0.0.1:8080`** using your web browser.
 
 ## Deployment
 

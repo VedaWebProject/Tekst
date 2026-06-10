@@ -31,7 +31,7 @@ jobs:
         with:
           python-version: 3.x
       - run: sudo mkdir includes && sudo cp ../Tekst-Web/i18n/help/enUS/** includes/
-      - run: pip install zensical==0.0.38
+      - run: pip install zensical==0.0.45
       - run: zensical build --clean --strict
       - uses: actions/upload-pages-artifact@v4
         with:
