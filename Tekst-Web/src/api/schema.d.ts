@@ -2290,7 +2290,7 @@ export interface components {
        * File
        * @description JSON file containing the resource content data
        */
-      file: string;
+      file: Blob;
     };
     /** Body_importTextStructure */
     Body_importTextStructure: {
@@ -2298,7 +2298,7 @@ export interface components {
        * File
        * @description JSON file containing the text's structure
        */
-      file: string;
+      file: Blob;
     };
     /** Body_reset:forgotPassword */
     Body_reset_forgotPassword: {
@@ -2321,7 +2321,7 @@ export interface components {
        * File
        * @description JSON file containing the locations to update
        */
-      file: string;
+      file: Blob;
     };
     /** Body_verify:requestToken */
     Body_verify_requestToken: {
