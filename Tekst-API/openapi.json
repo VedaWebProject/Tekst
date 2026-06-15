@@ -17,7 +17,7 @@
         "tags": [
           "browse"
         ],
-        "summary": "Get location data",
+        "summary": "Get Location Data",
         "description": "Returns the location path from the location with the given ID or text/level/position\nas the last element, up to its most distant ancestor location\non structure level 0 as the first element of an array as well as all contents\nfor the given resource(s) referencing the locations in the location path.",
         "operationId": "getLocationData",
         "security": [
@@ -180,7 +180,7 @@
         "tags": [
           "browse"
         ],
-        "summary": "Get content context",
+        "summary": "Get Content Context",
         "description": "Returns a list of all resource contents belonging to the resource\nwith the given ID, associated to locations that are children of the parent location\nwith the given ID.",
         "operationId": "getContentContext",
         "security": [
@@ -273,7 +273,7 @@
                       }
                     }
                   },
-                  "title": "Response Get Content Context Browse Context Get"
+                  "title": "Response Getcontentcontext"
                 }
               }
             }
@@ -306,7 +306,7 @@
         "tags": [
           "browse"
         ],
-        "summary": "Get nearest content location",
+        "summary": "Get Nearest Content Location",
         "description": "Finds the nearest location the given resource holds content for and returns it.",
         "operationId": "getNearestContentLocation",
         "security": [
@@ -404,7 +404,7 @@
         "tags": [
           "browse"
         ],
-        "summary": "Get user bookmarks",
+        "summary": "Get User Bookmarks",
         "description": "Returns all bookmarks that belong to the requesting user",
         "operationId": "getUserBookmarks",
         "responses": {
@@ -417,7 +417,7 @@
                     "$ref": "#/components/schemas/BookmarkRead"
                   },
                   "type": "array",
-                  "title": "Response Get User Bookmarks Browse Bookmarks Get"
+                  "title": "Response Getuserbookmarks"
                 }
               }
             }
@@ -436,7 +436,7 @@
         "tags": [
           "browse"
         ],
-        "summary": "Create bookmark",
+        "summary": "Create Bookmark",
         "description": "Creates a bookmark for the requesting user",
         "operationId": "createBookmark",
         "requestBody": {
@@ -506,7 +506,7 @@
         "tags": [
           "browse"
         ],
-        "summary": "Delete bookmark",
+        "summary": "Delete Bookmark",
         "operationId": "deleteBookmark",
         "security": [
           {
@@ -568,7 +568,7 @@
         "tags": [
           "contents"
         ],
-        "summary": "Create content",
+        "summary": "Create Content",
         "operationId": "createContent",
         "security": [
           {
@@ -672,7 +672,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                     }
                   },
-                  "title": "Response Create Content Contents Post"
+                  "title": "Response Createcontent"
                 }
               }
             }
@@ -723,7 +723,7 @@
         "tags": [
           "contents"
         ],
-        "summary": "Find contents",
+        "summary": "Find Contents",
         "description": "Returns a list of all resource contents matching the given criteria.\n\nRespects restricted resources and inactive texts.\nAs the resulting list may contain contents of different types, the\nreturned content objects cannot be typed to their precise resource content type.",
         "operationId": "findContents",
         "security": [
@@ -845,7 +845,7 @@
                       }
                     }
                   },
-                  "title": "Response Find Contents Contents Get"
+                  "title": "Response Findcontents"
                 }
               }
             }
@@ -868,7 +868,7 @@
         "tags": [
           "contents"
         ],
-        "summary": "Get archived contents",
+        "summary": "Get Archived Contents",
         "description": "Returns all content (including archived content)\nfor the given resource and location,\nsorted by creation timestamp in descending order.",
         "operationId": "getArchivedContents",
         "security": [
@@ -918,7 +918,7 @@
                   "items": {
                     "$ref": "#/components/schemas/ContentArchiveSignature"
                   },
-                  "title": "Response Get Archived Contents Contents Archive Get"
+                  "title": "Response Getarchivedcontents"
                 }
               }
             }
@@ -961,7 +961,7 @@
         "tags": [
           "contents"
         ],
-        "summary": "Get content",
+        "summary": "Get Content",
         "description": "A generic route for retrieving a content by ID from the database",
         "operationId": "getContent",
         "security": [
@@ -1027,7 +1027,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                     }
                   },
-                  "title": "Response Get Content Contents  Id  Get"
+                  "title": "Response Getcontent"
                 }
               }
             }
@@ -1058,7 +1058,7 @@
         "tags": [
           "contents"
         ],
-        "summary": "Update content",
+        "summary": "Update Content",
         "operationId": "updateContent",
         "security": [
           {
@@ -1172,7 +1172,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                     }
                   },
-                  "title": "Response Update Content Contents  Id  Patch"
+                  "title": "Response Updatecontent"
                 }
               }
             }
@@ -1213,7 +1213,7 @@
         "tags": [
           "contents"
         ],
-        "summary": "Delete content",
+        "summary": "Delete Content",
         "operationId": "deleteContent",
         "security": [
           {
@@ -1285,7 +1285,7 @@
         "tags": [
           "contents"
         ],
-        "summary": "Archive content",
+        "summary": "Archive Content",
         "operationId": "archiveContent",
         "security": [
           {
@@ -1350,7 +1350,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                     }
                   },
-                  "title": "Response Archive Content Contents  Id  Archive Post"
+                  "title": "Response Archivecontent"
                 }
               }
             }
@@ -1403,7 +1403,7 @@
         "tags": [
           "contents"
         ],
-        "summary": "Restore archived content",
+        "summary": "Restore Archived Content",
         "description": "Restores the archived content with the given ID, archives any content currently\npresent for the same resource/location.",
         "operationId": "restoreArchivedContent",
         "security": [
@@ -1469,7 +1469,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationContentRead"
                     }
                   },
-                  "title": "Response Restore Archived Content Contents  Id  Restore Post"
+                  "title": "Response Restorearchivedcontent"
                 }
               }
             }
@@ -1512,7 +1512,7 @@
         "tags": [
           "corrections"
         ],
-        "summary": "Create correction",
+        "summary": "Create Correction",
         "description": "Creates a correction note referring to a specific content",
         "operationId": "createCorrection",
         "requestBody": {
@@ -1582,7 +1582,7 @@
         "tags": [
           "corrections"
         ],
-        "summary": "Get corrections",
+        "summary": "Get Corrections",
         "description": "Returns a list of all corrections for a specific resource",
         "operationId": "getCorrections",
         "security": [
@@ -1613,7 +1613,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CorrectionRead"
                   },
-                  "title": "Response Get Corrections Corrections  Resourceid  Get"
+                  "title": "Response Getcorrections"
                 }
               }
             }
@@ -1646,7 +1646,7 @@
         "tags": [
           "corrections"
         ],
-        "summary": "Delete correction",
+        "summary": "Delete Correction",
         "description": "Deletes a specific correction note",
         "operationId": "deleteCorrection",
         "security": [
@@ -1699,7 +1699,7 @@
         "tags": [
           "locations"
         ],
-        "summary": "Create location",
+        "summary": "Create Location",
         "description": "Creates a new location. The position will be automatically set to the last position\nof the location's parent (or the first parent before that has children).",
         "operationId": "createLocation",
         "security": [
@@ -1777,7 +1777,7 @@
         "tags": [
           "locations"
         ],
-        "summary": "Find locations",
+        "summary": "Find Locations",
         "description": "Finds locations by various combinations of location properties.\nA full combined label including all parent location's labels is added to each\nreturned location object if add_full_labels is set to true.",
         "operationId": "findLocations",
         "parameters": [
@@ -1955,7 +1955,7 @@
                   "items": {
                     "$ref": "#/components/schemas/LocationRead"
                   },
-                  "title": "Response Find Locations Locations Get"
+                  "title": "Response Findlocations"
                 }
               }
             }
@@ -1978,7 +1978,7 @@
         "tags": [
           "locations"
         ],
-        "summary": "Get path options by head id",
+        "summary": "Get Path Options By Head Id",
         "description": "Returns the options for selecting text locations derived from the location path of\nthe location with the given ID as head or root.",
         "operationId": "getPathOptionsByHeadId",
         "parameters": [
@@ -2021,7 +2021,7 @@
                       "$ref": "#/components/schemas/LocationRead"
                     }
                   },
-                  "title": "Response Get Path Options By Head Id Locations  Id  Path Options  By  Get"
+                  "title": "Response Getpathoptionsbyheadid"
                 }
               }
             }
@@ -2054,7 +2054,7 @@
         "tags": [
           "locations"
         ],
-        "summary": "Get first and last locations paths",
+        "summary": "Get First And Last Locations Paths",
         "operationId": "getFirstAndLastLocationsPaths",
         "parameters": [
           {
@@ -2095,7 +2095,7 @@
                   },
                   "minItems": 2,
                   "maxItems": 2,
-                  "title": "Response Get First And Last Locations Paths Locations First Last Paths Get"
+                  "title": "Response Getfirstandlastlocationspaths"
                 }
               }
             }
@@ -2128,7 +2128,7 @@
         "tags": [
           "locations"
         ],
-        "summary": "Get children",
+        "summary": "Get Children",
         "operationId": "getChildren",
         "security": [
           {
@@ -2196,7 +2196,7 @@
                   "items": {
                     "$ref": "#/components/schemas/LocationRead"
                   },
-                  "title": "Response Get Children Locations Children Get"
+                  "title": "Response Getchildren"
                 }
               }
             }
@@ -2249,7 +2249,7 @@
         "tags": [
           "locations"
         ],
-        "summary": "Get location",
+        "summary": "Get Location",
         "operationId": "getLocation",
         "parameters": [
           {
@@ -2298,7 +2298,7 @@
         "tags": [
           "locations"
         ],
-        "summary": "Update location",
+        "summary": "Update Location",
         "operationId": "updateLocation",
         "security": [
           {
@@ -2385,7 +2385,7 @@
         "tags": [
           "locations"
         ],
-        "summary": "Delete location",
+        "summary": "Delete Location",
         "description": "Deletes the specified location. Also deletes any associated contents,\nchild locations and contents associated with child locations.",
         "operationId": "deleteLocation",
         "security": [
@@ -2465,7 +2465,7 @@
         "tags": [
           "locations"
         ],
-        "summary": "Move location",
+        "summary": "Move Location",
         "description": "Moves the specified location to a new position on its level.",
         "operationId": "moveLocation",
         "security": [
@@ -2555,7 +2555,7 @@
         "tags": [
           "messages"
         ],
-        "summary": "Send message",
+        "summary": "Send Message",
         "description": "Creates a message for the specified recipient",
         "operationId": "sendMessage",
         "security": [
@@ -2623,7 +2623,7 @@
         "tags": [
           "messages"
         ],
-        "summary": "Get thread messages",
+        "summary": "Get Thread Messages",
         "description": "Returns all messages belonging to the specified thread",
         "operationId": "getThreadMessages",
         "security": [
@@ -2664,7 +2664,7 @@
                   "items": {
                     "$ref": "#/components/schemas/UserMessageRead"
                   },
-                  "title": "Response Get Thread Messages Messages Get"
+                  "title": "Response Getthreadmessages"
                 }
               }
             }
@@ -2697,7 +2697,7 @@
         "tags": [
           "messages"
         ],
-        "summary": "Get threads",
+        "summary": "Get Threads",
         "description": "Returns all message threads involving the requesting user",
         "operationId": "getThreads",
         "responses": {
@@ -2710,7 +2710,7 @@
                     "$ref": "#/components/schemas/UserMessageThread"
                   },
                   "type": "array",
-                  "title": "Response Get Threads Messages Threads Get"
+                  "title": "Response Getthreads"
                 }
               }
             }
@@ -2741,7 +2741,7 @@
         "tags": [
           "messages"
         ],
-        "summary": "Delete thread",
+        "summary": "Delete Thread",
         "description": "Marks all received messages from the given user as deleted or actually deletes them,\ndepending on the current deletion status",
         "operationId": "deleteThread",
         "security": [
@@ -2813,7 +2813,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Get platform data",
+        "summary": "Get Platform Data",
         "description": "Returns data about the platform and its configuration",
         "operationId": "getPlatformData",
         "responses": {
@@ -2843,7 +2843,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Get client init data",
+        "summary": "Get Client Init Data",
         "description": "Returns data the client needs to initialize",
         "operationId": "getClientInitData",
         "responses": {
@@ -2873,7 +2873,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Update platform state",
+        "summary": "Update Platform State",
         "operationId": "updatePlatformState",
         "requestBody": {
           "content": {
@@ -2942,7 +2942,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Get segment",
+        "summary": "Get Segment",
         "operationId": "getSegment",
         "security": [
           {
@@ -2999,7 +2999,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Update segment",
+        "summary": "Update Segment",
         "operationId": "updateSegment",
         "security": [
           {
@@ -3086,7 +3086,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Delete segment",
+        "summary": "Delete Segment",
         "operationId": "deleteSegment",
         "security": [
           {
@@ -3158,7 +3158,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Create segment",
+        "summary": "Create Segment",
         "operationId": "createSegment",
         "requestBody": {
           "content": {
@@ -3237,7 +3237,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Get all tasks status",
+        "summary": "Get All Tasks Status",
         "operationId": "getAllTasksStatus",
         "responses": {
           "200": {
@@ -3249,7 +3249,7 @@
                     "$ref": "#/components/schemas/TaskRead"
                   },
                   "type": "array",
-                  "title": "Response Get All Tasks Status Platform Tasks Get"
+                  "title": "Response Getalltasksstatus"
                 }
               }
             }
@@ -3278,7 +3278,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Delete all tasks",
+        "summary": "Delete All Tasks",
         "operationId": "deleteAllTasks",
         "responses": {
           "204": {
@@ -3320,7 +3320,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Get user tasks",
+        "summary": "Get User Tasks",
         "operationId": "getUserTasks",
         "security": [
           {
@@ -3361,7 +3361,7 @@
                   "items": {
                     "$ref": "#/components/schemas/TaskRead"
                   },
-                  "title": "Response Get User Tasks Platform Tasks User Get"
+                  "title": "Response Getusertasks"
                 }
               }
             }
@@ -3394,7 +3394,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Download task artifact",
+        "summary": "Download Task Artifact",
         "operationId": "downloadTaskArtifact",
         "parameters": [
           {
@@ -3447,7 +3447,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Delete task",
+        "summary": "Delete Task",
         "operationId": "deleteTask",
         "security": [
           {
@@ -3509,7 +3509,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Run platform cleanup",
+        "summary": "Run Platform Cleanup",
         "operationId": "runPlatformCleanup",
         "responses": {
           "202": {
@@ -3558,7 +3558,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Send test email to admin",
+        "summary": "Send Test Email To Admin",
         "operationId": "sendTestEmailToAdmin",
         "responses": {
           "204": {
@@ -3600,7 +3600,7 @@
         "tags": [
           "platform"
         ],
-        "summary": "Get stats",
+        "summary": "Get Stats",
         "operationId": "getStats",
         "responses": {
           "200": {
@@ -3616,7 +3616,7 @@
                       "$ref": "#/components/schemas/SuperuserStats"
                     }
                   ],
-                  "title": "Response Get Stats Platform Stats Get"
+                  "title": "Response Getstats"
                 }
               }
             }
@@ -3637,7 +3637,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Trigger cache precomputation",
+        "summary": "Trigger Cache Precomputation",
         "operationId": "triggerCachePrecomputation",
         "security": [
           {
@@ -3708,7 +3708,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Create resource",
+        "summary": "Create Resource",
         "operationId": "createResource",
         "security": [
           {
@@ -3812,7 +3812,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Create Resource Resources Post"
+                  "title": "Response Createresource"
                 }
               }
             }
@@ -3873,7 +3873,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Find resources",
+        "summary": "Find Resources",
         "description": "Returns a list of all resources matching the given criteria.\n\nAs the resulting list of resources may contain resources of different types, the\nreturned resource objects cannot be typed to their precise resource type.",
         "operationId": "findResources",
         "security": [
@@ -4000,7 +4000,7 @@
                       }
                     }
                   },
-                  "title": "Response Find Resources Resources Get"
+                  "title": "Response Findresources"
                 }
               }
             }
@@ -4023,7 +4023,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Create resource patch",
+        "summary": "Create Resource Patch",
         "operationId": "createResourcePatch",
         "security": [
           {
@@ -4088,7 +4088,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Create Resource Patch Resources  Id  Patch Post"
+                  "title": "Response Createresourcepatch"
                 }
               }
             }
@@ -4131,7 +4131,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Update resource",
+        "summary": "Update Resource",
         "operationId": "updateResource",
         "security": [
           {
@@ -4245,7 +4245,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Update Resource Resources  Id  Patch"
+                  "title": "Response Updateresource"
                 }
               }
             }
@@ -4276,7 +4276,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Get resource",
+        "summary": "Get Resource",
         "operationId": "getResource",
         "security": [
           {
@@ -4341,7 +4341,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Get Resource Resources  Id  Get"
+                  "title": "Response Getresource"
                 }
               }
             }
@@ -4372,7 +4372,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Delete resource",
+        "summary": "Delete Resource",
         "operationId": "deleteResource",
         "security": [
           {
@@ -4444,7 +4444,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Update resource owners",
+        "summary": "Update Resource Owners",
         "operationId": "updateResourceOwners",
         "security": [
           {
@@ -4524,7 +4524,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Update Resource Owners Resources  Id  Owners Patch"
+                  "title": "Response Updateresourceowners"
                 }
               }
             }
@@ -4577,7 +4577,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Propose resource",
+        "summary": "Propose Resource",
         "operationId": "proposeResource",
         "security": [
           {
@@ -4642,7 +4642,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Propose Resource Resources  Id  Propose Post"
+                  "title": "Response Proposeresource"
                 }
               }
             }
@@ -4695,7 +4695,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Unpropose resource",
+        "summary": "Unpropose Resource",
         "operationId": "unproposeResource",
         "security": [
           {
@@ -4760,7 +4760,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Unpropose Resource Resources  Id  Unpropose Post"
+                  "title": "Response Unproposeresource"
                 }
               }
             }
@@ -4803,7 +4803,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Publish resource",
+        "summary": "Publish Resource",
         "operationId": "publishResource",
         "security": [
           {
@@ -4868,7 +4868,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Publish Resource Resources  Id  Publish Post"
+                  "title": "Response Publishresource"
                 }
               }
             }
@@ -4931,7 +4931,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Unpublish resource",
+        "summary": "Unpublish Resource",
         "operationId": "unpublishResource",
         "security": [
           {
@@ -4996,7 +4996,7 @@
                       "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
                     }
                   },
-                  "title": "Response Unpublish Resource Resources  Id  Unpublish Post"
+                  "title": "Response Unpublishresource"
                 }
               }
             }
@@ -5049,7 +5049,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Download resource template",
+        "summary": "Download Resource Template",
         "operationId": "downloadResourceTemplate",
         "security": [
           {
@@ -5116,7 +5116,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Import resource",
+        "summary": "Import Resource",
         "operationId": "importResource",
         "security": [
           {
@@ -5141,7 +5141,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_import_resource_resources__id__import_post"
+                "$ref": "#/components/schemas/Body_importResource"
               }
             }
           }
@@ -5195,7 +5195,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Export resource contents",
+        "summary": "Export Resource Contents",
         "operationId": "exportResourceContents",
         "security": [
           {
@@ -5303,7 +5303,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Get aggregations",
+        "summary": "Get Aggregations",
         "operationId": "getAggregations",
         "security": [
           {
@@ -5331,7 +5331,7 @@
                 "schema": {
                   "type": "array",
                   "items": {},
-                  "title": "Response Get Aggregations Resources  Id  Aggregations Get"
+                  "title": "Response Getaggregations"
                 }
               }
             }
@@ -5364,7 +5364,7 @@
         "tags": [
           "resources"
         ],
-        "summary": "Get resource coverage data",
+        "summary": "Get Resource Coverage Data",
         "operationId": "getResourceCoverageData",
         "security": [
           {
@@ -5423,7 +5423,7 @@
         "tags": [
           "search"
         ],
-        "summary": "Handle search",
+        "summary": "Handle Search",
         "operationId": "handleSearch",
         "requestBody": {
           "content": {
@@ -5497,7 +5497,7 @@
         "tags": [
           "search"
         ],
-        "summary": "Create search index",
+        "summary": "Create Search Index",
         "operationId": "createSearchIndex",
         "security": [
           {
@@ -5568,7 +5568,7 @@
         "tags": [
           "search"
         ],
-        "summary": "Get search index info",
+        "summary": "Get Search Index Info",
         "operationId": "getSearchIndexInfo",
         "responses": {
           "200": {
@@ -5580,7 +5580,7 @@
                     "$ref": "#/components/schemas/IndexInfo"
                   },
                   "type": "array",
-                  "title": "Response Get Search Index Info Search Index Info Get"
+                  "title": "Response Getsearchindexinfo"
                 }
               }
             }
@@ -5621,7 +5621,7 @@
         "tags": [
           "search"
         ],
-        "summary": "Export search results",
+        "summary": "Export Search Results",
         "operationId": "exportSearchResults",
         "requestBody": {
           "content": {
@@ -5685,7 +5685,7 @@
         "tags": [
           "status"
         ],
-        "summary": "Api status",
+        "summary": "Api Status",
         "operationId": "apiStatus",
         "responses": {
           "200": {
@@ -5695,7 +5695,7 @@
                 "schema": {
                   "additionalProperties": true,
                   "type": "object",
-                  "title": "Response Api Status Status Get"
+                  "title": "Response Apistatus"
                 }
               }
             }
@@ -5718,7 +5718,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Get all texts",
+        "summary": "Get All Texts",
         "description": "Returns a list of all texts.\nOnly users with admin permissions will see inactive texts.",
         "operationId": "getAllTexts",
         "security": [
@@ -5751,7 +5751,7 @@
                   "items": {
                     "$ref": "#/components/schemas/TextRead"
                   },
-                  "title": "Response Get All Texts Texts Get"
+                  "title": "Response Getalltexts"
                 }
               }
             }
@@ -5772,7 +5772,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Create text",
+        "summary": "Create Text",
         "operationId": "createText",
         "security": [
           {
@@ -5851,7 +5851,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Download structure template",
+        "summary": "Download Structure Template",
         "description": "Download the structure template for a text to help compose a structure\ndefinition (or locations updates if there already is a structure)\nthat can later be uploaded to the server.",
         "operationId": "downloadStructureTemplate",
         "security": [
@@ -5929,7 +5929,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Import text structure",
+        "summary": "Import Text Structure",
         "description": "Uploads the structure definition for a text to apply as a structure of locations",
         "operationId": "importTextStructure",
         "security": [
@@ -5955,7 +5955,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_import_text_structure_texts__id__structure_post"
+                "$ref": "#/components/schemas/Body_importTextStructure"
               }
             }
           }
@@ -6035,7 +6035,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Update text structure",
+        "summary": "Update Text Structure",
         "description": "Uploads updated locations data.\nOnly existing locations (with a correct ID) will be updated.",
         "operationId": "updateTextStructure",
         "security": [
@@ -6061,7 +6061,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_update_text_structure_texts__id__structure_patch"
+                "$ref": "#/components/schemas/Body_updateTextStructure"
               }
             }
           }
@@ -6135,7 +6135,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Insert level",
+        "summary": "Insert Level",
         "operationId": "insertLevel",
         "security": [
           {
@@ -6254,7 +6254,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Delete level",
+        "summary": "Delete Level",
         "operationId": "deleteLevel",
         "security": [
           {
@@ -6356,7 +6356,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Delete text",
+        "summary": "Delete Text",
         "operationId": "deleteText",
         "security": [
           {
@@ -6436,7 +6436,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Get text",
+        "summary": "Get Text",
         "operationId": "getText",
         "parameters": [
           {
@@ -6485,7 +6485,7 @@
         "tags": [
           "texts"
         ],
-        "summary": "Update text",
+        "summary": "Update Text",
         "operationId": "updateText",
         "security": [
           {
@@ -6574,7 +6574,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Me",
+        "summary": "Users:Current User",
         "operationId": "users:currentUser",
         "responses": {
           "200": {
@@ -6604,7 +6604,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Delete me",
+        "summary": "Delete Me",
         "operationId": "deleteMe",
         "responses": {
           "204": {
@@ -6634,7 +6634,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Update me",
+        "summary": "Users:Patch Current User",
         "operationId": "users:patchCurrentUser",
         "requestBody": {
           "content": {
@@ -6713,7 +6713,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Find users",
+        "summary": "Find Users",
         "operationId": "findUsers",
         "security": [
           {
@@ -6945,7 +6945,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Find public users",
+        "summary": "Find Public Users",
         "description": "Returns a list of public users matching the given query.\n\nOnly returns active user accounts. The query is considered to match a full token\n(e.g. first name, last name, username, a word in the affiliation field).",
         "operationId": "findPublicUsers",
         "security": [
@@ -7046,13 +7046,13 @@
         "tags": [
           "auth"
         ],
-        "summary": "Login",
+        "summary": "Auth:Cookie.Login",
         "operationId": "auth:cookie.login",
         "requestBody": {
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Body_auth_cookie_login_auth_cookie_login_post"
+                "$ref": "#/components/schemas/login"
               }
             }
           },
@@ -7112,7 +7112,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Logout",
+        "summary": "Auth:Cookie.Logout",
         "operationId": "auth:cookie.logout",
         "responses": {
           "200": {
@@ -7145,7 +7145,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Register",
+        "summary": "Register:Register",
         "operationId": "register:register",
         "requestBody": {
           "content": {
@@ -7213,13 +7213,13 @@
         "tags": [
           "auth"
         ],
-        "summary": "Request verify token",
+        "summary": "Verify:Request-Token",
         "operationId": "verify:requestToken",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Body_verify_request_token_auth_request_verify_token_post"
+                "$ref": "#/components/schemas/Body_verify_requestToken"
               }
             }
           },
@@ -7252,13 +7252,13 @@
         "tags": [
           "auth"
         ],
-        "summary": "Verify",
+        "summary": "Verify:Verify",
         "operationId": "verify:verify",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Body_verify_verify_auth_verify_post"
+                "$ref": "#/components/schemas/Body_verify_verify"
               }
             }
           },
@@ -7317,13 +7317,13 @@
         "tags": [
           "auth"
         ],
-        "summary": "Forgot password",
+        "summary": "Reset:Forgot Password",
         "operationId": "reset:forgotPassword",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Body_reset_forgot_password_auth_forgot_password_post"
+                "$ref": "#/components/schemas/Body_reset_forgotPassword"
               }
             }
           },
@@ -7356,13 +7356,13 @@
         "tags": [
           "auth"
         ],
-        "summary": "Reset password",
+        "summary": "Reset:Reset Password",
         "operationId": "reset:resetPassword",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Body_reset_reset_password_auth_reset_password_post"
+                "$ref": "#/components/schemas/Body_reset_resetPassword"
               }
             }
           },
@@ -7422,7 +7422,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Get user",
+        "summary": "Users:User",
         "operationId": "users:user",
         "security": [
           {
@@ -7479,7 +7479,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Update user",
+        "summary": "Users:Patch User",
         "operationId": "users:patchUser",
         "security": [
           {
@@ -7573,7 +7573,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Delete user",
+        "summary": "Users:Delete User",
         "operationId": "users:deleteUser",
         "security": [
           {
@@ -9493,70 +9493,11 @@
         ],
         "title": "AudioSearchQuery"
       },
-      "Body_auth_cookie_login_auth_cookie_login_post": {
-        "properties": {
-          "grant_type": {
-            "anyOf": [
-              {
-                "type": "string",
-                "pattern": "^password$"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Grant Type"
-          },
-          "username": {
-            "type": "string",
-            "title": "Username"
-          },
-          "password": {
-            "type": "string",
-            "format": "password",
-            "title": "Password"
-          },
-          "scope": {
-            "type": "string",
-            "title": "Scope",
-            "default": ""
-          },
-          "client_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Client Id"
-          },
-          "client_secret": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "format": "password",
-            "title": "Client Secret"
-          }
-        },
-        "type": "object",
-        "required": [
-          "username",
-          "password"
-        ],
-        "title": "Body_auth_cookie_login_auth_cookie_login_post"
-      },
-      "Body_import_resource_resources__id__import_post": {
+      "Body_importResource": {
         "properties": {
           "file": {
             "type": "string",
-            "format": "binary",
+            "contentMediaType": "application/octet-stream",
             "title": "File",
             "description": "JSON file containing the resource content data"
           }
@@ -9565,13 +9506,13 @@
         "required": [
           "file"
         ],
-        "title": "Body_import_resource_resources__id__import_post"
+        "title": "Body_importResource"
       },
-      "Body_import_text_structure_texts__id__structure_post": {
+      "Body_importTextStructure": {
         "properties": {
           "file": {
             "type": "string",
-            "format": "binary",
+            "contentMediaType": "application/octet-stream",
             "title": "File",
             "description": "JSON file containing the text's structure"
           }
@@ -9580,9 +9521,9 @@
         "required": [
           "file"
         ],
-        "title": "Body_import_text_structure_texts__id__structure_post"
+        "title": "Body_importTextStructure"
       },
-      "Body_reset_forgot_password_auth_forgot_password_post": {
+      "Body_reset_forgotPassword": {
         "properties": {
           "email": {
             "type": "string",
@@ -9594,9 +9535,9 @@
         "required": [
           "email"
         ],
-        "title": "Body_reset_forgot_password_auth_forgot_password_post"
+        "title": "Body_reset:forgotPassword"
       },
-      "Body_reset_reset_password_auth_reset_password_post": {
+      "Body_reset_resetPassword": {
         "properties": {
           "token": {
             "type": "string",
@@ -9612,13 +9553,13 @@
           "token",
           "password"
         ],
-        "title": "Body_reset_reset_password_auth_reset_password_post"
+        "title": "Body_reset:resetPassword"
       },
-      "Body_update_text_structure_texts__id__structure_patch": {
+      "Body_updateTextStructure": {
         "properties": {
           "file": {
             "type": "string",
-            "format": "binary",
+            "contentMediaType": "application/octet-stream",
             "title": "File",
             "description": "JSON file containing the locations to update"
           }
@@ -9627,9 +9568,9 @@
         "required": [
           "file"
         ],
-        "title": "Body_update_text_structure_texts__id__structure_patch"
+        "title": "Body_updateTextStructure"
       },
-      "Body_verify_request_token_auth_request_verify_token_post": {
+      "Body_verify_requestToken": {
         "properties": {
           "email": {
             "type": "string",
@@ -9641,9 +9582,9 @@
         "required": [
           "email"
         ],
-        "title": "Body_verify_request_token_auth_request_verify_token_post"
+        "title": "Body_verify:requestToken"
       },
-      "Body_verify_verify_auth_verify_post": {
+      "Body_verify_verify": {
         "properties": {
           "token": {
             "type": "string",
@@ -9654,7 +9595,7 @@
         "required": [
           "token"
         ],
-        "title": "Body_verify_verify_auth_verify_post"
+        "title": "Body_verify:verify"
       },
       "BookmarkCreate": {
         "properties": {
@@ -19101,6 +19042,13 @@
           "type": {
             "type": "string",
             "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
           }
         },
         "type": "object",
@@ -19110,6 +19058,65 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "login": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^password$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "format": "password",
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_auth:cookie.login"
       }
     },
     "securitySchemes": {

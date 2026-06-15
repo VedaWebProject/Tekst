@@ -18,7 +18,7 @@ from tekst.logs import log
 from tekst.middlewares import CookieTypeChoiceMiddleware
 from tekst.models.platform import PlatformState
 from tekst.openapi import customize_openapi
-from tekst.routers import setup_routes
+from tekst.routers import custom_generate_unique_id, setup_routes
 from tekst.state import get_state
 
 
@@ -80,6 +80,7 @@ app = FastAPI(
     redoc_url=_cfg.api_doc.redoc_url,
     lifespan=lifespan,
     separate_input_output_schemas=False,
+    generate_unique_id_function=custom_generate_unique_id,
 )
 
 # add middleware to force use of session cookies if a request to the cookie-based
@@ -131,7 +132,7 @@ async def custom_http_exception_handler(request: Request, exc: Exception):
             detail=exc.detail.model_dump().get("detail", None)
             if isinstance(exc.detail, TekstErrorModel)
             else None,
-            headers=exc.headers,  # ty:ignore[invalid-argument-type]
+            headers=exc.headers,
         )
         if isinstance(exc, TekstHTTPException)
         else exc,  # ty:ignore[invalid-argument-type]
