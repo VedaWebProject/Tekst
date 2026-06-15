@@ -41,7 +41,10 @@ const ast = await openapiTS(SCHEMA_FILE_URL, {
       };
     }
     // handle binary types as `Blob` or `Blob | null`
-    if (schemaObject.format === 'binary') {
+    if (
+      schemaObject.format === 'binary' ||
+      schemaObject.contentMediaType === 'application/octet-stream'
+    ) {
       return schemaObject.nullable ? ts.factory.createUnionTypeNode([BLOB, NULL]) : BLOB;
     }
   },
