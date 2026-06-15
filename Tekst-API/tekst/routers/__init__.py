@@ -19,6 +19,10 @@ def _get_routers() -> Iterator[APIRouter]:
             yield module.router
 
 
+def custom_generate_unique_id(route: APIRoute) -> str:
+    return humps.camelize(route.name)
+
+
 def setup_routes(app: FastAPI, dev_mode: bool = False) -> None:
     """
     Connects the API routers defined in this module to the passed application instance.
@@ -30,6 +34,7 @@ def setup_routes(app: FastAPI, dev_mode: bool = False) -> None:
     :type app: FastAPI
     """
     log.info("Setting up API routes")
+
     # register routers that aren't auth-related
     for router in _get_routers():
         if not dev_mode and router.prefix == "/dev":
@@ -37,16 +42,6 @@ def setup_routes(app: FastAPI, dev_mode: bool = False) -> None:
             continue  # pragma: no cover
         log.debug(f"Registering router: {router.prefix or '/'}")
         app.include_router(router)
+
     # register auth-related routers (must happen after other routers are registered)
     setup_auth_routes(app)
-    # modify routes...
-    for route in app.routes:
-        if isinstance(route, APIRoute):
-            # generate route operation IDs from route names
-            route.operation_id = humps.camelize(route.name)
-            route.summary = (
-                route.summary
-                or getattr(route.endpoint, "__name__", route.name)
-                .replace("_", " ")
-                .capitalize()
-            )

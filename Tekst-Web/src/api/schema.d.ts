@@ -7,7 +7,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get location data
+     * Get Location Data
      * @description Returns the location path from the location with the given ID or text/level/position
      *     as the last element, up to its most distant ancestor location
      *     on structure level 0 as the first element of an array as well as all contents
@@ -30,7 +30,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get content context
+     * Get Content Context
      * @description Returns a list of all resource contents belonging to the resource
      *     with the given ID, associated to locations that are children of the parent location
      *     with the given ID.
@@ -52,7 +52,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get nearest content location
+     * Get Nearest Content Location
      * @description Finds the nearest location the given resource holds content for and returns it.
      */
     get: operations['getNearestContentLocation'];
@@ -72,13 +72,13 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get user bookmarks
+     * Get User Bookmarks
      * @description Returns all bookmarks that belong to the requesting user
      */
     get: operations['getUserBookmarks'];
     put?: never;
     /**
-     * Create bookmark
+     * Create Bookmark
      * @description Creates a bookmark for the requesting user
      */
     post: operations['createBookmark'];
@@ -98,7 +98,7 @@ export interface paths {
     get?: never;
     put?: never;
     post?: never;
-    /** Delete bookmark */
+    /** Delete Bookmark */
     delete: operations['deleteBookmark'];
     options?: never;
     head?: never;
@@ -113,7 +113,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Find contents
+     * Find Contents
      * @description Returns a list of all resource contents matching the given criteria.
      *
      *     Respects restricted resources and inactive texts.
@@ -122,7 +122,7 @@ export interface paths {
      */
     get: operations['findContents'];
     put?: never;
-    /** Create content */
+    /** Create Content */
     post: operations['createContent'];
     delete?: never;
     options?: never;
@@ -138,7 +138,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get archived contents
+     * Get Archived Contents
      * @description Returns all content (including archived content)
      *     for the given resource and location,
      *     sorted by creation timestamp in descending order.
@@ -160,17 +160,17 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get content
+     * Get Content
      * @description A generic route for retrieving a content by ID from the database
      */
     get: operations['getContent'];
     put?: never;
     post?: never;
-    /** Delete content */
+    /** Delete Content */
     delete: operations['deleteContent'];
     options?: never;
     head?: never;
-    /** Update content */
+    /** Update Content */
     patch: operations['updateContent'];
     trace?: never;
   };
@@ -183,7 +183,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Archive content */
+    /** Archive Content */
     post: operations['archiveContent'];
     delete?: never;
     options?: never;
@@ -201,7 +201,7 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * Restore archived content
+     * Restore Archived Content
      * @description Restores the archived content with the given ID, archives any content currently
      *     present for the same resource/location.
      */
@@ -222,7 +222,7 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * Create correction
+     * Create Correction
      * @description Creates a correction note referring to a specific content
      */
     post: operations['createCorrection'];
@@ -240,7 +240,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get corrections
+     * Get Corrections
      * @description Returns a list of all corrections for a specific resource
      */
     get: operations['getCorrections'];
@@ -263,7 +263,7 @@ export interface paths {
     put?: never;
     post?: never;
     /**
-     * Delete correction
+     * Delete Correction
      * @description Deletes a specific correction note
      */
     delete: operations['deleteCorrection'];
@@ -280,7 +280,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Find locations
+     * Find Locations
      * @description Finds locations by various combinations of location properties.
      *     A full combined label including all parent location's labels is added to each
      *     returned location object if add_full_labels is set to true.
@@ -288,7 +288,7 @@ export interface paths {
     get: operations['findLocations'];
     put?: never;
     /**
-     * Create location
+     * Create Location
      * @description Creates a new location. The position will be automatically set to the last position
      *     of the location's parent (or the first parent before that has children).
      */
@@ -307,7 +307,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get path options by head id
+     * Get Path Options By Head Id
      * @description Returns the options for selecting text locations derived from the location path of
      *     the location with the given ID as head or root.
      */
@@ -327,7 +327,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get first and last locations paths */
+    /** Get First And Last Locations Paths */
     get: operations['getFirstAndLastLocationsPaths'];
     put?: never;
     post?: never;
@@ -344,7 +344,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get children */
+    /** Get Children */
     get: operations['getChildren'];
     put?: never;
     post?: never;
@@ -361,19 +361,19 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get location */
+    /** Get Location */
     get: operations['getLocation'];
     put?: never;
     post?: never;
     /**
-     * Delete location
+     * Delete Location
      * @description Deletes the specified location. Also deletes any associated contents,
      *     child locations and contents associated with child locations.
      */
     delete: operations['deleteLocation'];
     options?: never;
     head?: never;
-    /** Update location */
+    /** Update Location */
     patch: operations['updateLocation'];
     trace?: never;
   };
@@ -387,7 +387,7 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * Move location
+     * Move Location
      * @description Moves the specified location to a new position on its level.
      */
     post: operations['moveLocation'];
@@ -405,13 +405,13 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get thread messages
+     * Get Thread Messages
      * @description Returns all messages belonging to the specified thread
      */
     get: operations['getThreadMessages'];
     put?: never;
     /**
-     * Send message
+     * Send Message
      * @description Creates a message for the specified recipient
      */
     post: operations['sendMessage'];
@@ -429,7 +429,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get threads
+     * Get Threads
      * @description Returns all message threads involving the requesting user
      */
     get: operations['getThreads'];
@@ -452,7 +452,7 @@ export interface paths {
     put?: never;
     post?: never;
     /**
-     * Delete thread
+     * Delete Thread
      * @description Marks all received messages from the given user as deleted or actually deletes them,
      *     depending on the current deletion status
      */
@@ -470,7 +470,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get platform data
+     * Get Platform Data
      * @description Returns data about the platform and its configuration
      */
     get: operations['getPlatformData'];
@@ -490,7 +490,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get client init data
+     * Get Client Init Data
      * @description Returns data the client needs to initialize
      */
     get: operations['getClientInitData'];
@@ -515,7 +515,7 @@ export interface paths {
     delete?: never;
     options?: never;
     head?: never;
-    /** Update platform state */
+    /** Update Platform State */
     patch: operations['updatePlatformState'];
     trace?: never;
   };
@@ -526,15 +526,15 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get segment */
+    /** Get Segment */
     get: operations['getSegment'];
     put?: never;
     post?: never;
-    /** Delete segment */
+    /** Delete Segment */
     delete: operations['deleteSegment'];
     options?: never;
     head?: never;
-    /** Update segment */
+    /** Update Segment */
     patch: operations['updateSegment'];
     trace?: never;
   };
@@ -547,7 +547,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create segment */
+    /** Create Segment */
     post: operations['createSegment'];
     delete?: never;
     options?: never;
@@ -562,11 +562,11 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get all tasks status */
+    /** Get All Tasks Status */
     get: operations['getAllTasksStatus'];
     put?: never;
     post?: never;
-    /** Delete all tasks */
+    /** Delete All Tasks */
     delete: operations['deleteAllTasks'];
     options?: never;
     head?: never;
@@ -580,7 +580,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get user tasks */
+    /** Get User Tasks */
     get: operations['getUserTasks'];
     put?: never;
     post?: never;
@@ -597,7 +597,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Download task artifact */
+    /** Download Task Artifact */
     get: operations['downloadTaskArtifact'];
     put?: never;
     post?: never;
@@ -617,7 +617,7 @@ export interface paths {
     get?: never;
     put?: never;
     post?: never;
-    /** Delete task */
+    /** Delete Task */
     delete: operations['deleteTask'];
     options?: never;
     head?: never;
@@ -631,7 +631,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Run platform cleanup */
+    /** Run Platform Cleanup */
     get: operations['runPlatformCleanup'];
     put?: never;
     post?: never;
@@ -648,7 +648,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Send test email to admin */
+    /** Send Test Email To Admin */
     get: operations['sendTestEmailToAdmin'];
     put?: never;
     post?: never;
@@ -665,7 +665,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get stats */
+    /** Get Stats */
     get: operations['getStats'];
     put?: never;
     post?: never;
@@ -682,7 +682,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Trigger cache precomputation */
+    /** Trigger Cache Precomputation */
     get: operations['triggerCachePrecomputation'];
     put?: never;
     post?: never;
@@ -700,7 +700,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Find resources
+     * Find Resources
      * @description Returns a list of all resources matching the given criteria.
      *
      *     As the resulting list of resources may contain resources of different types, the
@@ -708,7 +708,7 @@ export interface paths {
      */
     get: operations['findResources'];
     put?: never;
-    /** Create resource */
+    /** Create Resource */
     post: operations['createResource'];
     delete?: never;
     options?: never;
@@ -725,7 +725,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create resource patch */
+    /** Create Resource Patch */
     post: operations['createResourcePatch'];
     delete?: never;
     options?: never;
@@ -740,15 +740,15 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get resource */
+    /** Get Resource */
     get: operations['getResource'];
     put?: never;
     post?: never;
-    /** Delete resource */
+    /** Delete Resource */
     delete: operations['deleteResource'];
     options?: never;
     head?: never;
-    /** Update resource */
+    /** Update Resource */
     patch: operations['updateResource'];
     trace?: never;
   };
@@ -765,7 +765,7 @@ export interface paths {
     delete?: never;
     options?: never;
     head?: never;
-    /** Update resource owners */
+    /** Update Resource Owners */
     patch: operations['updateResourceOwners'];
     trace?: never;
   };
@@ -778,7 +778,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Propose resource */
+    /** Propose Resource */
     post: operations['proposeResource'];
     delete?: never;
     options?: never;
@@ -795,7 +795,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Unpropose resource */
+    /** Unpropose Resource */
     post: operations['unproposeResource'];
     delete?: never;
     options?: never;
@@ -812,7 +812,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Publish resource */
+    /** Publish Resource */
     post: operations['publishResource'];
     delete?: never;
     options?: never;
@@ -829,7 +829,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Unpublish resource */
+    /** Unpublish Resource */
     post: operations['unpublishResource'];
     delete?: never;
     options?: never;
@@ -844,7 +844,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Download resource template */
+    /** Download Resource Template */
     get: operations['downloadResourceTemplate'];
     put?: never;
     post?: never;
@@ -863,7 +863,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Import resource */
+    /** Import Resource */
     post: operations['importResource'];
     delete?: never;
     options?: never;
@@ -878,7 +878,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Export resource contents */
+    /** Export Resource Contents */
     get: operations['exportResourceContents'];
     put?: never;
     post?: never;
@@ -895,7 +895,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get aggregations */
+    /** Get Aggregations */
     get: operations['getAggregations'];
     put?: never;
     post?: never;
@@ -912,7 +912,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get resource coverage data */
+    /** Get Resource Coverage Data */
     get: operations['getResourceCoverageData'];
     put?: never;
     post?: never;
@@ -931,7 +931,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Handle search */
+    /** Handle Search */
     post: operations['handleSearch'];
     delete?: never;
     options?: never;
@@ -946,7 +946,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Create search index */
+    /** Create Search Index */
     get: operations['createSearchIndex'];
     put?: never;
     post?: never;
@@ -963,7 +963,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get search index info */
+    /** Get Search Index Info */
     get: operations['getSearchIndexInfo'];
     put?: never;
     post?: never;
@@ -982,7 +982,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Export search results */
+    /** Export Search Results */
     post: operations['exportSearchResults'];
     delete?: never;
     options?: never;
@@ -997,7 +997,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Api status */
+    /** Api Status */
     get: operations['apiStatus'];
     put?: never;
     post?: never;
@@ -1015,13 +1015,13 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get all texts
+     * Get All Texts
      * @description Returns a list of all texts.
      *     Only users with admin permissions will see inactive texts.
      */
     get: operations['getAllTexts'];
     put?: never;
-    /** Create text */
+    /** Create Text */
     post: operations['createText'];
     delete?: never;
     options?: never;
@@ -1037,7 +1037,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Download structure template
+     * Download Structure Template
      * @description Download the structure template for a text to help compose a structure
      *     definition (or locations updates if there already is a structure)
      *     that can later be uploaded to the server.
@@ -1061,7 +1061,7 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * Import text structure
+     * Import Text Structure
      * @description Uploads the structure definition for a text to apply as a structure of locations
      */
     post: operations['importTextStructure'];
@@ -1069,7 +1069,7 @@ export interface paths {
     options?: never;
     head?: never;
     /**
-     * Update text structure
+     * Update Text Structure
      * @description Uploads updated locations data.
      *     Only existing locations (with a correct ID) will be updated.
      */
@@ -1085,7 +1085,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Insert level */
+    /** Insert Level */
     post: operations['insertLevel'];
     delete?: never;
     options?: never;
@@ -1103,7 +1103,7 @@ export interface paths {
     get?: never;
     put?: never;
     post?: never;
-    /** Delete level */
+    /** Delete Level */
     delete: operations['deleteLevel'];
     options?: never;
     head?: never;
@@ -1117,15 +1117,15 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get text */
+    /** Get Text */
     get: operations['getText'];
     put?: never;
     post?: never;
-    /** Delete text */
+    /** Delete Text */
     delete: operations['deleteText'];
     options?: never;
     head?: never;
-    /** Update text */
+    /** Update Text */
     patch: operations['updateText'];
     trace?: never;
   };
@@ -1136,15 +1136,15 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Me */
+    /** Users:Current User */
     get: operations['users:currentUser'];
     put?: never;
     post?: never;
-    /** Delete me */
+    /** Delete Me */
     delete: operations['deleteMe'];
     options?: never;
     head?: never;
-    /** Update me */
+    /** Users:Patch Current User */
     patch: operations['users:patchCurrentUser'];
     trace?: never;
   };
@@ -1155,7 +1155,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Find users */
+    /** Find Users */
     get: operations['findUsers'];
     put?: never;
     post?: never;
@@ -1193,7 +1193,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Find public users
+     * Find Public Users
      * @description Returns a list of public users matching the given query.
      *
      *     Only returns active user accounts. The query is considered to match a full token
@@ -1217,7 +1217,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Login */
+    /** Auth:Cookie.Login */
     post: operations['auth:cookie.login'];
     delete?: never;
     options?: never;
@@ -1234,7 +1234,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Logout */
+    /** Auth:Cookie.Logout */
     post: operations['auth:cookie.logout'];
     delete?: never;
     options?: never;
@@ -1251,7 +1251,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Register */
+    /** Register:Register */
     post: operations['register:register'];
     delete?: never;
     options?: never;
@@ -1268,7 +1268,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Request verify token */
+    /** Verify:Request-Token */
     post: operations['verify:requestToken'];
     delete?: never;
     options?: never;
@@ -1285,7 +1285,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Verify */
+    /** Verify:Verify */
     post: operations['verify:verify'];
     delete?: never;
     options?: never;
@@ -1302,7 +1302,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Forgot password */
+    /** Reset:Forgot Password */
     post: operations['reset:forgotPassword'];
     delete?: never;
     options?: never;
@@ -1319,7 +1319,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Reset password */
+    /** Reset:Reset Password */
     post: operations['reset:resetPassword'];
     delete?: never;
     options?: never;
@@ -1334,15 +1334,15 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get user */
+    /** Users:User */
     get: operations['users:user'];
     put?: never;
     post?: never;
-    /** Delete user */
+    /** Users:Delete User */
     delete: operations['users:deleteUser'];
     options?: never;
     head?: never;
-    /** Update user */
+    /** Users:Patch User */
     patch: operations['users:patchUser'];
     trace?: never;
   };
@@ -2284,82 +2284,55 @@ export interface components {
        */
       caption?: string;
     };
-    /** Body_auth_cookie_login_auth_cookie_login_post */
-    Body_auth_cookie_login_auth_cookie_login_post: {
-      /** Grant Type */
-      grant_type?: string | null;
-      /** Username */
-      username: string;
-      /**
-       * Password
-       * Format: password
-       */
-      password: string;
-      /**
-       * Scope
-       * @default
-       */
-      scope: string;
-      /** Client Id */
-      client_id?: string | null;
-      /**
-       * Client Secret
-       * Format: password
-       */
-      client_secret?: string | null;
-    };
-    /** Body_import_resource_resources__id__import_post */
-    Body_import_resource_resources__id__import_post: {
+    /** Body_importResource */
+    Body_importResource: {
       /**
        * File
-       * Format: binary
        * @description JSON file containing the resource content data
        */
-      file: Blob;
+      file: string;
     };
-    /** Body_import_text_structure_texts__id__structure_post */
-    Body_import_text_structure_texts__id__structure_post: {
+    /** Body_importTextStructure */
+    Body_importTextStructure: {
       /**
        * File
-       * Format: binary
        * @description JSON file containing the text's structure
        */
-      file: Blob;
+      file: string;
     };
-    /** Body_reset_forgot_password_auth_forgot_password_post */
-    Body_reset_forgot_password_auth_forgot_password_post: {
+    /** Body_reset:forgotPassword */
+    Body_reset_forgotPassword: {
       /**
        * Email
        * Format: email
        */
       email: string;
     };
-    /** Body_reset_reset_password_auth_reset_password_post */
-    Body_reset_reset_password_auth_reset_password_post: {
+    /** Body_reset:resetPassword */
+    Body_reset_resetPassword: {
       /** Token */
       token: string;
       /** Password */
       password: string;
     };
-    /** Body_update_text_structure_texts__id__structure_patch */
-    Body_update_text_structure_texts__id__structure_patch: {
+    /** Body_updateTextStructure */
+    Body_updateTextStructure: {
       /**
        * File
-       * Format: binary
        * @description JSON file containing the locations to update
        */
-      file: Blob;
+      file: string;
     };
-    /** Body_verify_request_token_auth_request_verify_token_post */
-    Body_verify_request_token_auth_request_verify_token_post: {
+    /** Body_verify:requestToken */
+    Body_verify_requestToken: {
       /**
        * Email
        * Format: email
        */
       email: string;
     };
-    /** Body_verify_verify_auth_verify_post */
-    Body_verify_verify_auth_verify_post: {
+    /** Body_verify:verify */
+    Body_verify_verify: {
       /** Token */
       token: string;
     };
@@ -7068,6 +7041,34 @@ export interface components {
       msg: string;
       /** Error Type */
       type: string;
+      /** Input */
+      input?: unknown;
+      /** Context */
+      ctx?: Record<string, never>;
+    };
+    /** Body_auth:cookie.login */
+    login: {
+      /** Grant Type */
+      grant_type?: string | null;
+      /** Username */
+      username: string;
+      /**
+       * Password
+       * Format: password
+       */
+      password: string;
+      /**
+       * Scope
+       * @default
+       */
+      scope: string;
+      /** Client Id */
+      client_id?: string | null;
+      /**
+       * Client Secret
+       * Format: password
+       */
+      client_secret?: string | null;
     };
   };
   responses: never;
@@ -9988,7 +9989,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'multipart/form-data': components['schemas']['Body_import_resource_resources__id__import_post'];
+        'multipart/form-data': components['schemas']['Body_importResource'];
       };
     };
     responses: {
@@ -10515,7 +10516,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'multipart/form-data': components['schemas']['Body_import_text_structure_texts__id__structure_post'];
+        'multipart/form-data': components['schemas']['Body_importTextStructure'];
       };
     };
     responses: {
@@ -10595,7 +10596,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'multipart/form-data': components['schemas']['Body_update_text_structure_texts__id__structure_patch'];
+        'multipart/form-data': components['schemas']['Body_updateTextStructure'];
       };
     };
     responses: {
@@ -11230,7 +11231,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/x-www-form-urlencoded': components['schemas']['Body_auth_cookie_login_auth_cookie_login_post'];
+        'application/x-www-form-urlencoded': components['schemas']['login'];
       };
     };
     responses: {
@@ -11355,7 +11356,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['Body_verify_request_token_auth_request_verify_token_post'];
+        'application/json': components['schemas']['Body_verify_requestToken'];
       };
     };
     responses: {
@@ -11388,7 +11389,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['Body_verify_verify_auth_verify_post'];
+        'application/json': components['schemas']['Body_verify_verify'];
       };
     };
     responses: {
@@ -11430,7 +11431,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['Body_reset_forgot_password_auth_forgot_password_post'];
+        'application/json': components['schemas']['Body_reset_forgotPassword'];
       };
     };
     responses: {
@@ -11463,7 +11464,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['Body_reset_reset_password_auth_reset_password_post'];
+        'application/json': components['schemas']['Body_reset_resetPassword'];
       };
     };
     responses: {
