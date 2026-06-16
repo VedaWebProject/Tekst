@@ -62,7 +62,7 @@ const citationFull = computed(
         <copy-to-clipboard-button secondary size="small" :text="citationFull" show-msg />
       </template>
       <template #description>
-        <p class="text-small">{{ citationFull }}</p>
+        <p class="text-small pre-wrap">{{ citationFull }}</p>
       </template>
     </n-thing>
 
@@ -76,7 +76,7 @@ const citationFull = computed(
         <copy-to-clipboard-button secondary size="small" :text="citationRes" show-msg />
       </template>
       <template #description>
-        <p class="text-small">{{ citationRes }}</p>
+        <p class="text-small pre-wrap">{{ citationRes }}</p>
       </template>
     </n-thing>
 
