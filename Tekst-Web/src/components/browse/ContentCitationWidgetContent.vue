@@ -37,11 +37,13 @@ const citationRes = computed(() =>
 const citationFull = computed(
   () => `${citationRes.value} – ${$t('common.location')}: ${browseUrl.value}`
 );
+const hideCitationFull = computed(() => citationRes.value.includes('\n'));
 </script>
 
 <template>
   <div>
     <!-- archived content warning -->
+
     <n-alert
       v-if="!!params.ts"
       type="warning"
@@ -54,7 +56,8 @@ const citationFull = computed(
     </n-alert>
 
     <!-- citation variants -->
-    <n-thing v-if="props.resource.citation">
+
+    <n-thing v-if="props.resource.citation && !hideCitationFull">
       <template #header>
         <b class="text-small">{{ $t('browse.contentCitation.full') }}</b>
       </template>
@@ -66,7 +69,7 @@ const citationFull = computed(
       </template>
     </n-thing>
 
-    <n-divider v-if="props.resource.citation" />
+    <n-divider v-if="props.resource.citation && !hideCitationFull" />
 
     <n-thing v-if="props.resource.citation">
       <template #header>

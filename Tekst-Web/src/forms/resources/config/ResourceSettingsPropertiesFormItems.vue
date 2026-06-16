@@ -53,7 +53,7 @@ const metadataKeysOptions = computed(() =>
   </form-section>
 
   <!-- CITATION -->
-  <form-section :title="$t('models.resource.citation')">
+  <form-section :title="$t('models.resource.citation')" help-key="resourceCitation">
     <n-form-item path="citation" :show-label="false">
       <n-input
         type="textarea"
