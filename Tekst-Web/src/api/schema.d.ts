@@ -3632,10 +3632,7 @@ export interface components {
        * @enum {string}
        */
       labellingType:
-        | 'numbersZeroBased'
-        | 'numbersOneBased'
-        | 'lettersLowercase'
-        | 'lettersUppercase';
+        'numbersZeroBased' | 'numbersOneBased' | 'lettersLowercase' | 'lettersUppercase';
     };
     /** @enum {string} */
     LocaleKey: 'deDE' | 'enUS';
@@ -9188,8 +9185,7 @@ export interface operations {
         };
         content: {
           'application/json':
-            | components['schemas']['UserStats']
-            | components['schemas']['SuperuserStats'];
+            components['schemas']['UserStats'] | components['schemas']['SuperuserStats'];
         };
       };
     };

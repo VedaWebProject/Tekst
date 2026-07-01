@@ -10,8 +10,8 @@ defineProps<{
   enabled?: boolean;
 }>();
 
-const fromPath = defineModel<LocationRead[]>('fromPath', { default: [] });
-const toPath = defineModel<LocationRead[]>('toPath', { default: [] });
+const fromPath = defineModel<LocationRead[]>('fromPath', { required: true });
+const toPath = defineModel<LocationRead[]>('toPath', { required: true });
 const expanded = defineModel<boolean>('expanded');
 
 const fromLocationFullLabel = computed(() => fromPath.value.map((loc) => loc.label).join(', '));
