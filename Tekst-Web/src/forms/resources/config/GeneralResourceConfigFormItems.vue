@@ -13,7 +13,7 @@ const props = defineProps<{
   resource: AnyResourceRead;
 }>();
 
-const model = defineModel<GeneralResourceConfig>({ default: {} });
+const model = defineModel<GeneralResourceConfig>({ required: true });
 const state = useStateStore();
 
 const categoryOptions = computed(
