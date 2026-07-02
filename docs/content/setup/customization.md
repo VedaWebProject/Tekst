@@ -59,9 +59,19 @@ Tekst has an on-screen keyboard feature for easy input of special character sets
     ```
 
 
+## UI Colors, logos, fonts
+
+You may change the primary UI color
+
+![](../assets/screen_admin_appearance_branding.png)
+
+/// caption
+Example screenshots taken from [VedaWeb](https://vedaweb.uni-koeln.de).
+///
+
 ## Custom client assets
 
-For some customization features of Tekst, it is necessary to provide custom assets to the client application. So if you want to e.g. use [additional fonts](#additional-custom-fonts) or the [on-screen keyboard](#on-screen-keyboard) feature with custom key maps, this is a preparation step you'll have to take.
+For some customization features of Tekst, it is necessary to provide custom assets to the client application. So if you want to use e.g. [custom logos](#ui-colors-logos-fonts), [additional fonts](#additional-custom-fonts) or the [on-screen keyboard](#on-screen-keyboard) feature with custom key maps, this is a preparation step you'll have to take.
 
 To provide custom assets, you need administrative access to the server on which the platform application is deployed. The procedure is described step by step below.
 

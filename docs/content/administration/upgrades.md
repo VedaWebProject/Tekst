@@ -1,14 +1,13 @@
 # Upgrades
 
-!!! info "Work in progress"
-    This page is yet to exist.
-
 
 ## Installing new versions
 
-...
+!!! note "Work in progress"
+    This content is yet to exist.
 
 
 ## Migrating the database
 
-...
+!!! note "Work in progress"
+    This content is yet to exist.

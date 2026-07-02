@@ -19,11 +19,11 @@ In the end, giving it a try on your local machine [is relatively easy](setup/ins
 
 ## Features
 
-!!! info
-    - [x] This is a feature is already implemented.
-    - [ ] This is a feature that is planned but not yet implemented.
-
 This list is far from exhaustive, but includes some features that might be decisive in certain scenarios:
+
+!!! note
+    - [x] This feature is already implemented.
+    - [ ] This feature is planned, not yet implemented.
 
 - [x] Manage multiple independent, potentially **differently structured texts**
 - [x] Run it as a **closed, internally curated** publishing platform **or as an open platform** for a selected research **community** to encourage user **contributions**
@@ -57,7 +57,7 @@ This list is far from exhaustive, but includes some features that might be decis
 Depending on your requirements, you might want to consider the following list of potential shortcomings:
 
 - SEO: The web client is a [SPA](https://en.wikipedia.org/wiki/Single-page_application) that is rendered in the browser (no SSR). As a result, visibility to search engines is somewhat limited.
-- No built-in functionality for uploading and managing media files. If you want to integrate image- or audio-based resources, you will have to host the respective media files yourself and link to them from your resources.
+- No built-in functionality for uploading and managing media files. If you want to integrate multimedia resources, you will have to host the respective files yourself and reference them by URL in your resources.
 - _...get in touch if you find anything that should be added to this list, we mean it!_
 
 ## Publications

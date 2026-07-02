@@ -344,5 +344,7 @@ line_spans = "__span"
 
 [project.markdown_extensions.pymdownx.inlinehilite]
 
+[project.markdown_extensions.pymdownx.blocks.caption]
+
 [project.markdown_extensions.pymdownx.tasklist]
 custom_checkbox = true
