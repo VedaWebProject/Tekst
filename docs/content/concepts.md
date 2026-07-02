@@ -104,6 +104,14 @@ This resource type shows one or more audio players per content that can be used 
 Example screenshot taken from [VedaWeb](https://vedaweb.uni-koeln.de).
 ///
 
+### Video
+
+Work in progress...
+
+### 3D
+
+Work in progress...
+
 ### Location Metadata
 
 This resource type is meant for holding basic key-value metadata on certain text locations. The data can be displayed as a normal resource content block (along all the other resource types' contents) or as tags embedded in the reading view's header.
