@@ -101,7 +101,7 @@ This resource type shows one or more audio players per content that can be used 
 ![](assets/screen_res_type_audio.png)
 
 /// caption
-Example screenshot taken from [VedaWeb](https://vedaweb.uni-koeln.de).
+Example screenshot taken from the Tekst development demo.
 ///
 
 ### Video
