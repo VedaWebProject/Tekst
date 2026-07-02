@@ -61,7 +61,7 @@ Tekst has an on-screen keyboard feature for easy input of special character sets
 
 ## UI Colors, logos, fonts
 
-You may change the primary UI color
+You may change the primary UI color, the platform logo and the fonts used for UI components and contents in the admin interface. Just log in with an administrator account, click your account symbol in the upper right corner and choose "Administration" and then "Appearance" from the menu.
 
 ![](../assets/screen_admin_appearance_branding.png)
 
@@ -79,14 +79,36 @@ To provide custom assets, you need administrative access to the server on which 
 
     It is always recommended to create a backup of all application data before making any changes to the application deployment!
 
+The directory structure expected by the application looks as follows:
+
+```
+/var/www/my-tekst-platform/static/
+├── fonts
+│   ├── MyCustomFont-Regular.ttf
+│   └── MyOtherCustomFont-Regular.ttf
+└── osk
+    └── my-osk-mapping.json
+├── favicon-dark.ico
+├── favicon-dark.png
+├── favicon.ico
+├── favicon.png
+├── fonts.css
+├── logo-dark.png
+├── logo.png
+```
+
+!!! tip
+    You may add any additional files and directories that you want to statically reference from your platform, e.g. images for custom info pages or page segments.
+
+To let the application know about your custom assets, you need to set the `TEKST_WEB_STATIC_DIR` environment variable to the path of the directory containing the assets:
 
 **For a Docker-based deployment...**
 
-1. In case you haven't done so already, in the `.env` file, set the value for `TEKST_WEB_STATIC_DIR` to a path under which you want to make additional static files available for the web client (e.g., `/var/www/tekst/static/`) and create the corresponding directories.
+1. In case you haven't done so already, in the `.env` file, set the value for `TEKST_WEB_STATIC_DIR` to a path under which you want to make additional static files available for the web client (e.g., `/var/www/my-tekst-platform/static/`) and create the corresponding directories.
 2. For the client container to recognize the changed value in `.env`, it needs to be restarted (`docker compose restart client`).
 
 
 **For a bare-metal deployment...**
 
-1. In case you haven't done so already, create a directory where you want to make additional static files available for the web client (e.g., `/var/www/tekst/static/`).
+1. In case you haven't done so already, create a directory where you want to make additional static files available for the web client (e.g., `/var/www/my-tekst-platform/static/`).
 2. Ensure that your web server makes this directory available as `/static` under the same path as the application, e.g `www.tekst-platform.org/static`. How this is done depends on the web server you are using.

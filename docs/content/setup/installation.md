@@ -67,7 +67,7 @@ The instructions below will help you deploy a stack consisting of everything Tek
 
     (or `sudo chmod 660 .env` if you're into numbers)
 
-    !!! warning
+    !!! danger
 
         After you finish deploying Tekst by following these instructions, please log into the initial admin account and **change its password immediately**.
 
