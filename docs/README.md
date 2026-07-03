@@ -14,7 +14,7 @@ docker compose -f docs/compose.yml up
 docker compose up
 ```
 
-Then, visit **`http://127.0.0.1:8000`** using your web browser.
+Then, visit **`http://127.0.0.1:8888`** using your web browser.
 
 ## Deployment
 

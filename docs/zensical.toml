@@ -30,7 +30,8 @@ site_url = "https://vedawebproject.github.io/Tekst/"
 # Read more: https://zensical.org/docs/setup/basics/#copyright
 copyright = """
 Tekst was initially developed in the scope of the
-<a href="https://vedaweb.uni-koeln.de" target="_blank" rel="noreferrer">VedaWeb</a> research project.
+<a href="https://vedaweb.uni-koeln.de" target="_blank" rel="noreferrer">VedaWeb</a>
+research project.
 """
 
 # Zensical supports both implicit navigation and explicitly defined navigation.

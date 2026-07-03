@@ -4,4 +4,5 @@ services:
     volumes:
       - .:/docs
     ports:
-      - 127.0.0.1:8000:8000
+      - 127.0.0.1:8888:8888
+    command: ["serve", "--dev-addr=0.0.0.0:8888"]
