@@ -924,8 +924,8 @@ admin:
       heading: Interne Bereinigung
       description: |
         Diese Routine ist Teil des Wartungsprogramms, kann hier aber manuell ausgeführt werden.
-        Abgelaufene Zugangstokens und Benutzer*innen-Nachrichten werden gelöscht.
-      actionStarted: The internal cleanup is performed in the background. @:common.takeAWhile
+        Abgelaufene Zugangstokens sowie alte Plattform-Hinweise und Benutzer*innen-Nachrichten werden gelöscht.
+      actionStarted: Die interne Bereinigung wird im Hintergrund ausgeführt. @:common.takeAWhile
     tasks:
       noTasks: Keine aktiven @:tasks.title
       started: Gestartet

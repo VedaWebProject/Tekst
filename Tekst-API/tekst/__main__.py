@@ -172,7 +172,7 @@ def precompute(force: bool):
 
 @click.command()
 def cleanup():
-    """Runs the internal cleanup routine for deleting outdated data"""
+    """Runs the internal cleanup routine for deleting outdated and invalidated data"""
     asyncio.run(_cleanup())
 
 
