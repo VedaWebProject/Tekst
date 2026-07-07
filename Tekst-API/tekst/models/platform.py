@@ -13,6 +13,7 @@ from tekst.models.common import (
     ReadBase,
     make_update_model,
 )
+from tekst.models.notice import NoticeRead
 from tekst.models.segment import ClientSegmentRead, ClientSegmentSignature
 from tekst.models.text import TextRead
 from tekst.models.user import UserRead
@@ -300,4 +301,8 @@ class ClientInitData(ModelBase):
     user: Annotated[
         UserRead | None,
         Field(description="User data of current user (if there is an active session)"),
+    ] = None
+    notices: Annotated[
+        list[NoticeRead] | None,
+        Field(description="Any current platform notices"),
     ] = None

@@ -15,6 +15,7 @@ from tekst.logs import log, log_op_end, log_op_start
 from tekst.models.common import PydanticObjectId
 from tekst.models.content import ContentBaseDocument
 from tekst.models.message import UserMessageDocument
+from tekst.models.notice import NoticeDocument
 from tekst.models.platform import PlatformStateDocument
 from tekst.models.segment import (
     ClientSegmentDocument,
@@ -123,6 +124,15 @@ async def cleanup_task(cfg: TekstConfig = get_config()) -> dict[str, float]:
         LT(
             UserMessageDocument.created_at,
             datetime.now(UTC) - timedelta(days=cfg.misc.usrmsg_force_delete_after_days),
+        ),
+    ).delete()
+
+    # delete old platform notices
+    log.info("Cleanup: Deleting old platform notices...")
+    await NoticeDocument.find(
+        LT(
+            NoticeDocument.ends_at,
+            datetime.now(UTC),
         ),
     ).delete()
 

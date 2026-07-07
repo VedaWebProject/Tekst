@@ -17,6 +17,7 @@ from tekst.models.bookmark import BookmarkDocument
 from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
+from tekst.models.notice import NoticeDocument
 from tekst.models.platform import (
     ClientInitData,
     PlatformData,
@@ -83,6 +84,12 @@ async def get_client_init_data(
     return ClientInitData(
         platform=await get_platform_data(ou, cfg),
         user=ou,
+        notices=await NoticeDocument.find(
+            GTE(
+                NoticeDocument.ends_at,
+                datetime.now(UTC),
+            )
+        ).to_list(),
     )
 
 

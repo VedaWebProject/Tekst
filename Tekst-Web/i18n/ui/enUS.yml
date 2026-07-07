@@ -899,7 +899,7 @@ admin:
       heading: Internal Cleanup
       description: |
         This routine is part of the maintenance job, but can be run manually here.
-        Outdated access tokens and user messages scheduled for removal will be deleted.
+        Outdated access tokens, old platform notices and user messages scheduled for removal will be deleted.
       actionStarted: The internal cleanup is performed in the background. @:common.takeAWhile
     tasks:
       noTasks: No active background tasks

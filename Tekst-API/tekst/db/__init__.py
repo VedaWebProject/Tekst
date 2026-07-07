@@ -14,6 +14,7 @@ from tekst.models.content import ContentBaseDocument
 from tekst.models.correction import CorrectionDocument
 from tekst.models.location import LocationDocument
 from tekst.models.message import UserMessageDocument
+from tekst.models.notice import NoticeDocument
 from tekst.models.platform import PlatformStateDocument
 from tekst.models.precomputed import PrecomputedDataDocument
 from tekst.models.resource import ResourceBaseDocument
@@ -76,6 +77,7 @@ async def init_odm(db: Database = get_db()) -> None:
         AccessTokenDocument,
         TaskDocument,
         PrecomputedDataDocument,
+        NoticeDocument,
     ]
     # add all resource types' resource and content document models
     for lt_class in resource_types_mgr.get_all().values():
