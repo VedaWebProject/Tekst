@@ -23,7 +23,7 @@ const props = withDefaults(
 );
 
 const show = defineModel<boolean>('show');
-const emit = defineEmits(['submit']);
+const emit = defineEmits<{ submit: [locPath: LocationRead[]] }>();
 
 const locationPath = ref<LocationRead[]>(props.currentLocationPath);
 
