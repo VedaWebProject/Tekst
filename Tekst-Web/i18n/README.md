@@ -10,4 +10,4 @@
 ## UI translations (`ui/`)
 
 - This directory contains one `.yml` file for each supported language, named using the short language code (e.g. `enUS.yml`, `deDE.yml`, ...).
-- The `.yml` files contain the language-specific translations for the UI elements' labels, alerts, dialogs and so on.
+- The `.yml` files contain the language-specific translations for all UI elements' labels.

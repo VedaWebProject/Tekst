@@ -148,9 +148,6 @@ export const useStateStore = defineStore('state', () => {
     { once: true }
   );
 
-  // tasks widget visibility
-  const backtopVisible = ref(false);
-
   // set page title
   function setPageTitle(
     forRoute: RouteLocationNormalized = route,
@@ -166,6 +163,10 @@ export const useStateStore = defineStore('state', () => {
     document.title = [title, pfName].filter(Boolean).join(' | ');
   }
 
+  // general UI state
+  const backtopVisible = ref(false);
+  const showAnnouncementsModal = false;
+
   return {
     pf,
     fonts,
@@ -173,6 +174,7 @@ export const useStateStore = defineStore('state', () => {
     vw,
     isTouchDevice,
     backtopVisible,
+    showAnnouncementsModal,
     setPageTitle,
     locale,
     setLocale,

@@ -2808,177 +2808,6 @@
         }
       }
     },
-    "/notices": {
-      "post": {
-        "tags": [
-          "notices"
-        ],
-        "summary": "Create Notice",
-        "description": "Creates a platform notice",
-        "operationId": "createNotice",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NoticeCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoticeRead"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/notices/{id}": {
-      "delete": {
-        "tags": [
-          "notices"
-        ],
-        "summary": "Delete Notice",
-        "description": "Deletes a specific platform notice",
-        "operationId": "deleteNotice",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/PydanticObjectId"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "notices"
-        ],
-        "summary": "Update Notice",
-        "description": "Updates a specific platform notice",
-        "operationId": "updateNotice",
-        "security": [
-          {
-            "APIKeyCookie": []
-          },
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/PydanticObjectId"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NoticeCreate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoticeRead"
-                }
-              }
-            }
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/platform": {
       "get": {
         "tags": [
@@ -7908,6 +7737,25 @@
         "type": "object",
         "title": "AnnotationsConfig"
       },
+      "AnnouncementTranslation": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/TranslationLocaleKey"
+          },
+          "translation": {
+            "type": "string",
+            "maxLength": 102400,
+            "minLength": 1,
+            "title": "Translation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "translation"
+        ],
+        "title": "AnnouncementTranslation"
+      },
       "ApiCallContentCreate": {
         "properties": {
           "resourceId": {
@@ -9876,21 +9724,6 @@
               }
             ],
             "description": "User data of current user (if there is an active session)"
-          },
-          "notices": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/NoticeRead"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notices",
-            "description": "Any current platform notices"
           }
         },
         "type": "object",
@@ -13894,82 +13727,6 @@
         "type": "object",
         "title": "NavTranslations"
       },
-      "NoticeCreate": {
-        "properties": {
-          "html": {
-            "items": {
-              "$ref": "#/components/schemas/NoticeTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "minItems": 1,
-            "title": "Html",
-            "description": "HTML content of this notice, possibly translated"
-          },
-          "endsAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Endsat",
-            "description": "The time this notice will be invalidated at"
-          }
-        },
-        "type": "object",
-        "required": [
-          "html",
-          "endsAt"
-        ],
-        "title": "NoticeCreate"
-      },
-      "NoticeRead": {
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/PydanticObjectId"
-          },
-          "html": {
-            "items": {
-              "$ref": "#/components/schemas/NoticeTranslation"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "minItems": 1,
-            "title": "Html",
-            "description": "HTML content of this notice, possibly translated"
-          },
-          "endsAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Endsat",
-            "description": "The time this notice will be invalidated at"
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "required": [
-          "id",
-          "html",
-          "endsAt"
-        ],
-        "title": "NoticeRead"
-      },
-      "NoticeTranslation": {
-        "properties": {
-          "locale": {
-            "$ref": "#/components/schemas/TranslationLocaleKey"
-          },
-          "translation": {
-            "type": "string",
-            "maxLength": 100000,
-            "minLength": 1,
-            "title": "Translation"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locale",
-          "translation"
-        ],
-        "title": "NoticeTranslation"
-      },
       "OskMode": {
         "properties": {
           "key": {
@@ -15166,6 +14923,16 @@
             "description": "Custom labels for main navigation entries",
             "default": []
           },
+          "announcements": {
+            "items": {
+              "$ref": "#/components/schemas/AnnouncementTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Announcements",
+            "description": "HTML content of announcements in a certain language",
+            "default": []
+          },
           "indicesUpdatedAt": {
             "anyOf": [
               {
@@ -15397,6 +15164,16 @@
             "maxItems": 64,
             "title": "Resmetatranslations",
             "description": "Custom labels for main navigation entries",
+            "optionalNullable": false
+          },
+          "announcements": {
+            "items": {
+              "$ref": "#/components/schemas/AnnouncementTranslation"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Announcements",
+            "description": "HTML content of announcements in a certain language",
             "optionalNullable": false
           }
         },

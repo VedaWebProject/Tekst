@@ -257,6 +257,11 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
       icon: (showIcons && renderIcon(SettingsIcon)) || undefined,
     },
     {
+      label: renderLink(() => $t('admin.users.heading'), { name: 'adminUsers' }),
+      key: 'adminUsers',
+      icon: (showIcons && renderIcon(UsersIcon)) || undefined,
+    },
+    {
       label: renderLink(() => $t('admin.infoPages.heading'), {
         name: 'adminInfoPages',
       }),
@@ -269,11 +274,6 @@ export function useAdminMenuOptions(showIcons: boolean = true) {
       }),
       key: 'adminSegments',
       icon: (showIcons && renderIcon(SegmentsIcon)) || undefined,
-    },
-    {
-      label: renderLink(() => $t('admin.users.heading'), { name: 'adminUsers' }),
-      key: 'adminUsers',
-      icon: (showIcons && renderIcon(UsersIcon)) || undefined,
     },
     {
       label: renderLink(() => $t('admin.maintenance.heading'), {
