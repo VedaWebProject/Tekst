@@ -217,6 +217,10 @@ export const platformSettingsFormRules: Record<string, FormItemRule[]> = {
     minMaxCharsRule(1, 32, 'blur'),
   ],
   fontName: [requiredStringRule(() => $t('common.name'), 'blur'), minMaxCharsRule(1, 32, 'blur')],
+  announcementTranslation: [
+    requiredStringRule(() => $t('common.content'), 'blur'),
+    minMaxCharsRule(1, 102400),
+  ],
 };
 
 export const resourceSettingsFormRules: Record<string, FormItemRule[]> = {
@@ -508,6 +512,6 @@ export const searchFormRules: Record<string, Record<string, FormItemRule[]>> = {
 };
 
 export const wysiwygEditorFormRules: Record<string, FormItemRule[]> = {
-  imageUrl: [minMaxCharsRule(0, 2083, undefined)],
-  linkUrl: [minMaxCharsRule(0, 2083, undefined)],
+  imageUrl: [minMaxCharsRule(0, 2083)],
+  linkUrl: [minMaxCharsRule(0, 2083)],
 };

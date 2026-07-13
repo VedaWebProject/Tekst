@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppLoadingFeedback from '@/components/AppLoadingFeedback.vue';
 import GlobalMessenger from '@/components/messages/GlobalMessenger.vue';
+import AnnouncementsModal from '@/components/modals/AnnouncementsModal.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
 import PrimaryNavBar from '@/components/navigation/PrimaryNavBar.vue';
 import TextSelect from '@/components/navigation/TextSelect.vue';
@@ -64,6 +65,7 @@ useFavicon();
           <page-footer />
           <login-modal />
           <messaging-modal />
+          <announcements-modal />
           <tasks-widget v-if="showTasksWidget" />
           <n-back-top
             v-model:show="state.backtopVisible"

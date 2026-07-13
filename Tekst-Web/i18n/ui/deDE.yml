@@ -104,6 +104,14 @@ common:
   sortOrder: Sortierreihenfolge
   generateFromKnownDataLabel: Automatisch
   generateFromKnownDataTip: Automatisch aus bekannten Daten generieren (kann manuell angepasst werden)
+  always: immer
+  never: niemals
+  localStorageHint: Diese Einstellungen werden im lokalen Speicher Ihres Browsers gespeichert.
+
+announcements:
+  announcement: Bekanntmachung | Bekanntmachungen
+  autoShowPrefix: 'Bekanntmachungen automatisch anzeigen:'
+  ifChanged: bei Änderungen
 
 i18n:
   tipSwitcher: Sprache für Bedienoberfläche auswählen

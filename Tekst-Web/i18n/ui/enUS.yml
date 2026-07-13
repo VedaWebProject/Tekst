@@ -102,6 +102,14 @@ common:
   sortOrder: Sort order
   generateFromKnownDataLabel: Automatic
   generateFromKnownDataTip: Automatically generate from known data (can be manually adjusted)
+  always: always
+  never: never
+  localStorageHint: These settings will be stored in your browser's local storage.
+
+announcements:
+  announcement: Announcement | Announcements
+  autoShowPrefix: 'Automatically show announcements:'
+  ifChanged: if changed
 
 i18n:
   tipSwitcher: Choose language for user interface
@@ -899,7 +907,7 @@ admin:
       heading: Internal Cleanup
       description: |
         This routine is part of the maintenance job, but can be run manually here.
-        Outdated access tokens, old platform notices and user messages scheduled for removal will be deleted.
+        Outdated access tokens, old platform announcements and user messages scheduled for removal will be deleted.
       actionStarted: The internal cleanup is performed in the background. @:common.takeAWhile
     tasks:
       noTasks: No active background tasks

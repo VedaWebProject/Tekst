@@ -1,7 +1,12 @@
 from typing import Annotated, get_args
 
 from beanie import PydanticObjectId
-from pydantic import AwareDatetime, Field, StringConstraints, field_validator
+from pydantic import (
+    AwareDatetime,
+    Field,
+    StringConstraints,
+    field_validator,
+)
 from pydantic_extra_types.color import Color
 
 from tekst.config import TekstConfig, get_config
@@ -13,7 +18,6 @@ from tekst.models.common import (
     ReadBase,
     make_update_model,
 )
-from tekst.models.notice import NoticeRead
 from tekst.models.segment import ClientSegmentRead, ClientSegmentSignature
 from tekst.models.text import TextRead
 from tekst.models.user import UserRead
@@ -66,6 +70,14 @@ class OskMode(ModelBase):
         StringConstraints(min_length=1, max_length=32),
     ]
     font: FontFamilyValue | None = None
+
+
+class AnnouncementTranslation(TranslationBase):
+    translation: Annotated[
+        str,
+        StringConstraints(min_length=1, max_length=102400),
+        MultiLineString,
+    ]
 
 
 class PlatformState(ModelBase):
@@ -231,6 +243,11 @@ class PlatformState(ModelBase):
         ),
     ] = []
 
+    announcements: Annotated[
+        Translations[AnnouncementTranslation],
+        Field(description="HTML content of announcements in a certain language"),
+    ] = []
+
     indices_updated_at: Annotated[
         AwareDatetime | None,
         Field(description="Time when indices were created"),
@@ -301,8 +318,4 @@ class ClientInitData(ModelBase):
     user: Annotated[
         UserRead | None,
         Field(description="User data of current user (if there is an active session)"),
-    ] = None
-    notices: Annotated[
-        list[NoticeRead] | None,
-        Field(description="Any current platform notices"),
     ] = None

@@ -607,6 +607,23 @@ watch(
             </n-form-item>
           </form-section>
         </n-tab-pane>
+
+        <!-- ANNOUNCEMENTS -->
+        <n-tab-pane :tab="$t('announcements.announcement', 2)" name="announcements">
+          <form-section
+            :title="$t('announcements.announcement', 2)"
+            help-key="platformAnnouncements"
+          >
+            <translation-form-item
+              v-model="formModel.announcements"
+              input-type="html"
+              parent-form-path-prefix="announcements"
+              :max-translation-length="102400"
+              :translation-form-label="$t('common.content')"
+              :translation-form-rules="platformSettingsFormRules.announcementTranslation"
+            />
+          </form-section>
+        </n-tab-pane>
       </n-tabs>
     </n-form>
 

@@ -1,16 +1,29 @@
 <script setup lang="ts">
 import { useGuidedTour } from '@/composables/tour';
 import { $t } from '@/i18n';
-import { FileQuestionMarkIcon, TourIcon } from '@/icons';
+import { AnnouncementsIcon, FileQuestionMarkIcon, TourIcon } from '@/icons';
+import { useStateStore } from '@/stores';
 import { renderIcon } from '@/utils';
 import { NButton, NDropdown } from 'naive-ui';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const emit = defineEmits(['done']);
+
+const state = useStateStore();
 const router = useRouter();
 const { start: startGuidedTour } = useGuidedTour();
 
-const options = [
+const options = computed(() => [
+  ...(!!state.pf?.state.announcements?.length
+    ? [
+        {
+          label: () => $t('announcements.announcement', 2),
+          key: 'announcements',
+          icon: renderIcon(AnnouncementsIcon),
+        },
+      ]
+    : []),
   {
     label: () => $t('tour.heading'),
     key: 'tour',
@@ -21,11 +34,13 @@ const options = [
     key: 'help',
     icon: renderIcon(FileQuestionMarkIcon),
   },
-];
+]);
 
 async function handleSelect(key: string) {
   emit('done');
-  if (key === 'tour') {
+  if (key === 'announcements') {
+    state.showAnnouncementsModal = true;
+  } else if (key === 'tour') {
     startGuidedTour();
   } else if (key === 'help') {
     router.push({ name: 'help' });

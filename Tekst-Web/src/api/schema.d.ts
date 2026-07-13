@@ -462,50 +462,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/notices': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * Create Notice
-     * @description Creates a platform notice
-     */
-    post: operations['createNotice'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/notices/{id}': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post?: never;
-    /**
-     * Delete Notice
-     * @description Deletes a specific platform notice
-     */
-    delete: operations['deleteNotice'];
-    options?: never;
-    head?: never;
-    /**
-     * Update Notice
-     * @description Updates a specific platform notice
-     */
-    patch: operations['updateNotice'];
-    trace?: never;
-  };
   '/platform': {
     parameters: {
       query?: never;
@@ -1452,6 +1408,12 @@ export interface components {
        *     }
        */
       annoIntegration: components['schemas']['ItemIntegrationConfig'];
+    };
+    /** AnnouncementTranslation */
+    AnnouncementTranslation: {
+      locale: components['schemas']['TranslationLocaleKey'];
+      /** Translation */
+      translation: string;
     };
     /** ApiCallContentCreate */
     ApiCallContentCreate: {
@@ -2428,11 +2390,6 @@ export interface components {
       platform: components['schemas']['PlatformData'];
       /** @description User data of current user (if there is an active session) */
       user?: components['schemas']['UserRead'] | null;
-      /**
-       * Notices
-       * @description Any current platform notices
-       */
-      notices?: components['schemas']['NoticeRead'][] | null;
     };
     /** ClientSegmentCreate */
     ClientSegmentCreate: {
@@ -4386,43 +4343,6 @@ export interface components {
        */
       info: components['schemas']['MainNavEntryTranslation'][];
     };
-    /** NoticeCreate */
-    NoticeCreate: {
-      /**
-       * Html
-       * @description HTML content of this notice, possibly translated
-       */
-      html: components['schemas']['NoticeTranslation'][];
-      /**
-       * Endsat
-       * Format: date-time
-       * @description The time this notice will be invalidated at
-       */
-      endsAt: string;
-    };
-    /** NoticeRead */
-    NoticeRead: {
-      id: components['schemas']['PydanticObjectId'];
-      /**
-       * Html
-       * @description HTML content of this notice, possibly translated
-       */
-      html: components['schemas']['NoticeTranslation'][];
-      /**
-       * Endsat
-       * Format: date-time
-       * @description The time this notice will be invalidated at
-       */
-      endsAt: string;
-    } & {
-      [key: string]: unknown;
-    };
-    /** NoticeTranslation */
-    NoticeTranslation: {
-      locale: components['schemas']['TranslationLocaleKey'];
-      /** Translation */
-      translation: string;
-    };
     /** OskMode */
     OskMode: {
       /**
@@ -5095,6 +5015,12 @@ export interface components {
        */
       resMetaTranslations: components['schemas']['ResourceMetadataKey'][];
       /**
+       * Announcements
+       * @description HTML content of announcements in a certain language
+       * @default []
+       */
+      announcements: components['schemas']['AnnouncementTranslation'][];
+      /**
        * Indicesupdatedat
        * @description Time when indices were created
        */
@@ -5214,6 +5140,11 @@ export interface components {
        * @description Custom labels for main navigation entries
        */
       resMetaTranslations?: components['schemas']['ResourceMetadataKey'][];
+      /**
+       * Announcements
+       * @description HTML content of announcements in a certain language
+       */
+      announcements?: components['schemas']['AnnouncementTranslation'][];
     };
     /** PlatformSubtitleTranslation */
     PlatformSubtitleTranslation: {
@@ -8656,121 +8587,6 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  createNotice: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['NoticeCreate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['NoticeRead'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  deleteNotice: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        id: components['schemas']['PydanticObjectId'];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Not Found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  updateNotice: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        id: components['schemas']['PydanticObjectId'];
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['NoticeCreate'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['NoticeRead'];
         };
       };
       /** @description Not Found */
