@@ -141,7 +141,7 @@ class ContentBase(ModelBase):
             "This method must be implemented by subclasses."
         )  # pragma: no cover
 
-    async def comments_for_csv(self) -> str:
+    def comments_for_csv(self) -> str:
         if not self.comments:
             return ""
         return "\n\n".join(

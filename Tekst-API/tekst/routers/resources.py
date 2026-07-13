@@ -1089,31 +1089,75 @@ async def export_resource_contents_task(
     text = ensure(await TextDocument.get(resource.text_id))
     target_res_type = resource_types_mgr.get(resource.resource_type)
 
-    # get target location IDs from range
-    target_loc_id_pos_map: dict[PydanticObjectId, LocationDocument] = {
-        loc.id: loc.position
-        for loc in await LocationDocument.find(
+    content_ids = (
+        await LocationDocument.find(
             LocationDocument.text_id == resource.text_id,
             LocationDocument.level == resource.level,
             GTE(LocationDocument.position, loc_from.position) if loc_from else {},
             LTE(LocationDocument.position, loc_to.position) if loc_to else {},
-        ).to_list()
-    }
-
-    # get target contents
-    content_doc_model: type[ContentBase] = (
-        target_res_type.content_model().document_model()
+        )
+        .sort(+LocationDocument.position)
+        .aggregate(
+            [
+                {
+                    "$lookup": {
+                        "from": "contents",
+                        "localField": "_id",
+                        "foreignField": "location_id",
+                        "let": {
+                            "location_id": "$_id",
+                            "resource_id": resource_id,
+                        },
+                        "pipeline": [
+                            {
+                                "$match": {
+                                    "$expr": {
+                                        "$and": [
+                                            {"$eq": ["$location_id", "$$location_id"]},
+                                            {"$eq": ["$resource_id", "$$resource_id"]},
+                                            {"$eq": ["$archived", False]},
+                                        ]
+                                    }
+                                }
+                            },
+                            {"$project": {"_id": 1}},
+                        ],
+                        "as": "contents",
+                    }
+                },
+                {"$match": {"$expr": {"$gt": [{"$size": "$contents"}, 0]}}},
+                {"$project": {"_id": {"$arrayElemAt": ["$contents._id", 0]}}},
+            ]
+        )
+        .to_list()
     )
-    assert issubclass(content_doc_model, DocumentBase)  # for type checker
-    contents = await content_doc_model.find(
-        Eq(content_doc_model.resource_id, resource.id),
-        In(content_doc_model.location_id, target_loc_id_pos_map.keys()),
-        Eq(content_doc_model.archived, False),
-    ).to_list()
+    content_ids: list[PydanticObjectId] = [c["_id"] for c in content_ids]
 
-    # sort target contents
-    contents.sort(key=lambda c: target_loc_id_pos_map[c.location_id])
-    target_loc_id_pos_map = {}
+    # # get target location IDs from range
+    # target_loc_id_pos_map: dict[PydanticObjectId, LocationDocument] = {
+    #     loc.id: loc.position
+    #     for loc in await LocationDocument.find(
+    #         LocationDocument.text_id == resource.text_id,
+    #         LocationDocument.level == resource.level,
+    #         GTE(LocationDocument.position, loc_from.position) if loc_from else {},
+    #         LTE(LocationDocument.position, loc_to.position) if loc_to else {},
+    #     ).to_list()
+    # }
+
+    # # get target contents
+    # content_doc_model: type[ContentBase] = (
+    #     target_res_type.content_model().document_model()
+    # )
+    # assert issubclass(content_doc_model, DocumentBase)  # for type checker
+    # contents = await content_doc_model.find(
+    #     Eq(content_doc_model.resource_id, resource.id),
+    #     In(content_doc_model.location_id, target_loc_id_pos_map.keys()),
+    #     Eq(content_doc_model.archived, False),
+    # ).to_list()
+
+    # # sort target contents
+    # contents.sort(key=lambda c: target_loc_id_pos_map[c.location_id])
+    # target_loc_id_pos_map = {}
 
     # construct temp file name and path
     tempfile_name = str(uuid4())
@@ -1123,20 +1167,20 @@ async def export_resource_contents_task(
     if export_format == "tekst-json":
         await target_res_type.export_tekst_json(
             resource=resource,
-            contents=contents,
+            content_ids=content_ids,
             file_path=tempfile_path,
         )
     elif export_format == "json":
         await target_res_type.export_universal_json(
             resource=resource,
-            contents=contents,
+            content_ids=content_ids,
             file_path=tempfile_path,
         )
     else:
         try:
             await target_res_type.export(
                 resource=resource,
-                contents=contents,
+                content_ids=content_ids,
                 export_format=export_format,
                 file_path=tempfile_path,
             )

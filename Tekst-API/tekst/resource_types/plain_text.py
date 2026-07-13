@@ -3,6 +3,8 @@ import csv
 from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
+from beanie import PydanticObjectId
+from beanie.operators import In
 from pydantic import AfterValidator, Field, StringConstraints
 
 from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
@@ -99,12 +101,12 @@ class PlainText(ResourceTypeBase):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list[ContentBaseDocument],
+        content_ids: list[PydanticObjectId],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
+            await cls._export_csv(resource, content_ids, file_path)
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -115,7 +117,7 @@ class PlainText(ResourceTypeBase):
     async def _export_csv(
         cls,
         resource: "PlainTextResource",
-        contents: list["PlainTextContent"],
+        content_ids: list[PydanticObjectId],
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
@@ -138,13 +140,16 @@ class PlainText(ResourceTypeBase):
                     "COMMENTS",
                 ]
             )
-            for content in contents:
+            async for content in ContentBaseDocument.find(
+                In(ContentBaseDocument.id, content_ids),
+                with_children=True,
+            ):
                 csv_writer.writerow(
                     [
                         full_loc_labels.get(str(content.location_id), ""),
                         sort_num,
                         content.text,
-                        await content.comments_for_csv(),
+                        content.comments_for_csv(),
                     ]
                 )
                 sort_num += 1

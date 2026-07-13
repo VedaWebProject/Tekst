@@ -224,14 +224,14 @@ class ResourceTypeBase:
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list[ContentBaseDocument],
+        content_ids: list[PydanticObjectId],
         file_path: Path,
     ) -> None:
         """
         Exports the given contents of the given resource as JSON, compatible for
         re-import in Tekst.
         """
-        contents = [
+        content_ids: list[dict] = [
             camelize(
                 c.model_dump(
                     by_alias=True,
@@ -240,10 +240,13 @@ class ResourceTypeBase:
                     exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
                 )
             )
-            for c in contents
+            for c in await ContentBaseDocument.find(
+                In(ContentBaseDocument.id, content_ids),
+                with_children=True,
+            ).to_list()
         ]
         # stringify PydanticObjectIds
-        for c in contents:
+        for c in content_ids:
             for attr in c:
                 if isinstance(c[attr], PydanticObjectId):
                     c[attr] = str(c[attr])
@@ -257,7 +260,7 @@ class ResourceTypeBase:
                 exclude_unset=True,
             )
         )
-        data.update(contents=contents)
+        data.update(contents=content_ids)
         with open(file_path, "w") as fp:
             json.dump(
                 data,
@@ -271,7 +274,7 @@ class ResourceTypeBase:
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list[ContentBaseDocument],
+        content_ids: list[PydanticObjectId],
         file_path: Path,
     ) -> None:
         """
@@ -315,7 +318,7 @@ class ResourceTypeBase:
         res["meta"] = {meta["key"]: meta["value"] for meta in res["meta"]}
 
         # construct content objects
-        contents = [
+        content_ids: list[ContentBaseDocument] = [
             camelize(
                 c.model_dump(
                     by_alias=True,
@@ -324,15 +327,18 @@ class ResourceTypeBase:
                     exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
                 )
             )
-            for c in contents
+            for c in await ContentBaseDocument.find(
+                In(ContentBaseDocument.id, content_ids),
+                with_children=True,
+            ).to_list()
         ]
 
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
-        for content in contents:
+        for content in content_ids:
             content["location"] = full_loc_labels.get(str(content["locationId"]))
             del content["locationId"]
-        res["contents"] = contents
+        res["contents"] = content_ids
 
         with open(file_path, "w") as fp:
             json.dump(
@@ -415,7 +421,7 @@ class ResourceTypeBase:
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list[ContentBaseDocument],
+        content_ids: list[PydanticObjectId],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:

@@ -4,7 +4,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from beanie.operators import Eq
+from beanie import PydanticObjectId
+from beanie.operators import Eq, In
 from pydantic import BeforeValidator, Field, StringConstraints
 
 from tekst.logs import log, log_op_end, log_op_start
@@ -170,12 +171,12 @@ class LocationMetadata(ResourceTypeBase):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list[ContentBaseDocument],
+        content_ids: list[PydanticObjectId],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
+            await cls._export_csv(resource, content_ids, file_path)
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -186,7 +187,7 @@ class LocationMetadata(ResourceTypeBase):
     async def _export_csv(
         cls,
         resource: "LocationMetadataResourceDocument",
-        contents: list["LocationMetadataContent"],
+        content_ids: list[PydanticObjectId],
         file_path: Path,
     ) -> None:
         text = ensure(await TextDocument.get(resource.text_id))
@@ -215,7 +216,10 @@ class LocationMetadata(ResourceTypeBase):
                     "COMMENTS",
                 ]
             )
-            for content in contents:
+            async for content in ContentBaseDocument.find(
+                In(ContentBaseDocument.id, content_ids),
+                with_children=True,
+            ):
                 entries_map = {entry.key: entry.value for entry in content.entries}
                 values = [";".join(entries_map.get(key, "")) for key in keys]
                 csv_writer.writerow(
@@ -223,7 +227,7 @@ class LocationMetadata(ResourceTypeBase):
                         full_loc_labels.get(str(content.location_id), ""),
                         sort_num,
                         *values,
-                        await content.comments_for_csv(),
+                        content.comments_for_csv(),
                     ]
                 )
                 sort_num += 1
