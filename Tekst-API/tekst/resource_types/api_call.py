@@ -3,6 +3,8 @@ import csv
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
+from beanie import PydanticObjectId
+from beanie.operators import In
 from pydantic import Field, StringConstraints, model_validator
 
 from tekst.models.common import (
@@ -74,12 +76,12 @@ class ApiCall(ResourceTypeBase):
         cls,
         *,
         resource: ResourceBaseDocument,
-        contents: list[ContentBaseDocument],
+        content_ids: list[PydanticObjectId],
         export_format: ResourceExportFormat,
         file_path: Path,
     ) -> None:
         if export_format == "csv":
-            await cls._export_csv(resource, contents, file_path)  # ty:ignore[invalid-argument-type]
+            await cls._export_csv(resource, content_ids, file_path)
         else:  # pragma: no cover
             raise ValueError(
                 f"Unsupported export format '{export_format}' "
@@ -90,7 +92,7 @@ class ApiCall(ResourceTypeBase):
     async def _export_csv(
         cls,
         resource: "ApiCallResource",
-        contents: list["ApiCallContent"],
+        content_ids: list[PydanticObjectId],
         file_path: Path,
     ) -> None:
         text = await TextDocument.get(resource.text_id)
@@ -118,7 +120,10 @@ class ApiCall(ResourceTypeBase):
                     "COMMENTS",
                 ]
             )
-            for content in contents:
+            async for content in ContentBaseDocument.find(
+                In(ContentBaseDocument.id, content_ids),
+                with_children=True,
+            ):
                 for call in content.calls:
                     csv_writer.writerow(
                         [
@@ -130,7 +135,7 @@ class ApiCall(ResourceTypeBase):
                             call.content_type,
                             call.query,
                             content.transform_context,
-                            await content.comments_for_csv(),
+                            content.comments_for_csv(),
                         ]
                     )
                     sort_num += 1
