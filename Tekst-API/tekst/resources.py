@@ -237,7 +237,7 @@ class ResourceTypeBase:
                 c_id,
                 with_children=True,
             )
-            if content is None:
+            if content is None:  # pragma: no cover
                 log.error("Could not find content with given ID for export.")
                 continue
             c_dict = camelize(
@@ -327,7 +327,7 @@ class ResourceTypeBase:
                 c_id,
                 with_children=True,
             )
-            if content is None:
+            if content is None:  # pragma: no cover
                 log.error("Could not find content with given ID for export.")
                 continue
             c_dict = camelize(
