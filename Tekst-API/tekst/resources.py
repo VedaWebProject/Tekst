@@ -231,36 +231,39 @@ class ResourceTypeBase:
         Exports the given contents of the given resource as JSON, compatible for
         re-import in Tekst.
         """
-        content_ids: list[dict] = [
-            camelize(
-                c.model_dump(
+        contents: list[dict] = []
+        for c_id in content_ids:
+            content = await ContentBaseDocument.get(
+                c_id,
+                with_children=True,
+            )
+            if content is None:
+                log.error("Could not find content with given ID for export.")
+                continue
+            c_dict = camelize(
+                content.model_dump(
+                    mode="json",
                     by_alias=True,
                     exclude_unset=True,
                     exclude_none=True,
                     exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
                 )
             )
-            for c in await ContentBaseDocument.find(
-                In(ContentBaseDocument.id, content_ids),
-                with_children=True,
-            ).to_list()
-        ]
-        # stringify PydanticObjectIds
-        for c in content_ids:
-            for attr in c:
-                if isinstance(c[attr], PydanticObjectId):
-                    c[attr] = str(c[attr])
-        # write to file
+            contents.append(c_dict)
+        del content_ids
+
+        # serialize resource data and use as root object
         data = camelize(
             resource.model_dump(
                 mode="json",
-                exclude=RES_EXCLUDE_EXP_IMP,
                 by_alias=True,
                 exclude_none=True,
                 exclude_unset=True,
+                exclude=RES_EXCLUDE_EXP_IMP,
             )
         )
-        data.update(contents=content_ids)
+        data.update(contents=contents)
+        # write to file
         with open(file_path, "w") as fp:
             json.dump(
                 data,
@@ -318,27 +321,33 @@ class ResourceTypeBase:
         res["meta"] = {meta["key"]: meta["value"] for meta in res["meta"]}
 
         # construct content objects
-        content_ids: list[ContentBaseDocument] = [
-            camelize(
-                c.model_dump(
+        contents: list[dict] = []
+        for c_id in content_ids:
+            content = await ContentBaseDocument.get(
+                c_id,
+                with_children=True,
+            )
+            if content is None:
+                log.error("Could not find content with given ID for export.")
+                continue
+            c_dict = camelize(
+                content.model_dump(
+                    mode="json",
                     by_alias=True,
                     exclude_unset=True,
                     exclude_none=True,
                     exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
                 )
             )
-            for c in await ContentBaseDocument.find(
-                In(ContentBaseDocument.id, content_ids),
-                with_children=True,
-            ).to_list()
-        ]
+            contents.append(c_dict)
+        del content_ids
 
         # construct labels of all locations on the resource's level
         full_loc_labels = await text.full_location_labels(resource.level)
-        for content in content_ids:
+        for content in contents:
             content["location"] = full_loc_labels.get(str(content["locationId"]))
             del content["locationId"]
-        res["contents"] = content_ids
+        res["contents"] = contents
 
         with open(file_path, "w") as fp:
             json.dump(

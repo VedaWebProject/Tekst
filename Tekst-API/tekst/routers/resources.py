@@ -1089,16 +1089,19 @@ async def export_resource_contents_task(
     text = ensure(await TextDocument.get(resource.text_id))
     target_res_type = resource_types_mgr.get(resource.resource_type)
 
+    # get the IDs of all resource contents in the given location range,
+    # sorted by the position of their reference location
     content_ids = (
         await LocationDocument.find(
-            LocationDocument.text_id == resource.text_id,
-            LocationDocument.level == resource.level,
+            Eq(LocationDocument.text_id, resource.text_id),
+            Eq(LocationDocument.level, resource.level),
+            # query for location range
             GTE(LocationDocument.position, loc_from.position) if loc_from else {},
             LTE(LocationDocument.position, loc_to.position) if loc_to else {},
         )
-        .sort(+LocationDocument.position)
         .aggregate(
             [
+                # find contents for these locations
                 {
                     "$lookup": {
                         "from": "contents",
@@ -1125,39 +1128,17 @@ async def export_resource_contents_task(
                         "as": "contents",
                     }
                 },
+                # drop locations without contents
                 {"$match": {"$expr": {"$gt": [{"$size": "$contents"}, 0]}}},
+                # sort locations by position
+                {"$sort": {"position": 1}},
+                # only keep content IDs
                 {"$project": {"_id": {"$arrayElemAt": ["$contents._id", 0]}}},
             ]
         )
         .to_list()
     )
     content_ids: list[PydanticObjectId] = [c["_id"] for c in content_ids]
-
-    # # get target location IDs from range
-    # target_loc_id_pos_map: dict[PydanticObjectId, LocationDocument] = {
-    #     loc.id: loc.position
-    #     for loc in await LocationDocument.find(
-    #         LocationDocument.text_id == resource.text_id,
-    #         LocationDocument.level == resource.level,
-    #         GTE(LocationDocument.position, loc_from.position) if loc_from else {},
-    #         LTE(LocationDocument.position, loc_to.position) if loc_to else {},
-    #     ).to_list()
-    # }
-
-    # # get target contents
-    # content_doc_model: type[ContentBase] = (
-    #     target_res_type.content_model().document_model()
-    # )
-    # assert issubclass(content_doc_model, DocumentBase)  # for type checker
-    # contents = await content_doc_model.find(
-    #     Eq(content_doc_model.resource_id, resource.id),
-    #     In(content_doc_model.location_id, target_loc_id_pos_map.keys()),
-    #     Eq(content_doc_model.archived, False),
-    # ).to_list()
-
-    # # sort target contents
-    # contents.sort(key=lambda c: target_loc_id_pos_map[c.location_id])
-    # target_loc_id_pos_map = {}
 
     # construct temp file name and path
     tempfile_name = str(uuid4())
