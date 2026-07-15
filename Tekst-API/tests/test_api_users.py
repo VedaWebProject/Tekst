@@ -95,7 +95,7 @@ async def test_get_public_user(
     u = await register_test_user()
 
     # get by ID
-    resp = await test_client.get(f"/users/public/{u['id']}")
+    resp = await test_client.post("/users/public", json=[u["id"]])
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "username" in resp.json()

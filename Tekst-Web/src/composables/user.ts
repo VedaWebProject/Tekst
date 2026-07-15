@@ -1,11 +1,11 @@
 import type { PublicUserSearchFilters, UserReadPublic } from '@/api';
-import { GET } from '@/api';
+import { GET, POST } from '@/api';
 import { useDebounceFn } from '@vueuse/core';
 import { isRef, ref, unref, watch, watchEffect, type Ref } from 'vue';
 
 const _cache = new Map<string, UserReadPublic>();
 
-export function useUser(usernameOrId: string | Ref<string>) {
+export function useUser(usernameOrId?: string | Ref<string>) {
   const user = ref<UserReadPublic | null>(null);
   const error = ref(false);
   const loading = ref(false);
@@ -13,6 +13,9 @@ export function useUser(usernameOrId: string | Ref<string>) {
   async function fetchUserData() {
     loading.value = true;
     error.value = false;
+    user.value = null;
+    if (!usernameOrId) return;
+
     const unoid = unref(usernameOrId);
     if (!unoid) {
       error.value = true;
@@ -28,13 +31,12 @@ export function useUser(usernameOrId: string | Ref<string>) {
     }
 
     // get from api
-    const { data, error: err } = await GET('/users/public/{user}', {
-      params: { path: { user: unoid } },
-    });
+    const { data, error: err } = await POST('/users/public', { body: [unoid] });
 
-    if (!err) {
-      _cache.set(unoid, data);
-      user.value = data;
+    if (!err && data.length) {
+      _cache.set(data[0].id, data[0]);
+      _cache.set(data[0].username, data[0]);
+      user.value = data[0];
     } else {
       error.value = true;
     }
@@ -48,6 +50,54 @@ export function useUser(usernameOrId: string | Ref<string>) {
   }
 
   return { user, loading, error };
+}
+
+export function useUsers(usernamesOrIds?: string[] | Ref<string[]>) {
+  const users = ref<UserReadPublic[]>([]);
+  const error = ref(false);
+  const loading = ref(false);
+
+  async function fetchUsersData() {
+    loading.value = true;
+    error.value = false;
+    users.value = [];
+    if (!usernamesOrIds) return;
+
+    const unoids = unref(usernamesOrIds);
+
+    if (!unoids.length) {
+      loading.value = false;
+      return;
+    }
+
+    users.value = unoids.map((u) => _cache.get(u)).filter((u) => !!u);
+    if (users.value.length === unoids.length) {
+      loading.value = false;
+      return;
+    }
+
+    // get from api
+    const { data, error: err } = await POST('/users/public', { body: unoids });
+
+    if (!err) {
+      data.forEach((u) => {
+        _cache.set(u.id, u);
+        _cache.set(u.username, u);
+        users.value.push(u);
+      });
+    } else {
+      error.value = true;
+    }
+    loading.value = false;
+  }
+
+  if (isRef(usernamesOrIds)) {
+    watchEffect(fetchUsersData);
+  } else {
+    fetchUsersData();
+  }
+
+  return { users, loading, error };
 }
 
 export function usePublicUserSearch(queryRef: Ref<PublicUserSearchFilters>) {

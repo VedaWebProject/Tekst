@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type AnyResourceRead, type UserRead } from '@/api';
 import { $t } from '@/i18n';
-import { NoContentIcon, ProposedIcon, PublicOffIcon } from '@/icons';
+import { NoContentIcon, ProposedIcon, PublicOffIcon, StarIcon } from '@/icons';
 import { useStateStore } from '@/stores';
 import { pickTranslation } from '@/utils';
 import { NFlex, NIcon, NSwitch, NTag } from 'naive-ui';
@@ -26,14 +26,21 @@ const resTitle = computed(() => pickTranslation(props.resource.title, state.loca
         <n-flex align="center" :wrap="false">
           <n-switch v-model:value="active" :round="false" />
           <span class="text-medium">{{ resTitle || '???' }}</span>
-          <n-icon
-            v-if="user && resource.proposed"
-            size="medium"
-            :component="ProposedIcon"
-            :title="$t('resources.proposed')"
-            color="var(--warning-color)"
-            style="cursor: help"
-          />
+          <template v-if="user && resource.proposed">
+            <n-icon
+              size="medium"
+              :component="ProposedIcon"
+              :title="$t('resources.proposed')"
+              color="var(--warning-color)"
+              style="cursor: help"
+            />
+            <n-icon
+              :component="StarIcon"
+              :color="resource.supporters?.length ? 'var(--success-color)' : 'var(--error-color)'"
+              :title="$t('resources.supporters', { count: resource.supporters?.length ?? 0 })"
+              style="cursor: help"
+            />
+          </template>
           <n-icon
             v-else-if="user && !resource.public"
             size="medium"

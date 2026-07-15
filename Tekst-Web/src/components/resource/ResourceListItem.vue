@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { AnyResourceRead, UserRead } from '@/api';
+import { type AnyResourceRead, type UserRead } from '@/api';
 import CopyToClipboardButton from '@/components/generic/CopyToClipboardButton.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
 import ResourceExportModal from '@/components/resource/ResourceExportModal.vue';
 import ResourceInfoContent from '@/components/resource/ResourceInfoContent.vue';
 import ResourceInfoTags from '@/components/resource/ResourceInfoTags.vue';
+import UserDisplay from '@/components/user/UserDisplay.vue';
+import { useUsers } from '@/composables/user';
 import env from '@/env';
 import { $t } from '@/i18n';
 import {
@@ -20,6 +22,8 @@ import {
   PublicIcon,
   PublicOffIcon,
   SettingsIcon,
+  StarIcon,
+  StarOffIcon,
   UnproposedIcon,
   UploadIcon,
   UserIcon,
@@ -27,6 +31,7 @@ import {
 import { useResourcesStore, useStateStore } from '@/stores';
 import { pickTranslation, renderIcon } from '@/utils';
 import {
+  NAlert,
   NBadge,
   NButton,
   NCollapseItem,
@@ -49,6 +54,8 @@ const emit = defineEmits([
   'setOwnersClick',
   'proposeClick',
   'unproposeClick',
+  'supportClick',
+  'unsupportClick',
   'publishClick',
   'unpublishClick',
   'reqPatchIntegrationClick',
@@ -68,6 +75,8 @@ const showExport = ref(false);
 
 const isOwner = computed(() => !!props.resource.ownerIds?.includes(props.user?.id ?? 'noid'));
 const isOwnerOrAdmin = computed(() => isOwner.value || !!props.user?.isSuperuser);
+
+const {users} = useUsers(props.resource.supporters ?? undefined);
 
 const resTitle = computed(() => pickTranslation(props.resource.title, state.locale));
 const resInfoUrl = computed(
@@ -164,91 +173,109 @@ const actionOptions = computed<DropdownOption[]>(() => [
         : []),
     ],
   },
-  ...(isOwnerOrAdmin.value
-    ? [
-        {
-          type: 'group',
-          label: $t('common.status'),
-          children: [
-            ...(!props.resource.proposed && !props.resource.public && !props.resource.patchFor
-              ? [
-                  {
-                    label: $t('resources.proposeAction'),
-                    key: 'propose',
-                    icon: renderIcon(ProposedIcon),
-                    action: () => emit('proposeClick', props.resource),
-                    statusType: 'warning',
-                  },
-                ]
-              : []),
-            ...(props.resource.proposed && !props.resource.public
-              ? [
-                  {
-                    label: $t('resources.unproposeAction'),
-                    key: 'unpropose',
-                    disabled: !!props.resource.patchFor,
-                    icon: renderIcon(UnproposedIcon),
-                    action: () => emit('unproposeClick', props.resource),
-                    statusType: 'error',
-                  },
-                ]
-              : []),
-            ...(props.user?.isSuperuser && !props.resource.public && props.resource.proposed
-              ? [
-                  {
-                    label: $t('resources.publishAction'),
-                    key: 'publish',
-                    disabled: !!props.resource.patchFor,
-                    icon: renderIcon(PublicIcon),
-                    action: () => emit('publishClick', props.resource),
-                    statusType: 'success',
-                  },
-                ]
-              : []),
-            ...(props.user?.isSuperuser && props.resource.public && !props.resource.proposed
-              ? [
-                  {
-                    label: $t('resources.unpublishAction'),
-                    key: 'unpublish',
-                    disabled: !!props.resource.patchFor,
-                    icon: renderIcon(PublicOffIcon),
-                    action: () => emit('unpublishClick', props.resource),
-                    statusType: 'error',
-                  },
-                ]
-              : []),
-            ...(!!props.resource.patchFor &&
-            props.user &&
-            props.resource.ownerIds.includes(props.user.id)
-              ? [
-                  {
-                    label: $t('resources.reqPatchIntegration.action'),
-                    key: 'reqPatchtegration',
-                    icon: renderIcon(IntegratePatchIcon),
-                    disabled:
-                      resources.all
-                        .find((r) => r.id === props.resource.patchFor)
-                        ?.ownerIds.includes(props.user.id) ||
-                      !resources.all.find((r) => r.id === props.resource.patchFor)?.ownerIds.length,
-                    action: () => emit('reqPatchIntegrationClick', props.resource),
-                    statusType: 'success',
-                  },
-                ]
-              : []),
-            ...(props.user?.isSuperuser || (!props.resource.public && !props.resource.proposed)
-              ? [
-                  {
-                    label: $t('resources.setOwnersAction'),
-                    key: 'setOwners',
-                    icon: renderIcon(UserIcon),
-                    action: () => emit('setOwnersClick', props.resource),
-                  },
-                ]
-              : []),
-          ],
-        },
-      ]
-    : []),
+  {
+    type: 'group',
+    label: $t('common.status'),
+    children: [
+      ...(isOwnerOrAdmin.value && !props.resource.proposed && !props.resource.public && !props.resource.patchFor
+        ? [
+            {
+              label: $t('resources.proposeAction'),
+              key: 'propose',
+              icon: renderIcon(ProposedIcon),
+              action: () => emit('proposeClick', props.resource),
+              statusType: 'warning',
+            },
+          ]
+        : []),
+      ...(isOwnerOrAdmin.value && props.resource.proposed && !props.resource.public
+        ? [
+            {
+              label: $t('resources.unproposeAction'),
+              key: 'unpropose',
+              disabled: !!props.resource.patchFor,
+              icon: renderIcon(UnproposedIcon),
+              action: () => emit('unproposeClick', props.resource),
+              statusType: 'error',
+            },
+          ]
+        : []),
+      ...(props.user && props.resource.proposed && !isOwner.value && !props.resource.supporters?.includes(props.user.id)
+        ? [
+            {
+              label: $t('resources.supportAction'),
+              key: 'support',
+              icon: renderIcon(StarIcon),
+              action: () => emit('supportClick', props.resource),
+              statusType: 'success',
+            },
+          ]
+        : []),
+      ...(props.user && props.resource.proposed && !isOwner.value  && !!props.resource.supporters?.includes(props.user.id)
+        ? [
+            {
+              label: $t('resources.unsupportAction'),
+              key: 'unsupport',
+              icon: renderIcon(StarOffIcon),
+              action: () => emit('unsupportClick', props.resource),
+              statusType: 'error',
+            },
+          ]
+        : []),
+      ...(props.user?.isSuperuser && !props.resource.public && props.resource.proposed
+        ? [
+            {
+              label: $t('resources.publishAction'),
+              key: 'publish',
+              disabled: !!props.resource.patchFor,
+              icon: renderIcon(PublicIcon),
+              action: () => emit('publishClick', props.resource),
+              statusType: 'success',
+            },
+          ]
+        : []),
+      ...(props.user?.isSuperuser && props.resource.public && !props.resource.proposed
+        ? [
+            {
+              label: $t('resources.unpublishAction'),
+              key: 'unpublish',
+              disabled: !!props.resource.patchFor,
+              icon: renderIcon(PublicOffIcon),
+              action: () => emit('unpublishClick', props.resource),
+              statusType: 'error',
+            },
+          ]
+        : []),
+      ...(!!props.resource.patchFor &&
+      props.user &&
+      isOwner.value
+        ? [
+            {
+              label: $t('resources.reqPatchIntegration.action'),
+              key: 'reqPatchtegration',
+              icon: renderIcon(IntegratePatchIcon),
+              disabled:
+                resources.all
+                  .find((r) => r.id === props.resource.patchFor)
+                  ?.ownerIds.includes(props.user.id) ||
+                !resources.all.find((r) => r.id === props.resource.patchFor)?.ownerIds.length,
+              action: () => emit('reqPatchIntegrationClick', props.resource),
+              statusType: 'success',
+            },
+          ]
+        : []),
+      ...(props.user?.isSuperuser || (!props.resource.public && !props.resource.proposed)
+        ? [
+            {
+              label: $t('resources.setOwnersAction'),
+              key: 'setOwners',
+              icon: renderIcon(UserIcon),
+              action: () => emit('setOwnersClick', props.resource),
+            },
+          ]
+        : []),
+    ],
+  },
 ]);
 
 function handleCorrectionsClick() {
@@ -304,6 +331,21 @@ function handleCorrectionsClick() {
       </n-flex>
       <resource-info-tags :resource="resource" />
     </n-flex>
+
+    <n-alert v-if="props.user?.isSuperuser && resource.proposed" :show-icon="false" :type="resource.supporters?.length ? 'success' : 'error'" class="mb-lg">
+      <n-flex align="center" class="b">
+        <n-icon :component="resource.supporters?.length ? StarIcon : StarOffIcon" :color="resource.supporters?.length ? 'var(--success-color)' : 'var(--error-color)'" />
+        <span>
+        {{ $t('resources.proposed') + ', ' + $t('resources.supporters', { count: resource.supporters?.length ?? 0 }) + ' ...' }}
+        </span>
+      </n-flex>
+      <user-display
+        v-if="!!resource.supporters?.length && !!users"
+        :user="users.filter(u => resource.supporters?.includes(u.id))"
+        size="small"
+        class="mt-lg"
+      />
+    </n-alert>
 
     <div>
       <resource-info-content :resource="resource" />

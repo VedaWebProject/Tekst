@@ -427,6 +427,7 @@ resources:
   notPublic: unpublished
   shared: access shared with {count} user | access shared with {count} users
   proposed: '@:models.resource.proposed'
+  supporters: no supporters | one supporter | {count} supporters
   correctionNotesAction: Show correction notes
   setOwnersAction: Set resource owners
   downloadTemplateAction: Download import template
@@ -434,6 +435,8 @@ resources:
   createPatchAction: Create patch
   proposeAction: Propose for publication
   unproposeAction: Revoke publication proposal
+  supportAction: Support proposal
+  unsupportAction: Revoke proposal support
   publishAction: Publish
   unpublishAction: Revoke publication
   reqPatchIntegration:
@@ -451,6 +454,14 @@ resources:
     you understand the implications of a publication proposal.
   warnUnpropose: |
     Are you sure you want to revoke the publication proposal for this resource?
+  warnSupport: |
+    If you support the proposal to publish this resource,
+    you are thereby indicating to the platform administrators that you consider the resource to be
+    valuable and worthy of publication, and that, if applicable, you have reviewed its contents
+    for quality.
+  warnUnsupport: |
+    Are you sure you want to withdraw your support for the publication proposal
+    for this resource?
   warnPublish: |
     You are about to publish this resource, making it accessible to
     non-registered users. You will be set as the owner of this resource and assumed

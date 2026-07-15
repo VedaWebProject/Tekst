@@ -188,6 +188,56 @@ function handleUnproposeClick(resource: AnyResourceRead) {
   });
 }
 
+function handleSupportClick(resource: AnyResourceRead) {
+  dialog.warning({
+    ...commonDialogOptions,
+    title: $t('common.warning'),
+    content: $t('resources.warnSupport') + ' ' + $t('common.areYouSureHelpTextHint'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
+    closable: false,
+    onPositiveClick: async () => {
+      actionsLoading.value = true;
+      const { data, error } = await POST('/resources/{id}/support', {
+        params: { path: { id: resource.id } },
+      });
+      if (!error) {
+        resources.replace(data);
+        message.success(
+          $t('common.ok')
+        );
+      }
+      filtersRef.value?.reset();
+      actionsLoading.value = false;
+    },
+  });
+}
+
+function handleUnsupportClick(resource: AnyResourceRead) {
+  dialog.warning({
+    ...commonDialogOptions,
+    title: $t('common.warning'),
+    content: $t('resources.warnUnsupport'),
+    positiveText: $t('common.yes'),
+    negativeText: $t('common.no'),
+    closable: false,
+    onPositiveClick: async () => {
+      actionsLoading.value = true;
+      const { data, error } = await POST('/resources/{id}/unsupport', {
+        params: { path: { id: resource.id } },
+      });
+      if (!error) {
+        resources.replace(data);
+        message.success(
+          $t('common.ok')
+        );
+      }
+      filtersRef.value?.reset();
+      actionsLoading.value = false;
+    },
+  });
+}
+
 function handlePublishClick(resource: AnyResourceRead) {
   dialog.warning({
     ...commonDialogOptions,
@@ -499,6 +549,8 @@ onMounted(() => {
           @set-owners-click="handleSetOwnersClick"
           @propose-click="handleProposeClick"
           @unpropose-click="handleUnproposeClick"
+          @support-click="handleSupportClick"
+          @unsupport-click="handleUnsupportClick"
           @publish-click="handlePublishClick"
           @unpublish-click="handleUnpublishClick"
           @settings-click="handleSettingsClick"

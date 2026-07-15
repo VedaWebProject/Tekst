@@ -8,6 +8,7 @@ import {
   PublicIcon,
   PublicOffIcon,
   ResourceIcon,
+  StarIcon,
   UsersIcon,
 } from '@/icons';
 import { useAuthStore, useResourcesStore, useStateStore } from '@/stores';
@@ -93,6 +94,12 @@ const accessSharesTip = computed(() => {
         <n-icon :component="publicationStatusIcon" />
       </template>
       {{ publicationStatusText }}
+    </n-tag>
+    <n-tag v-if="resource.proposed && !!auth.user" :type="resource.supporters?.length ? 'success' : 'error'" :size="size">
+      <template #icon>
+        <n-icon :component="StarIcon" />
+      </template>
+      {{ $t('resources.supporters', { count: resource.supporters?.length ?? 0 }) }}
     </n-tag>
     <n-tag v-if="!!resource.patchFor" type="info" :size="size">
       <template #icon>

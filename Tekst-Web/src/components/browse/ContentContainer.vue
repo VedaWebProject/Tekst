@@ -13,6 +13,7 @@ import {
   PatchIcon,
   ProposedIcon,
   PublicOffIcon,
+  StarIcon,
   WarningIcon,
 } from '@/icons';
 import { useBrowseStore, useStateStore } from '@/stores';
@@ -120,12 +121,20 @@ watch(
             color="var(--error-color)"
             :title="$t('resources.notPublic')"
           />
-          <n-icon
-            v-else-if="resource.proposed"
-            :component="ProposedIcon"
-            color="var(--warning-color)"
-            :title="$t('resources.proposed')"
-          />
+          <template v-else-if="resource.proposed">
+            <n-icon
+              :component="ProposedIcon"
+              color="var(--warning-color)"
+              :title="$t('resources.proposed')"
+              style="cursor: help"
+            />
+            <n-icon
+              :component="StarIcon"
+              :color="resource.supporters?.length ? 'var(--success-color)' : 'var(--error-color)'"
+              :title="$t('resources.supporters', { count: resource.supporters?.length ?? 0 })"
+              style="cursor: help"
+            />
+          </template>
 
           <!-- icon hint: this is combined content (context) from original level -->
           <n-icon
@@ -136,6 +145,7 @@ watch(
                 level: state.textLevelLabels[props.resource.level],
               })
             "
+            style="cursor: help"
           />
 
           <!-- icon hint: this content is (partly?) from an original resource -->
@@ -144,6 +154,7 @@ watch(
             :component="PatchIcon"
             color="var(--warning-color)"
             :title="$t('contents.fromOriginalResourceHint')"
+              style="cursor: help"
           />
 
           <!-- icon hint: no content -->
@@ -162,6 +173,7 @@ watch(
             v-else-if="!loading && !hasContents"
             :component="WarningIcon"
             :title="$t('browse.contents.cannotShowContext')"
+              style="cursor: help"
           />
           <n-tag
             v-if="!browse.focusView && props.resource.level !== browse.level"

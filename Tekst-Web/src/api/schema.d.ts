@@ -803,6 +803,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/resources/{id}/support': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Support Resource */
+    post: operations['supportResource'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/resources/{id}/unsupport': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Unsupport Resource */
+    post: operations['unsupportResource'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/resources/{id}/publish': {
     parameters: {
       query?: never;
@@ -1165,26 +1199,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/users/public/{user}': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get public user info
-     * @description Returns public information on the user with the specified username or ID
-     */
-    get: operations['getPublicUser'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/users/public': {
     parameters: {
       query?: never;
@@ -1201,7 +1215,11 @@ export interface paths {
      */
     get: operations['findPublicUsers'];
     put?: never;
-    post?: never;
+    /**
+     * Get public users info
+     * @description Returns public information on the users with the specified usernames or IDs
+     */
+    post: operations['getPublicUsers'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1804,6 +1822,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
+       * Supporters
+       * @description Supporters of the publication proposel for this resource
+       */
+      supporters?: components['schemas']['PydanticObjectId'][] | null;
+      /**
        * @default {
        *       "general": {
        *         "defaultActive": true,
@@ -2192,6 +2215,11 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
+      /**
+       * Supporters
+       * @description Supporters of the publication proposel for this resource
+       */
+      supporters?: components['schemas']['PydanticObjectId'][] | null;
       /**
        * @default {
        *       "general": {
@@ -2970,6 +2998,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
+       * Supporters
+       * @description Supporters of the publication proposel for this resource
+       */
+      supporters?: components['schemas']['PydanticObjectId'][] | null;
+      /**
        * @default {
        *       "general": {
        *         "defaultActive": true,
@@ -3460,6 +3493,11 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
+      /**
+       * Supporters
+       * @description Supporters of the publication proposel for this resource
+       */
+      supporters?: components['schemas']['PydanticObjectId'][] | null;
       /**
        * @default {
        *       "general": {
@@ -4091,6 +4129,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
+       * Supporters
+       * @description Supporters of the publication proposel for this resource
+       */
+      supporters?: components['schemas']['PydanticObjectId'][] | null;
+      /**
        * @default {
        *       "general": {
        *         "defaultActive": true,
@@ -4682,6 +4725,11 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
+      /**
+       * Supporters
+       * @description Supporters of the publication proposel for this resource
+       */
+      supporters?: components['schemas']['PydanticObjectId'][] | null;
       /**
        * @default {
        *       "general": {
@@ -5699,6 +5747,11 @@ export interface components {
        */
       meta: components['schemas']['MetadataEntry'][];
       /**
+       * Supporters
+       * @description Supporters of the publication proposel for this resource
+       */
+      supporters?: components['schemas']['PydanticObjectId'][] | null;
+      /**
        * @default {
        *       "general": {
        *         "collapsibleContents": 400,
@@ -6323,6 +6376,11 @@ export interface components {
        * @default []
        */
       meta: components['schemas']['MetadataEntry'][];
+      /**
+       * Supporters
+       * @description Supporters of the publication proposel for this resource
+       */
+      supporters?: components['schemas']['PydanticObjectId'][] | null;
       /**
        * @default {
        *       "general": {
@@ -9801,6 +9859,120 @@ export interface operations {
       };
     };
   };
+  supportResource: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: components['schemas']['PydanticObjectId'];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json':
+            | components['schemas']['ApiCallResourceRead']
+            | components['schemas']['AudioResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
+            | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  unsupportResource: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: components['schemas']['PydanticObjectId'];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json':
+            | components['schemas']['ApiCallResourceRead']
+            | components['schemas']['AudioResourceRead']
+            | components['schemas']['ExternalReferencesResourceRead']
+            | components['schemas']['ImagesResourceRead']
+            | components['schemas']['LocationMetadataResourceRead']
+            | components['schemas']['PlainTextResourceRead']
+            | components['schemas']['RichTextResourceRead']
+            | components['schemas']['TextAnnotationResourceRead'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
   publishResource: {
     parameters: {
       query?: never;
@@ -9960,15 +10132,6 @@ export interface operations {
         };
         content: {
           'application/json': unknown;
-        };
-      };
-      /** @description Forbidden */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Not Found */
@@ -11147,47 +11310,6 @@ export interface operations {
       };
     };
   };
-  getPublicUser: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Username or ID */
-        user: components['schemas']['PydanticObjectId'] | string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['UserReadPublic'];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
   findPublicUsers: {
     parameters: {
       query?: {
@@ -11222,6 +11344,39 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TekstErrorModel'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  getPublicUsers: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': (components['schemas']['PydanticObjectId'] | string)[];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserReadPublic'][];
         };
       };
       /** @description Validation Error */

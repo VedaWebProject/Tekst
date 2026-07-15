@@ -60,10 +60,11 @@ async def prepare_resource_read(
     for_user: UserRead | None = None,
 ) -> AnyResourceRead:
     """
-    A helper function that returns a fully prepared resource read instance for clients
+    A helper function that returns a fully prepared resource read instance for clients,
+    masked according to the requesting user's permissions.
     """
     # convert resource document to resource type's read model instance
-    resource = (
+    resource: AnyResourceRead = (
         resource_types_mgr.get(resource_doc.resource_type)
         .resource_model()
         .read_model()(
@@ -91,10 +92,9 @@ async def prepare_resource_read(
     if resource.owner_ids:
         resource.owners = [
             UserReadPublic.model_from(owner)
-            for owner in [
-                await UserDocument.get(owner_id) for owner_id in resource.owner_ids
-            ]
-            if owner
+            for owner in await UserDocument.find(
+                In(UserDocument.id, resource.owner_ids)
+            ).to_list()
         ]
 
     # include corrections count if user is owner of the resource
@@ -224,17 +224,9 @@ async def create_resource(
 )
 async def create_resource_patch(
     user: UserDep,
-    cfg: ConfigDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> AnyResourceRead:
-    # check if resource exists
-    resource_doc: ResourceBaseDocument = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.query_criteria_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
 
     # check if resource is already a patch
     if resource_doc.patch_for:
@@ -292,14 +284,11 @@ async def update_resource(
     updates: AnyResourceUpdate,
     user: UserDep,
 ) -> AnyResourceRead:
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        ResourceBaseDocument.resource_type == updates.resource_type,
-        await ResourceBaseDocument.query_criteria_write(user),
-        with_children=True,
+    resource_doc = await ResourceBaseDocument.get_safe(
+        resource_id,
+        user,
+        write_access=True,
     )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
 
     # prevent shares modification by non-owners and non-superusers,
     # generally prevent shares modification for proposed and public resources
@@ -430,13 +419,7 @@ async def get_resource(
     user: OptionalUserDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> AnyResourceRead:
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.query_criteria_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     return await prepare_resource_read(resource_doc, user)
 
 
@@ -459,9 +442,7 @@ async def delete_resource(
         Path(alias="id"),
     ],
 ) -> None:
-    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
     if resource_doc.public:
@@ -516,14 +497,7 @@ async def update_resource_owners(
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
     owner_ids: Annotated[list[PydanticObjectId], Body(min_length=1)],
 ) -> AnyResourceRead:
-    # check if resource exists
-    resource_doc: ResourceBaseDocument | None = await ResourceBaseDocument.get(
-        resource_id,
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     # check if requesting user is allowed to change owners
     if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
@@ -586,9 +560,7 @@ async def propose_resource(
         Path(alias="id"),
     ],
 ) -> AnyResourceRead:
-    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
     if resource_doc.proposed:
@@ -632,9 +604,7 @@ async def unpropose_resource(
         Path(alias="id"),
     ],
 ) -> AnyResourceRead:
-    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     if not user.is_superuser and user.id not in resource_doc.owner_ids:
         raise errors.E_403_FORBIDDEN
     # all fine, unpropose resource
@@ -642,6 +612,76 @@ async def unpropose_resource(
         {
             ResourceBaseDocument.proposed: False,
             ResourceBaseDocument.public: False,
+            ResourceBaseDocument.supporters: None,
+        }
+    )
+    return await prepare_resource_read(resource_doc, user)
+
+
+@router.post(
+    "/{id}/support",
+    response_model=AnyResourceRead,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_400_INVALID_REQUEST_DATA,
+        ]
+    ),
+)
+async def support_resource(
+    user: UserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
+) -> AnyResourceRead:
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
+    if not resource_doc.proposed or user.id in resource_doc.owner_ids:
+        raise errors.E_400_INVALID_REQUEST_DATA
+    if resource_doc.supporters is not None and user.id in resource_doc.supporters:
+        return await prepare_resource_read(resource_doc, user)
+    await resource_doc.set(
+        {
+            ResourceBaseDocument.supporters: list(
+                set((resource_doc.supporters or []) + [user.id])
+            ),
+        }
+    )
+    return await prepare_resource_read(resource_doc, user)
+
+
+@router.post(
+    "/{id}/unsupport",
+    response_model=AnyResourceRead,
+    status_code=status.HTTP_200_OK,
+    responses=errors.responses(
+        [
+            errors.E_404_RESOURCE_NOT_FOUND,
+            errors.E_400_INVALID_REQUEST_DATA,
+        ]
+    ),
+)
+async def unsupport_resource(
+    user: UserDep,
+    resource_id: Annotated[
+        PydanticObjectId,
+        Path(alias="id"),
+    ],
+) -> AnyResourceRead:
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
+    if (
+        not resource_doc.proposed
+        or user.id in resource_doc.owner_ids
+        or resource_doc.supporters is None
+        or user.id not in resource_doc.supporters
+    ):
+        raise errors.E_400_INVALID_REQUEST_DATA
+    await resource_doc.set(
+        {
+            ResourceBaseDocument.supporters: [
+                s_id for s_id in resource_doc.supporters if s_id != user.id
+            ],
         }
     )
     return await prepare_resource_read(resource_doc, user)
@@ -665,9 +705,7 @@ async def publish_resource(
     user: SuperuserDep,
     resource_id: Annotated[PydanticObjectId, Path(alias="id")],
 ) -> AnyResourceRead:
-    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     if resource_doc.public:
         return await prepare_resource_read(resource_doc, user)
     if not resource_doc.proposed:
@@ -680,6 +718,7 @@ async def publish_resource(
         {
             ResourceBaseDocument.public: True,
             ResourceBaseDocument.proposed: False,
+            ResourceBaseDocument.supporters: None,
             ResourceBaseDocument.owner_ids: [user.id],
             ResourceBaseDocument.shared_read: [],
             ResourceBaseDocument.shared_write: [],
@@ -717,21 +756,14 @@ async def unpublish_resource(
         Path(alias="id"),
     ],
 ) -> AnyResourceRead:
-    resource_doc = await ResourceBaseDocument.get(resource_id, with_children=True)
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-
-    # all fine, unpublish resource
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     await resource_doc.set(
         {
             ResourceBaseDocument.public: False,
             ResourceBaseDocument.proposed: False,
         }
     )
-
-    # mark the text's index as out-of-date
     await resource_doc.set_index_ood()
-
     return await prepare_resource_read(resource_doc, user)
 
 
@@ -741,7 +773,6 @@ async def unpublish_resource(
     responses=errors.responses(
         [
             errors.E_404_RESOURCE_NOT_FOUND,
-            errors.E_403_FORBIDDEN,
         ]
     ),
 )
@@ -752,18 +783,11 @@ async def download_resource_template(
         Path(alias="id"),
     ],
 ) -> FileResponse:
-    resource_doc = await ResourceBaseDocument.get(
+    resource_doc = await ResourceBaseDocument.get_safe(
         resource_id,
-        with_children=True,
+        user,
+        write_access=True,
     )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-    if not await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.query_criteria_write(user),
-        with_children=True,
-    ).exists():
-        raise errors.E_403_FORBIDDEN
     text = ensure(await TextDocument.get(resource_doc.text_id))
 
     # import content type for the requested resource
@@ -1061,15 +1085,7 @@ async def export_resource_contents_task(
     location_from_id: PydanticObjectId | None = None,
     location_to_id: PydanticObjectId | None = None,
 ) -> dict[str, Any]:
-    # check if user has permission to read this resource, if so, fetch from DB
-    resource: ResourceBaseDocument = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.query_criteria_read(user),
-        with_children=True,
-    )
-    if not resource:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-
+    resource = await ResourceBaseDocument.get_safe(resource_id, user)
     # check if location range is valid
     loc_from: LocationDocument | None = (
         await LocationDocument.get(location_from_id) if location_from_id else None
@@ -1260,14 +1276,7 @@ async def get_aggregations(
         Path(alias="id"),
     ],
 ) -> list[Any]:
-    # try to get resource doc to check if access is allowed for user
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.query_criteria_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     # find requested precomputed data
     precomp_doc = await PrecomputedDataDocument.find_one(
         PrecomputedDataDocument.ref_id == resource_doc.id,
@@ -1297,14 +1306,7 @@ async def get_resource_coverage_data(
     ],
     user: OptionalUserDep,
 ) -> dict:
-    # try to get resource doc to check if access is allowed for user
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.query_criteria_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     # find requested precomputed data
     precomp_doc = await PrecomputedDataDocument.find_one(
         PrecomputedDataDocument.ref_id == resource_doc.id,
