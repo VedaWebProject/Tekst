@@ -35,7 +35,6 @@ const resource = shallowRef<AnyResourceRead>();
 const initialUserSearchQuery = (): PublicUserSearchFilters => ({
   pg: 1,
   pgs: 9999,
-  emptyOk: true,
 });
 
 const resourceTitle = computed(() => pickTranslation(resource.value?.title, state.locale));

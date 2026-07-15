@@ -146,14 +146,9 @@ async def get_content(
     """A generic route for retrieving a content by ID from the database"""
     content_doc = await ContentBaseDocument.get(content_id, with_children=True)
     # check if the resource this content belongs to is readable by user
-    resource_read_allowed = content_doc and (
-        await ResourceBaseDocument.find_one(
-            ResourceBaseDocument.id == content_doc.resource_id,
-            await ResourceBaseDocument.query_criteria_read(user),
-            with_children=True,
-        ).exists()
-    )
-    if not content_doc or not resource_read_allowed:
+    if not content_doc or not (
+        await ResourceBaseDocument.get_safe(content_doc.resource_id, user)
+    ):
         raise errors.E_404_CONTENT_NOT_FOUND
     return content_doc
 

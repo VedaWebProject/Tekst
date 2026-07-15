@@ -94,7 +94,7 @@ async def test_get_public_user_info(
     wrong_id,
 ):
     user = await login()
-    resp = await test_client.get(f"/users/public/{user.get('id')}")
+    resp = await test_client.post("/users/public", json=[user.get("id")])
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "username" in resp.json()

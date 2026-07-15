@@ -838,7 +838,7 @@ async def test_propose_unpropose_publish_unpublish_resource(
     resp = await test_client.post(
         f"/resources/{resource_id}/propose",
     )
-    assert_status(403, resp)
+    assert_status(404, resp)
 
     # propose resource again
     await login(user=owner)
@@ -853,6 +853,82 @@ async def test_propose_unpropose_publish_unpublish_resource(
         f"/resources/{resource_id}/unpropose",
     )
     assert_status(403, resp)
+
+
+@pytest.mark.anyio
+async def test_support_unsupport_resource(
+    test_client: AsyncClient,
+    insert_test_data,
+    wrong_id,
+    login,
+    logout,
+    assert_status,
+):
+    resource_id = (await insert_test_data("texts", "locations", "resources"))[
+        "resources"
+    ][0]
+    resource_doc = await ResourceBaseDocument.get(PydanticObjectId(resource_id))
+    assert resource_doc is not None
+
+    # test cannot support as visitor
+    resp = await test_client.post(
+        f"/resources/{resource_id}/support",
+    )
+    assert_status(401, resp)
+
+    # test cannot support unproposed resource
+    u = await login()
+    resp = await test_client.post(
+        f"/resources/{resource_id}/support",
+    )
+    assert_status(400, resp)
+
+    # test cannot support resource w/ wrong ID
+    resp = await test_client.post(
+        f"/resources/{wrong_id}/support",
+    )
+    assert_status(404, resp)
+
+    # test can support proposed resource
+    await resource_doc.set({ResourceBaseDocument.proposed: True})
+    resp = await test_client.post(
+        f"/resources/{resource_id}/support",
+    )
+    assert_status(200, resp)
+
+    # test cannot unsupport as visitor
+    await logout()
+    resp = await test_client.post(
+        f"/resources/{resource_id}/unsupport",
+    )
+    assert_status(401, resp)
+
+    # test cannot unsupport unproposed resource
+    await resource_doc.set({ResourceBaseDocument.proposed: False})
+    await login(user=u)
+    resp = await test_client.post(
+        f"/resources/{resource_id}/unsupport",
+    )
+    assert_status(400, resp)
+
+    # test cannot unsupport resource w/ wrong ID
+    resp = await test_client.post(
+        f"/resources/{wrong_id}/unsupport",
+    )
+    assert_status(404, resp)
+
+    # test can unsupport proposed resource
+    await resource_doc.set({ResourceBaseDocument.proposed: True})
+    resp = await test_client.post(
+        f"/resources/{resource_id}/unsupport",
+    )
+    assert_status(200, resp)
+
+    # test cannot unsupport non-supported resource
+    resp = await test_client.post(
+        f"/resources/{resource_id}/unsupport",
+    )
+    assert_status(400, resp)
 
 
 @pytest.mark.anyio
@@ -908,7 +984,7 @@ async def test_delete_resource(
     resp = await test_client.delete(
         f"/resources/{str(target_resource_id)}",
     )
-    assert_status(403, resp)
+    assert_status(404, resp)
 
     # become superuser again
     await login(user=su)
@@ -1068,7 +1144,7 @@ async def test_update_resource_owners(
         f"/resources/{resource_id}/owners",
         json=[u["id"]],
     )
-    assert_status(403, resp)
+    assert_status(404, resp)
 
     # set regular user as owner
     await login(user=su)
@@ -1116,7 +1192,7 @@ async def test_get_resource_template(
     resp = await test_client.get(
         f"/resources/{resource_id}/template",
     )
-    assert_status(403, resp)
+    assert_status(404, resp)
 
     # get resource template
     await login(is_superuser=True)

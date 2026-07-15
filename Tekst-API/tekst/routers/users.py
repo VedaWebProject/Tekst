@@ -5,7 +5,7 @@ from typing import Annotated
 from beanie import PydanticObjectId
 from beanie.odm.operators.find import BaseFindOperator
 from beanie.operators import NE, Eq, Or, RegEx
-from fastapi import APIRouter, Depends, Path, Query, Request, status
+from fastapi import APIRouter, Body, Depends, Query, Request, status
 from pydantic import StringConstraints
 
 from tekst import errors
@@ -202,30 +202,30 @@ async def find_users(
     )
 
 
-@router.get(
-    "/public/{user}",
-    response_model=UserReadPublic,
-    summary="Get public user info",
+@router.post(
+    "/public",
+    response_model=list[UserReadPublic],
+    summary="Get public users info",
     status_code=status.HTTP_200_OK,
-    responses=errors.responses(
-        [
-            errors.E_404_USER_NOT_FOUND,
-        ]
-    ),
 )
-async def get_public_user(
-    username_or_id: Annotated[
-        PydanticObjectId | str, Path(alias="user", description="Username or ID")
+async def get_public_users(
+    usernames_or_ids: Annotated[
+        list[PydanticObjectId | str],
+        Body(alias="usernamesOrIds", description="Usernames or IDs"),
     ],
-) -> UserReadPublic:
-    """Returns public information on the user with the specified username or ID"""
-    if type(username_or_id) is PydanticObjectId:
-        user = await UserDocument.get(username_or_id)
-    else:
-        user = await UserDocument.find_one(UserDocument.username == username_or_id)
-    if not user:
-        raise errors.E_404_USER_NOT_FOUND
-    return UserReadPublic.model_from(user)
+) -> list[UserReadPublic]:
+    """Returns public information on the users with the specified usernames or IDs"""
+    users = []
+
+    for username_or_id in usernames_or_ids:
+        if type(username_or_id) is PydanticObjectId:
+            user = await UserDocument.get(username_or_id)
+        else:
+            user = await UserDocument.find_one(UserDocument.username == username_or_id)
+        if user:
+            users.append(user)
+
+    return [UserReadPublic.model_from(user) for user in users]
 
 
 @router.get(

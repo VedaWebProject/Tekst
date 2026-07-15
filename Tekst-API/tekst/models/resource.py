@@ -15,6 +15,7 @@ from pydantic import (
 )
 from typing_extensions import TypedDict
 
+from tekst import errors
 from tekst.html import force_html, sanitize_html
 from tekst.i18n import TranslationBase, Translations
 from tekst.logs import log, log_op_end, log_op_start
@@ -219,6 +220,14 @@ class ResourceBase(ModelBase):
         ),
     ] = []
 
+    supporters: Annotated[
+        list[PydanticObjectId] | None,
+        Field(
+            description="Supporters of the publication proposel for this resource",
+        ),
+        ExcludeFromModelVariants(update=True, create=True),
+    ] = None
+
     config: ResourceConfigBase = ResourceConfigBase()
 
     coverage: Annotated[
@@ -367,6 +376,34 @@ class ResourceBaseDocument(ResourceBase, DocumentBase):
                 "owner_ids",
             ]
         ]
+
+    @classmethod
+    async def get_safe(
+        cls,
+        resource_id: PydanticObjectId,
+        for_user: UserRead | None = None,
+        *,
+        write_access: bool = False,
+        add_queries: BaseFindOperator | dict | None = None,
+    ) -> "ResourceBaseDocument":
+        """
+        Returns the resource with the given ID if the user is allowed to read/write it
+        or raises a HTTP 404 error otherwise.
+        """
+        access_check_query = (
+            await cls.query_criteria_read(for_user)
+            if not write_access
+            else await cls.query_criteria_write(for_user)
+        )
+        resource_doc = await cls.find_one(
+            Eq(cls.id, resource_id),
+            access_check_query,
+            add_queries or {},
+            with_children=True,
+        )
+        if not resource_doc:
+            raise errors.E_404_RESOURCE_NOT_FOUND
+        return resource_doc
 
     @classmethod
     async def query_criteria_read(

@@ -431,6 +431,7 @@ resources:
   notPublic: unveröffentlicht
   shared: Zugriff mit einer Benutzer*in geteilt | Zugriff mit {count} Benutzer*innen geteilt
   proposed: '@:models.resource.proposed'
+  supporters: kein*e Unterstützer*innen | ein*e Unterstützer*in | {count} Unterstützer*innen
   correctionNotesAction: Korrekturnotizen anzeigen
   setOwnersAction: Ressourcen-Besitzer*innen festlegen
   downloadTemplateAction: Importvorlage herunterladen
@@ -438,8 +439,10 @@ resources:
   createPatchAction: Ausbesserung erstellen
   proposeAction: Für Veröffentlichung vorschlagen
   unproposeAction: Veröffentlichungsvorschlag widerrufen
+  supportAction: Veröffentlichungsvorschlag unterstützen
+  unsupportAction: Unterstützung zurücknehmen
   publishAction: Veröffentlichen
-  unpublishAction: Veröffentlichung aufheben
+  unpublishAction: Veröffentlichung widerrufen
   reqPatchIntegration:
     action: Integration vorschlagen
     diagMsg: |
@@ -457,6 +460,14 @@ resources:
   warnUnpropose: |
     Sind Sie sicher, dass Sie den Veröffentlichungsvorschlag
     für diese Ressource widerrufen wollen?
+  warnSupport: |
+    Wenn sie den Vorschlag zur Veröffentlichung dieser Ressource unterstützen,
+    drücken Sie den Plattformadministrator*innen damit aus, dass Sie die Ressource für
+    wertvoll und veröffentlichungswürdig halten und gegebenenfalls ihre Inhalte auf
+    ihre Qualität hin überprüft haben.
+  warnUnsupport: |
+    Sind Sie sicher, dass Sie Ihre Unterstützung für den Veröffentlichungsvorschlag
+    für diese Ressource zurückziehen wollen?
   warnPublish: |
     Sie sind im Begriff, diese Ressource zu veröffentlichen und
     sie auch für nicht registrierte Benutzer*innen zugänglich zu machen.

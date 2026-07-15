@@ -4798,6 +4798,222 @@
         }
       }
     },
+    "/resources/{id}/support": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Support Resource",
+        "operationId": "supportResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ImagesResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
+                      "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
+                      "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
+                    }
+                  },
+                  "title": "Response Supportresource"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}/unsupport": {
+      "post": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Unsupport Resource",
+        "operationId": "unsupportResource",
+        "security": [
+          {
+            "APIKeyCookie": []
+          },
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PydanticObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiCallResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AudioResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExternalReferencesResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ImagesResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LocationMetadataResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PlainTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RichTextResourceRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TextAnnotationResourceRead"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "resourceType",
+                    "mapping": {
+                      "apiCall": "#/components/schemas/ApiCallResourceRead",
+                      "audio": "#/components/schemas/AudioResourceRead",
+                      "externalReferences": "#/components/schemas/ExternalReferencesResourceRead",
+                      "images": "#/components/schemas/ImagesResourceRead",
+                      "locationMetadata": "#/components/schemas/LocationMetadataResourceRead",
+                      "plainText": "#/components/schemas/PlainTextResourceRead",
+                      "richText": "#/components/schemas/RichTextResourceRead",
+                      "textAnnotation": "#/components/schemas/TextAnnotationResourceRead"
+                    }
+                  },
+                  "title": "Response Unsupportresource"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/resources/{id}/publish": {
       "post": {
         "tags": [
@@ -5087,16 +5303,6 @@
               }
             },
             "description": "Not Found"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Forbidden"
           },
           "422": {
             "description": "Validation Error",
@@ -6878,54 +7084,50 @@
         }
       }
     },
-    "/users/public/{user}": {
-      "get": {
+    "/users/public": {
+      "post": {
         "tags": [
           "users"
         ],
-        "summary": "Get public user info",
-        "description": "Returns public information on the user with the specified username or ID",
-        "operationId": "getPublicUser",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "anyOf": [
-                {
-                  "$ref": "#/components/schemas/PydanticObjectId"
+        "summary": "Get public users info",
+        "description": "Returns public information on the users with the specified usernames or IDs",
+        "operationId": "getPublicUsers",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/PydanticObjectId"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
                 },
-                {
-                  "type": "string"
-                }
-              ],
-              "description": "Username or ID",
-              "title": "User"
-            },
-            "description": "Username or ID"
+                "description": "Usernames or IDs",
+                "title": "Usernamesorids"
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserReadPublic"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserReadPublic"
+                  },
+                  "title": "Response Getpublicusers"
                 }
               }
             }
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TekstErrorModel"
-                }
-              }
-            },
-            "description": "Not Found"
           },
           "422": {
             "description": "Validation Error",
@@ -6938,9 +7140,7 @@
             }
           }
         }
-      }
-    },
-    "/users/public": {
+      },
       "get": {
         "tags": [
           "users"
@@ -8521,6 +8721,21 @@
             "description": "Arbitrary metadata",
             "default": []
           },
+          "supporters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supporters",
+            "description": "Supporters of the publication proposel for this resource"
+          },
           "config": {
             "$ref": "#/components/schemas/ApiCallResourceConfig",
             "default": {
@@ -9303,6 +9518,21 @@
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
+          },
+          "supporters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supporters",
+            "description": "Supporters of the publication proposel for this resource"
           },
           "config": {
             "$ref": "#/components/schemas/AudioResourceConfig",
@@ -10903,6 +11133,21 @@
             "description": "Arbitrary metadata",
             "default": []
           },
+          "supporters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supporters",
+            "description": "Supporters of the publication proposel for this resource"
+          },
           "config": {
             "$ref": "#/components/schemas/ExternalReferencesResourceConfig",
             "default": {
@@ -11883,6 +12128,21 @@
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
+          },
+          "supporters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supporters",
+            "description": "Supporters of the publication proposel for this resource"
           },
           "config": {
             "$ref": "#/components/schemas/ImagesResourceConfig",
@@ -13202,6 +13462,21 @@
             "description": "Arbitrary metadata",
             "default": []
           },
+          "supporters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supporters",
+            "description": "Supporters of the publication proposel for this resource"
+          },
           "config": {
             "$ref": "#/components/schemas/LocationMetadataResourceConfig",
             "default": {
@@ -14372,6 +14647,21 @@
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
+          },
+          "supporters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supporters",
+            "description": "Supporters of the publication proposel for this resource"
           },
           "config": {
             "$ref": "#/components/schemas/PlainTextResourceConfig",
@@ -16274,6 +16564,21 @@
             "description": "Arbitrary metadata",
             "default": []
           },
+          "supporters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supporters",
+            "description": "Supporters of the publication proposel for this resource"
+          },
           "config": {
             "$ref": "#/components/schemas/RichTextResourceConfig",
             "default": {
@@ -17575,6 +17880,21 @@
             "title": "Meta",
             "description": "Arbitrary metadata",
             "default": []
+          },
+          "supporters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supporters",
+            "description": "Supporters of the publication proposel for this resource"
           },
           "config": {
             "$ref": "#/components/schemas/TextAnnotationResourceConfig",

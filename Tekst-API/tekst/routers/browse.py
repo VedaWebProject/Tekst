@@ -344,16 +344,7 @@ async def get_content_context(
     with the given ID, associated to locations that are children of the parent location
     with the given ID.
     """
-
-    resource = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.query_criteria_read(user),
-        with_children=True,
-    )
-
-    if not resource:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-
+    resource = await ResourceBaseDocument.get_safe(resource_id, user)
     return await _get_content_context(resource, parent_location_id)
 
 
@@ -399,14 +390,7 @@ async def get_nearest_content_location(
     """
     Finds the nearest location the given resource holds content for and returns it.
     """
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
-        await ResourceBaseDocument.query_criteria_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
-
+    resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     location_doc = await LocationDocument.get(location_id)
     if not location_doc:
         raise errors.E_404_LOCATION_NOT_FOUND

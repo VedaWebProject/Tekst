@@ -2,6 +2,7 @@ from datetime import UTC, datetime
 from typing import Annotated
 
 from beanie import PydanticObjectId
+from beanie.operators import Eq
 from fastapi import APIRouter, BackgroundTasks, Path, status
 
 from tekst import errors
@@ -42,15 +43,7 @@ async def create_correction(
     background_tasks: BackgroundTasks,
 ) -> CorrectionDocument:
     """Creates a correction note referring to a specific content"""
-
-    # check if the resource this content belongs to is readable by user
-    resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == correction.resource_id,
-        await ResourceBaseDocument.query_criteria_read(user),
-        with_children=True,
-    )
-    if not resource_doc:
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    resource_doc = await ResourceBaseDocument.get_safe(correction.resource_id, user)
 
     # get location, check if it is valid
     location_doc = await LocationDocument.get(correction.location_id)
@@ -125,18 +118,12 @@ async def get_corrections(
     user: UserDep,
 ) -> list[CorrectionDocument]:
     """Returns a list of all corrections for a specific resource"""
-    # check if the requested resource is owned by this user
-    resource_doc = await ResourceBaseDocument.get(
-        resource_id,
-        with_children=True,
-    )
-    if not resource_doc or (
-        user.id not in resource_doc.owner_ids and not user.is_superuser
-    ):
-        raise errors.E_404_RESOURCE_NOT_FOUND
+    # check if the requested resource is owned by this user or user is superuser
+    # (this call will raise a 404 otherwise)
+    await ResourceBaseDocument.get_safe(resource_id, user, write_access=True)
     # return all corrections for the resource
     return await CorrectionDocument.find(
-        CorrectionDocument.resource_id == resource_id,
+        Eq(CorrectionDocument.resource_id, resource_id),
     ).to_list()
 
 
