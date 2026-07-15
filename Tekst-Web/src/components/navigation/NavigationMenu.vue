@@ -18,7 +18,7 @@ const emit = defineEmits(['select']);
 </script>
 
 <template>
-  <div class="mt-md mb-lg">
+  <div :class="{ 'mt-md': secondary, 'mb-lg': secondary }">
     <n-menu
       responsive
       :options="options"

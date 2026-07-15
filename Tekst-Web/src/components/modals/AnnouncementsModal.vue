@@ -54,8 +54,8 @@ onMounted(() => {
   if (
     !!state.pf?.state.announcements?.length &&
     (choice.value === 'always' ||
-    (choice.value === 'ifChanged' &&
-      choiceStored.value !== hashCode(JSON.stringify(state.pf?.state.announcements)).toString()))
+      (choice.value === 'ifChanged' &&
+        choiceStored.value !== hashCode(JSON.stringify(state.pf?.state.announcements)).toString()))
   ) {
     state.showAnnouncementsModal = true;
   }
