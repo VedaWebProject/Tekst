@@ -867,7 +867,10 @@ async def test_support_unsupport_resource(
     resource_id = (await insert_test_data("texts", "locations", "resources"))[
         "resources"
     ][0]
-    resource_doc = await ResourceBaseDocument.get(PydanticObjectId(resource_id))
+    resource_doc = await ResourceBaseDocument.get(
+        PydanticObjectId(resource_id),
+        with_children=True,
+    )
     assert resource_doc is not None
 
     # test cannot support as visitor
@@ -890,6 +893,13 @@ async def test_support_unsupport_resource(
     assert_status(404, resp)
 
     # test can support proposed resource
+    await resource_doc.set({ResourceBaseDocument.proposed: True})
+    resp = await test_client.post(
+        f"/resources/{resource_id}/support",
+    )
+    assert_status(200, resp)
+
+    # test can support proposed resource again (noop)
     await resource_doc.set({ResourceBaseDocument.proposed: True})
     resp = await test_client.post(
         f"/resources/{resource_id}/support",

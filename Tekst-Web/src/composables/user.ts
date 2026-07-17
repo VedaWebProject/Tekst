@@ -31,12 +31,14 @@ export function useUser(usernameOrId?: string | Ref<string>) {
     }
 
     // get from api
-    const { data, error: err } = await POST('/users/public', { body: [unoid] });
+    const { data, error: err } = await GET('/users/public/{user}', {
+      params: { path: { user: unoid } },
+    });
 
-    if (!err && data.length) {
-      _cache.set(data[0].id, data[0]);
-      _cache.set(data[0].username, data[0]);
-      user.value = data[0];
+    if (!err) {
+      _cache.set(data.id, data);
+      _cache.set(data.username, data);
+      user.value = data;
     } else {
       error.value = true;
     }

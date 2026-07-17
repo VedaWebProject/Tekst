@@ -95,7 +95,7 @@ async def test_get_public_user(
     u = await register_test_user()
 
     # get by ID
-    resp = await test_client.post("/users/public", json=[u["id"]])
+    resp = await test_client.get(f"/users/public/{u['id']}")
     assert_status(200, resp)
     assert isinstance(resp.json(), dict)
     assert "username" in resp.json()
@@ -117,6 +117,55 @@ async def test_get_public_user(
     # fail to get by non-existent username
     resp = await test_client.get("/users/public/i_do_not_exist")
     assert_status(404, resp)
+
+
+@pytest.mark.anyio
+async def test_get_public_users(
+    test_client: AsyncClient,
+    register_test_user,
+    assert_status,
+    wrong_id,
+):
+    u = await register_test_user()
+
+    # get by ID
+    resp = await test_client.post("/users/public", json=[u["id"]])
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+    assert "username" in resp.json()[0]
+    assert resp.json()[0]["username"] == u["username"]
+    assert "id" in resp.json()[0]
+    assert "name" in resp.json()[0]
+    assert "isVerified" not in resp.json()[0]
+
+    # get by ID, some don't exist
+    resp = await test_client.post("/users/public", json=[u["id"], wrong_id])
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+    assert "username" in resp.json()[0]
+    assert resp.json()[0]["username"] == u["username"]
+    assert "id" in resp.json()[0]
+    assert "name" in resp.json()[0]
+    assert "isVerified" not in resp.json()[0]
+
+    # get by username
+    resp = await test_client.post("/users/public", json=[u["username"]])
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) > 0
+    assert "username" in resp.json()[0]
+    assert resp.json()[0]["username"] == u["username"]
+    assert "id" in resp.json()[0]
+    assert "name" in resp.json()[0]
+    assert "isVerified" not in resp.json()[0]
+
+    # fail to get by non-existent username
+    resp = await test_client.post("/users/public", json=["i_do_not_exist"])
+    assert_status(200, resp)
+    assert isinstance(resp.json(), list)
+    assert len(resp.json()) == 0
 
 
 @pytest.mark.anyio
