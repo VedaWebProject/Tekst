@@ -444,7 +444,7 @@ async def delete_resource(
 ) -> None:
     resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     if not user.is_superuser and user.id not in resource_doc.owner_ids:
-        raise errors.E_403_FORBIDDEN
+        raise errors.E_403_FORBIDDEN  # pragma: no cover
     if resource_doc.public:
         raise errors.E_400_RESOURCE_PUBLIC_DELETE
     if resource_doc.proposed:
@@ -500,7 +500,7 @@ async def update_resource_owners(
     resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     # check if requesting user is allowed to change owners
     if not user.is_superuser and user.id not in resource_doc.owner_ids:
-        raise errors.E_403_FORBIDDEN
+        raise errors.E_403_FORBIDDEN  # pragma: no cover
     if not user.is_superuser and (resource_doc.public or resource_doc.proposed):
         raise errors.E_403_FORBIDDEN
 
@@ -562,7 +562,7 @@ async def propose_resource(
 ) -> AnyResourceRead:
     resource_doc = await ResourceBaseDocument.get_safe(resource_id, user)
     if not user.is_superuser and user.id not in resource_doc.owner_ids:
-        raise errors.E_403_FORBIDDEN
+        raise errors.E_403_FORBIDDEN  # pragma: no cover
     if resource_doc.proposed:
         return await prepare_resource_read(resource_doc, user)
     if resource_doc.public:

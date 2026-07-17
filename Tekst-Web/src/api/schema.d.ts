@@ -1226,6 +1226,26 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/users/public/{user}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get public user info
+     * @description Returns public information on the user with the specified username or ID
+     */
+    get: operations['getPublicUser'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/auth/cookie/login': {
     parameters: {
       query?: never;
@@ -11377,6 +11397,47 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['UserReadPublic'][];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  getPublicUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Username or ID */
+        user: components['schemas']['PydanticObjectId'] | string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserReadPublic'];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Validation Error */

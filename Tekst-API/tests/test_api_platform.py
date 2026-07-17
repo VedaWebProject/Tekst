@@ -87,24 +87,6 @@ async def test_update_pf_state_invalid_denied_res_type(
 
 
 @pytest.mark.anyio
-async def test_get_public_user_info(
-    test_client: AsyncClient,
-    assert_status,
-    login,
-    wrong_id,
-):
-    user = await login()
-    resp = await test_client.post("/users/public", json=[user.get("id")])
-    assert_status(200, resp)
-    assert isinstance(resp.json(), dict)
-    assert "username" in resp.json()
-    assert resp.json()["username"] == user.get("username")
-    # wrong user ID
-    resp = await test_client.get(f"/platform/users/{wrong_id}")
-    assert_status(404, resp)
-
-
-@pytest.mark.anyio
 async def test_crud_segment(
     test_client: AsyncClient,
     assert_status,

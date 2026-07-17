@@ -53,6 +53,11 @@ const usersOptions = computed(() =>
 function show(nextResource: AnyResourceRead) {
   resource.value = nextResource;
   formModel.value.ownerIds = nextResource.ownerIds;
+  userSearchQuery.value = {
+    pg: 1,
+    pgs: 9999,
+    emptyOk: true,
+  }
   showModal.value = true;
 }
 

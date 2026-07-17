@@ -264,7 +264,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
             },
           ]
         : []),
-      ...(props.user?.isSuperuser || (!props.resource.public && !props.resource.proposed)
+      ...(props.user?.isSuperuser || (isOwner.value && !props.resource.public && !props.resource.proposed)
         ? [
             {
               label: $t('resources.setOwnersAction'),

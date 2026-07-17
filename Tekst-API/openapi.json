@@ -7241,6 +7241,68 @@
         }
       }
     },
+    "/users/public/{user}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get public user info",
+        "description": "Returns public information on the user with the specified username or ID",
+        "operationId": "getPublicUser",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/PydanticObjectId"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "description": "Username or ID",
+              "title": "User"
+            },
+            "description": "Username or ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserReadPublic"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TekstErrorModel"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/cookie/login": {
       "post": {
         "tags": [
