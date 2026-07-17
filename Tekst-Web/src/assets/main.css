@@ -169,6 +169,9 @@ table th,
 table td {
   text-align: left;
   vertical-align: top;
+  padding: 0.2em 0.5em;
+  background-color: #88888811;
+  border-color: var(--main-bg-color) !important;
 }
 
 .m-0 {
