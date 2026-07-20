@@ -203,9 +203,7 @@ function handleSupportClick(resource: AnyResourceRead) {
       });
       if (!error) {
         resources.replace(data);
-        message.success(
-          $t('common.ok')
-        );
+        message.success($t('common.ok'));
       }
       filtersRef.value?.reset();
       actionsLoading.value = false;
@@ -228,9 +226,7 @@ function handleUnsupportClick(resource: AnyResourceRead) {
       });
       if (!error) {
         resources.replace(data);
-        message.success(
-          $t('common.ok')
-        );
+        message.success($t('common.ok'));
       }
       filtersRef.value?.reset();
       actionsLoading.value = false;

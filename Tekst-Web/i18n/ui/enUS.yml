@@ -716,6 +716,7 @@ account:
       messageReceived: I receive a message from another user (via email)
       newCorrection: a correction note on one of my resources is created (via email)
       addedAsOwner: I am marked as owner of a resource (via email)
+      removedFromOwners: I am removed from the owners of a resource (via email)
       msgSaveSuccess: User notifications settings saved.
     adminNotificationTriggers:
       heading: Notifications for Administrators

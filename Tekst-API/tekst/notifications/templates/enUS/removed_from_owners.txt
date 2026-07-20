@@ -1,0 +1,5 @@
+Hello, {to_user_name}!
+
+The user "{username}" just removed you from the owners of the resource "{resource_title}".
+
+See you on {platform_name}!

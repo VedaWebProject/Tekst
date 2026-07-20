@@ -19,8 +19,7 @@
       "resourceProposed",
       "resourcePublished",
       "newCorrection",
-      "addedAsOwner",
-      "removedFromOwners"
+      "addedAsOwner"
     ],
     "seen": null
   },
@@ -44,8 +43,7 @@
       "resourceProposed",
       "resourcePublished",
       "newCorrection",
-      "addedAsOwner",
-      "removedFromOwners"
+      "addedAsOwner"
     ],
     "seen": null
   },
@@ -68,8 +66,7 @@
       "resourceProposed",
       "resourcePublished",
       "newCorrection",
-      "addedAsOwner",
-      "removedFromOwners"
+      "addedAsOwner"
     ],
     "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
     "seen": false,
@@ -93,8 +90,7 @@
       "resourcePublished",
       "messageReceived",
       "newCorrection",
-      "addedAsOwner",
-      "removedFromOwners"
+      "addedAsOwner"
     ],
     "admin_notification_triggers": ["userAwaitsActivation", "newCorrection"],
     "seen": true,
