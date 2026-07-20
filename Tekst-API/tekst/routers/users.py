@@ -68,8 +68,7 @@ async def delete_me(
             exc=errors.E_403_FORBIDDEN,
             values={"errors": "Cannot delete the only superuser!"},
         )
-    user_doc = await UserDocument.get(user.id)
-    await user_mgr.delete(ensure(user_doc), request)
+    await user_mgr.delete(ensure(await UserDocument.get(user.id)), request)
     return None
 
 

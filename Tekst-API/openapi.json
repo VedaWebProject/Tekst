@@ -4,7 +4,7 @@
     "title": "Tekst-Dev",
     "summary": "An online text research platform",
     "contact": {},
-    "version": "0.53.1b0"
+    "version": "0.53.2b0"
   },
   "servers": [
     {
@@ -18762,13 +18762,14 @@
               "$ref": "#/components/schemas/UserNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 5,
+            "maxItems": 6,
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
             "default": [
               "messageReceived",
               "newCorrection",
               "addedAsOwner",
+              "removedFromOwners",
               "resourceProposed",
               "resourcePublished"
             ]
@@ -18957,6 +18958,7 @@
           "messageReceived",
           "newCorrection",
           "addedAsOwner",
+          "removedFromOwners",
           "resourceProposed",
           "resourcePublished"
         ]
@@ -19053,13 +19055,14 @@
               "$ref": "#/components/schemas/UserNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 5,
+            "maxItems": 6,
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
             "default": [
               "messageReceived",
               "newCorrection",
               "addedAsOwner",
+              "removedFromOwners",
               "resourceProposed",
               "resourcePublished"
             ]
@@ -19394,7 +19397,7 @@
               "$ref": "#/components/schemas/UserNotificationTrigger"
             },
             "type": "array",
-            "maxItems": 5,
+            "maxItems": 6,
             "title": "Usernotificationtriggers",
             "description": "Events that trigger notifications for this user",
             "optionalNullable": false

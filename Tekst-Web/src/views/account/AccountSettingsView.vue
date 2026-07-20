@@ -6,6 +6,7 @@ import type {
   UserUpdateUserNotificationTriggers,
 } from '@/api';
 import { DELETE, POST } from '@/api';
+import type { components } from '@/api/schema';
 import { commonDialogOptions } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
 import LabeledSwitch from '@/components/LabeledSwitch.vue';
@@ -45,18 +46,35 @@ const initialUserDataModel = () => ({
   bio: auth.user?.bio || null,
 });
 
-const initialUserNotificationTriggersModel = () => ({
-  resourceProposed: !!auth.user?.userNotificationTriggers.includes('resourceProposed'),
-  resourcePublished: !!auth.user?.userNotificationTriggers.includes('resourcePublished'),
-  messageReceived: !!auth.user?.userNotificationTriggers.includes('messageReceived'),
-  newCorrection: !!auth.user?.userNotificationTriggers.includes('newCorrection'),
-  addedAsOwner: !!auth.user?.userNotificationTriggers.includes('addedAsOwner'),
-});
+const initialUserNotificationTriggersModel = () =>
+  Object.fromEntries(
+    [
+      'resourceProposed',
+      'resourcePublished',
+      'messageReceived',
+      'newCorrection',
+      'addedAsOwner',
+      'removedFromOwners',
+    ].map((untId) => [
+      untId,
+      !!auth.user?.userNotificationTriggers.includes(
+        untId as components['schemas']['UserNotificationTrigger']
+      ),
+    ])
+  );
 
-const initialAdminNotificationTriggersModel = () => ({
-  userAwaitsActivation: !!auth.user?.adminNotificationTriggers.includes('userAwaitsActivation'),
-  newCorrection: !!auth.user?.adminNotificationTriggers.includes('newCorrection'),
-});
+const initialAdminNotificationTriggersModel = () =>
+  Object.fromEntries(
+    [
+      'userAwaitsActivation',
+      'newCorrection',
+    ].map((untId) => [
+      untId,
+      !!auth.user?.adminNotificationTriggers.includes(
+        untId as components['schemas']['AdminNotificationTrigger']
+      ),
+    ])
+  );
 
 const initialPublicFieldsModel = () => ({
   name: !!auth.user?.publicFields.includes('name'),
@@ -85,7 +103,6 @@ const {
   reset: resetUserDataModelChanges,
 } = useModelChanges(userDataFormModel);
 
-const userNotificationTriggersFormRef = ref<FormInst | null>(null);
 const userNotificationTriggersFormModel = ref<Record<string, boolean>>(
   initialUserNotificationTriggersModel()
 );
@@ -94,7 +111,6 @@ const {
   reset: resetUserNotificationTriggersModelChanges,
 } = useModelChanges(userNotificationTriggersFormModel);
 
-const adminNotificationTriggersFormRef = ref<FormInst | null>(null);
 const adminNotificationTriggersFormModel = ref<Record<string, boolean>>(
   initialAdminNotificationTriggersModel()
 );

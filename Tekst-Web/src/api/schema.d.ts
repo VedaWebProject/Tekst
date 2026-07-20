@@ -6876,6 +6876,7 @@ export interface components {
        *       "messageReceived",
        *       "newCorrection",
        *       "addedAsOwner",
+       *       "removedFromOwners",
        *       "resourceProposed",
        *       "resourcePublished"
        *     ]
@@ -6952,6 +6953,7 @@ export interface components {
       | 'messageReceived'
       | 'newCorrection'
       | 'addedAsOwner'
+      | 'removedFromOwners'
       | 'resourceProposed'
       | 'resourcePublished';
     /**
@@ -7007,6 +7009,7 @@ export interface components {
        *       "messageReceived",
        *       "newCorrection",
        *       "addedAsOwner",
+       *       "removedFromOwners",
        *       "resourceProposed",
        *       "resourcePublished"
        *     ]

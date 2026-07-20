@@ -19,6 +19,7 @@ class Notification(StrEnum):
     EMAIL_MESSAGE_RECEIVED = "messageReceived"
     EMAIL_NEW_CORRECTION = "newCorrection"
     EMAIL_ADDED_AS_OWNER = "addedAsOwner"
+    EMAIL_REMOVED_FROM_OWNERS = "removedFromOwners"
     USRMSG_RESOURCE_PROPOSED = "resourceProposed"
     USRMSG_RESOURCE_PUBLISHED = "resourcePublished"
 
@@ -27,6 +28,7 @@ type UserNotificationTrigger = Literal[
     Notification.EMAIL_MESSAGE_RECEIVED,
     Notification.EMAIL_NEW_CORRECTION,
     Notification.EMAIL_ADDED_AS_OWNER,
+    Notification.EMAIL_REMOVED_FROM_OWNERS,
     Notification.USRMSG_RESOURCE_PROPOSED,
     Notification.USRMSG_RESOURCE_PUBLISHED,
 ]

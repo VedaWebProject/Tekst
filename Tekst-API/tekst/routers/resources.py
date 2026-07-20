@@ -504,13 +504,14 @@ async def update_resource_owners(
     if not user.is_superuser and (resource_doc.public or resource_doc.proposed):
         raise errors.E_403_FORBIDDEN
 
-    # check if target users exist, collect them
-    owners: list[UserDocument] = []
+    # check if target users exist
     for new_owner_id in owner_ids:
         owner = await UserDocument.get(new_owner_id)
         if not owner:
             raise errors.E_400_TARGET_USER_NON_EXISTENT
-        owners.append(owner)
+
+    # remember old owner_ids
+    old_owner_ids = [uid for uid in resource_doc.owner_ids]
 
     # all fine, set owners and remove target user IDs from resource shares
     await resource_doc.set(
@@ -525,18 +526,41 @@ async def update_resource_owners(
         }
     )
 
-    # notify target user(s)
-    for u in owners:
-        if Notification.EMAIL_ADDED_AS_OWNER.value in u.user_notification_triggers:
-            await send_notification(
-                u,
-                Notification.EMAIL_ADDED_AS_OWNER,
-                username=user.username,
-                resource_title=pick_translation(
-                    resource_doc.title,
-                    u.locale or "enUS",
-                ),
-            )
+    # notify newly added owners
+    for u in await UserDocument.find(
+        In(UserDocument.id, list(set(owner_ids) - set(old_owner_ids))),
+        Eq(
+            UserDocument.user_notification_triggers,
+            Notification.EMAIL_ADDED_AS_OWNER.value,
+        ),
+    ).to_list():
+        await send_notification(
+            u,
+            Notification.EMAIL_ADDED_AS_OWNER,
+            username=user.username,
+            resource_title=pick_translation(
+                resource_doc.title,
+                u.locale or "enUS",
+            ),
+        )
+
+    # notify removed owners
+    for u in await UserDocument.find(
+        In(UserDocument.id, list(set(old_owner_ids) - set(owner_ids))),
+        Eq(
+            UserDocument.user_notification_triggers,
+            Notification.EMAIL_REMOVED_FROM_OWNERS.value,
+        ),
+    ).to_list():
+        await send_notification(
+            u,
+            Notification.EMAIL_REMOVED_FROM_OWNERS,
+            username=user.username,
+            resource_title=pick_translation(
+                resource_doc.title,
+                u.locale or "enUS",
+            ),
+        )
 
     return await prepare_resource_read(resource_doc, user)
 

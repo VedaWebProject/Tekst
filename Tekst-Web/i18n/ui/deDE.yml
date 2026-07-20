@@ -729,6 +729,7 @@ account:
       messageReceived: ich eine Nachricht von einer anderen Benutzer*in erhalte (per Email)
       newCorrection: eine Korrekturnotiz zu einer meiner Ressourcen erstellt wird (per Email)
       addedAsOwner: ich als Besitzer*in einer Ressource eingetragen werde (per Email)
+      removedFromOwners: ich als Besitzer*in einer Ressource entfernt werde (per Email)
       msgSaveSuccess: Einstellungen zu Email-Benachrichtigungen gespeichert.
     adminNotificationTriggers:
       heading: Benachrichtigungen für Administrator*innen

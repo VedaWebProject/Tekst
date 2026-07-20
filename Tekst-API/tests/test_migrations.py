@@ -680,3 +680,21 @@ async def test_0_51_0b0(
     for res in resources:
         assert "original_id" not in res
         assert "patch_for" in res
+
+
+@pytest.mark.anyio
+async def test_0_53_2b0(
+    database,
+    get_test_data,
+):
+    test_data = get_test_data("migrations/0_53_2b0.json")
+    await database.users.insert_many(test_data)
+
+    # run migration
+    await _migration_fn("0_53_2b0")(database)
+
+    # assert the data has been fixed by the migration
+    users = await database.users.find({}).to_list()
+    assert users
+    for u in users:
+        assert "removedFromOwners" in u["user_notification_triggers"]
