@@ -154,7 +154,7 @@ watch(
             :component="PatchIcon"
             color="var(--warning-color)"
             :title="$t('contents.fromOriginalResourceHint')"
-              style="cursor: help"
+            style="cursor: help"
           />
 
           <!-- icon hint: no content -->
@@ -173,7 +173,7 @@ watch(
             v-else-if="!loading && !hasContents"
             :component="WarningIcon"
             :title="$t('browse.contents.cannotShowContext')"
-              style="cursor: help"
+            style="cursor: help"
           />
           <n-tag
             v-if="!browse.focusView && props.resource.level !== browse.level"

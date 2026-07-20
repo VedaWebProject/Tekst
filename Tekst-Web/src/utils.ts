@@ -1,5 +1,6 @@
 import type {
   AnyResourceRead,
+  LineLabellingConfig,
   LocationRead,
   PlatformStateRead,
   TextRead,
@@ -235,4 +236,19 @@ export function resourceSortFn(
     // OR by sort order value, ascending
     a.config.general.sortOrder - b.config.general.sortOrder
   );
+}
+
+export function getLineLabel(index: number, labellingType: LineLabellingConfig['labellingType']) {
+  switch (labellingType) {
+    case 'numbersZeroBased':
+      return index.toString();
+    case 'numbersOneBased':
+      return (index + 1).toString();
+    case 'lettersLowercase':
+      return String.fromCharCode('a'.charCodeAt(0) + (index % 26));
+    case 'lettersUppercase':
+      return String.fromCharCode('A'.charCodeAt(0) + (index % 26));
+    default:
+      return (index + 1).toString();
+  }
 }
