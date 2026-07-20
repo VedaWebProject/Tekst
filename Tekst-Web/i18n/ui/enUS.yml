@@ -569,6 +569,7 @@ resources:
         freeFormInputTip: Enter multiple comma-separated values or use the on-screen keyboard
         commaSepHint: Comma-separated values will be split and treated as multiple distinct annotation values!
         valueEnterHint: To add values that are not listed here, type them and hit ENTER!
+        jumpToToken: Jump to token
       copyTokenAction: Copy token
       copyTokenFullAction: Copy token and annotations
       copyHintTip: Right click or long press to copy
