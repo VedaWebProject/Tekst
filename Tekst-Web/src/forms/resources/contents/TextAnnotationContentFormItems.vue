@@ -99,6 +99,15 @@ const annoOptions = computed(() => {
   return options;
 });
 
+const quickJumpData = computed(() =>
+  model.value.tokens.map(
+    (t) =>
+      t.annotations
+        .find((a) => a.key === 'form')
+        ?.value.join(props.resource.config.special.annotations.multiValueDelimiter) ?? '???'
+  )
+);
+
 function renderValueLabel(option: SelectOption) {
   return h(
     'div',
@@ -140,6 +149,17 @@ onMounted(async () => {
 </script>
 
 <template>
+  <!-- QUICK-JUMP TOKEN LINKS -->
+  <n-flex align="center" :size="0" class="gray-box mb-lg">
+    <span class="mr-md text-tiny b"
+      >{{ $t('resources.types.textAnnotation.contentFields.jumpToToken') }}:</span
+    >
+    <div v-for="(tf, i) in quickJumpData" :key="`t_${i}`">
+      <span v-if="i !== 0" class="mx-sm">&bull;</span>
+      <a :href="`#t_${i}`">{{ tf }}</a>
+    </div>
+  </n-flex>
+
   <!-- TOKENS -->
   <n-form-item :show-label="false" :show-feedback="false">
     <n-dynamic-input
@@ -158,6 +178,7 @@ onMounted(async () => {
             :show-feedback="false"
             :path="`tokens[${tokenItemIndex}].annotations`"
             style="flex: 2 400px"
+            :id="`t_${tokenItemIndex}`"
           >
             <n-dynamic-input
               v-model:value="tokenItem.annotations"
