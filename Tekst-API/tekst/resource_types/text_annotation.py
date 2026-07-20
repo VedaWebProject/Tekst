@@ -27,6 +27,7 @@ from tekst.models.resource_configs import (
     ResourceConfigBase,
 )
 from tekst.models.text import TextDocument
+from tekst.resource_types.plain_text import LineLabellingConfig
 from tekst.resources import ResourceTypeBase
 from tekst.types import (
     FalsyToNone,
@@ -366,6 +367,7 @@ class AnnotationsConfig(ModelBase):
 
 class TextAnnotationSpecialConfig(ModelBase):
     annotations: AnnotationsConfig = AnnotationsConfig()
+    line_labelling: LineLabellingConfig = LineLabellingConfig()
 
 
 class TextAnnotationResourceConfig(ResourceConfigBase):

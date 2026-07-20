@@ -17575,6 +17575,10 @@
                   "itemProps": []
                 },
                 "multiValueDelimiter": "/"
+              },
+              "lineLabelling": {
+                "enabled": false,
+                "labellingType": "numbersOneBased"
               }
             }
           }
@@ -17711,6 +17715,10 @@
                     "itemProps": []
                   },
                   "multiValueDelimiter": "/"
+                },
+                "lineLabelling": {
+                  "enabled": false,
+                  "labellingType": "numbersOneBased"
                 }
               }
             }
@@ -17977,6 +17985,10 @@
                     "itemProps": []
                   },
                   "multiValueDelimiter": "/"
+                },
+                "lineLabelling": {
+                  "enabled": false,
+                  "labellingType": "numbersOneBased"
                 }
               }
             }
@@ -18189,6 +18201,13 @@
                 "groups": [],
                 "itemProps": []
               }
+            }
+          },
+          "lineLabelling": {
+            "$ref": "#/components/schemas/LineLabellingConfig",
+            "default": {
+              "enabled": false,
+              "labellingType": "numbersOneBased"
             }
           }
         },

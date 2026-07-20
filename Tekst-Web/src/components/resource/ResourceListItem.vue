@@ -76,7 +76,7 @@ const showExport = ref(false);
 const isOwner = computed(() => !!props.resource.ownerIds?.includes(props.user?.id ?? 'noid'));
 const isOwnerOrAdmin = computed(() => isOwner.value || !!props.user?.isSuperuser);
 
-const {users} = useUsers(props.resource.supporters ?? undefined);
+const { users } = useUsers(props.resource.supporters ?? undefined);
 
 const resTitle = computed(() => pickTranslation(props.resource.title, state.locale));
 const resInfoUrl = computed(
@@ -177,7 +177,10 @@ const actionOptions = computed<DropdownOption[]>(() => [
     type: 'group',
     label: $t('common.status'),
     children: [
-      ...(isOwnerOrAdmin.value && !props.resource.proposed && !props.resource.public && !props.resource.patchFor
+      ...(isOwnerOrAdmin.value &&
+      !props.resource.proposed &&
+      !props.resource.public &&
+      !props.resource.patchFor
         ? [
             {
               label: $t('resources.proposeAction'),
@@ -200,7 +203,10 @@ const actionOptions = computed<DropdownOption[]>(() => [
             },
           ]
         : []),
-      ...(props.user && props.resource.proposed && !isOwner.value && !props.resource.supporters?.includes(props.user.id)
+      ...(props.user &&
+      props.resource.proposed &&
+      !isOwner.value &&
+      !props.resource.supporters?.includes(props.user.id)
         ? [
             {
               label: $t('resources.supportAction'),
@@ -211,7 +217,10 @@ const actionOptions = computed<DropdownOption[]>(() => [
             },
           ]
         : []),
-      ...(props.user && props.resource.proposed && !isOwner.value  && !!props.resource.supporters?.includes(props.user.id)
+      ...(props.user &&
+      props.resource.proposed &&
+      !isOwner.value &&
+      !!props.resource.supporters?.includes(props.user.id)
         ? [
             {
               label: $t('resources.unsupportAction'),
@@ -246,9 +255,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
             },
           ]
         : []),
-      ...(!!props.resource.patchFor &&
-      props.user &&
-      isOwner.value
+      ...(!!props.resource.patchFor && props.user && isOwner.value
         ? [
             {
               label: $t('resources.reqPatchIntegration.action'),
@@ -264,7 +271,8 @@ const actionOptions = computed<DropdownOption[]>(() => [
             },
           ]
         : []),
-      ...(props.user?.isSuperuser || (isOwner.value && !props.resource.public && !props.resource.proposed)
+      ...(props.user?.isSuperuser ||
+      (isOwner.value && !props.resource.public && !props.resource.proposed)
         ? [
             {
               label: $t('resources.setOwnersAction'),
@@ -332,16 +340,29 @@ function handleCorrectionsClick() {
       <resource-info-tags :resource="resource" />
     </n-flex>
 
-    <n-alert v-if="props.user?.isSuperuser && resource.proposed" :show-icon="false" :type="resource.supporters?.length ? 'success' : 'error'" class="mb-lg">
+    <n-alert
+      v-if="props.user?.isSuperuser && resource.proposed"
+      :show-icon="false"
+      :type="resource.supporters?.length ? 'success' : 'error'"
+      class="mb-lg"
+    >
       <n-flex align="center" class="b">
-        <n-icon :component="resource.supporters?.length ? StarIcon : StarOffIcon" :color="resource.supporters?.length ? 'var(--success-color)' : 'var(--error-color)'" />
+        <n-icon
+          :component="resource.supporters?.length ? StarIcon : StarOffIcon"
+          :color="resource.supporters?.length ? 'var(--success-color)' : 'var(--error-color)'"
+        />
         <span>
-        {{ $t('resources.proposed') + ', ' + $t('resources.supporters', { count: resource.supporters?.length ?? 0 }) + ' ...' }}
+          {{
+            $t('resources.proposed') +
+            ', ' +
+            $t('resources.supporters', { count: resource.supporters?.length ?? 0 }) +
+            ' ...'
+          }}
         </span>
       </n-flex>
       <user-display
         v-if="!!resource.supporters?.length && !!users"
-        :user="users.filter(u => resource.supporters?.includes(u.id))"
+        :user="users.filter((u) => resource.supporters?.includes(u.id))"
         size="small"
         class="mt-lg"
       />

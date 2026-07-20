@@ -57,7 +57,7 @@ function show(nextResource: AnyResourceRead) {
     pg: 1,
     pgs: 9999,
     emptyOk: true,
-  }
+  };
   showModal.value = true;
 }
 

@@ -95,7 +95,11 @@ const accessSharesTip = computed(() => {
       </template>
       {{ publicationStatusText }}
     </n-tag>
-    <n-tag v-if="resource.proposed && !!auth.user" :type="resource.supporters?.length ? 'success' : 'error'" :size="size">
+    <n-tag
+      v-if="resource.proposed && !!auth.user"
+      :type="resource.supporters?.length ? 'success' : 'error'"
+      :size="size"
+    >
       <template #icon>
         <n-icon :component="StarIcon" />
       </template>
