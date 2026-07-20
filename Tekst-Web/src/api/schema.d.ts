@@ -6202,6 +6202,10 @@ export interface components {
        *           "itemProps": []
        *         },
        *         "multiValueDelimiter": "/"
+       *       },
+       *       "lineLabelling": {
+       *         "enabled": false,
+       *         "labellingType": "numbersOneBased"
        *       }
        *     }
        */
@@ -6279,6 +6283,10 @@ export interface components {
        *             "itemProps": []
        *           },
        *           "multiValueDelimiter": "/"
+       *         },
+       *         "lineLabelling": {
+       *           "enabled": false,
+       *           "labellingType": "numbersOneBased"
        *         }
        *       }
        *     }
@@ -6419,6 +6427,10 @@ export interface components {
        *             "itemProps": []
        *           },
        *           "multiValueDelimiter": "/"
+       *         },
+       *         "lineLabelling": {
+       *           "enabled": false,
+       *           "labellingType": "numbersOneBased"
        *         }
        *       }
        *     }
@@ -6521,6 +6533,13 @@ export interface components {
        *     }
        */
       annotations: components['schemas']['AnnotationsConfig'];
+      /**
+       * @default {
+       *       "enabled": false,
+       *       "labellingType": "numbersOneBased"
+       *     }
+       */
+      lineLabelling: components['schemas']['LineLabellingConfig'];
     };
     /** TextAnnotationToken */
     TextAnnotationToken: {

@@ -15,6 +15,7 @@ import {
 import { useBrowseStore, useStateStore, useThemeStore } from '@/stores';
 import {
   getFullLocationLabel,
+  getLineLabel,
   groupAndSortItems,
   hashCode,
   pickTranslation,
@@ -301,6 +302,21 @@ const contents = computed(() => {
   const out =
     props.resource.contents?.map((c) => {
       if (!c) return null;
+      const lineLabels = props.resource.config.special.lineLabelling.enabled
+        ? Object.fromEntries(
+            c.tokens
+              .map((_, i) =>
+                i === 0 || !!c.tokens[i - 1]?.annotations.find((a) => a.key === 'eol')
+                  ? { i }
+                  : null
+              )
+              .filter((it) => !!it)
+              .map((it, i) => [
+                it.i.toString(),
+                getLineLabel(i, props.resource.config.special.lineLabelling.labellingType),
+              ])
+          )
+        : undefined;
       const displays = applyDisplayTemplate(c.tokens);
       return {
         ...c,
@@ -311,10 +327,11 @@ const contents = computed(() => {
               .find((a) => a.key === 'form')
               ?.value.join(props.resource.config.special.annotations.multiValueDelimiter) ||
             _TOKEN_PLACEHOLDER,
-          eol: !!t.annotations.find((a) => a.key === 'eol'),
           annotations: t.annotations,
           annoDisplay: displays[i],
           comment: t.annotations.find((a) => a.key === 'comment')?.value,
+          eol: !!t.annotations.find((a) => a.key === 'eol'),
+          lineLabel: !!lineLabels && lineLabels[i.toString()],
         })),
       };
     }) || [];
@@ -545,6 +562,9 @@ function generatePlaintextAnno(): string {
       >
         <n-flex :size="4" class="anno-content">
           <template v-for="(t, tIndex) in content.tokens" :key="tIndex">
+            <div v-if="!!t.lineLabel" class="text-color-primary font-ui mr-sm">
+              {{ t.lineLabel }}
+            </div>
             <div
               class="token-container"
               :class="{

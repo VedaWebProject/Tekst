@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { LineLabellingConfig, PlainTextResourceRead } from '@/api';
+import type { PlainTextResourceRead } from '@/api';
+import { getLineLabel } from '@/utils.ts';
 import { NFlex } from 'naive-ui';
 import { computed } from 'vue';
 import CommonContentDisplay from './CommonContentDisplay.vue';
@@ -15,21 +16,6 @@ const props = withDefaults(
     focusView: false,
   }
 );
-
-const getLineLabel = (index: number, labellingType: LineLabellingConfig['labellingType']) => {
-  switch (labellingType) {
-    case 'numbersZeroBased':
-      return index.toString();
-    case 'numbersOneBased':
-      return (index + 1).toString();
-    case 'lettersLowercase':
-      return String.fromCharCode('a'.charCodeAt(0) + (index % 26));
-    case 'lettersUppercase':
-      return String.fromCharCode('A'.charCodeAt(0) + (index % 26));
-    default:
-      return null;
-  }
-};
 
 const multiContents = computed(() => (props.resource.contents?.length || 0) > 1);
 
@@ -90,7 +76,7 @@ const customStyle = computed(() => ({ ...fontStyle, ...contentCss.value }));
           >
             <div
               v-if="resource.config.special.lineLabelling.enabled && line.label != null"
-              class="text-color-primary font-ui text-small"
+              class="text-color-primary font-ui"
             >
               {{ line.label }}
             </div>
