@@ -65,10 +65,7 @@ const initialUserNotificationTriggersModel = () =>
 
 const initialAdminNotificationTriggersModel = () =>
   Object.fromEntries(
-    [
-      'userAwaitsActivation',
-      'newCorrection',
-    ].map((untId) => [
+    ['userAwaitsActivation', 'newCorrection'].map((untId) => [
       untId,
       !!auth.user?.adminNotificationTriggers.includes(
         untId as components['schemas']['AdminNotificationTrigger']

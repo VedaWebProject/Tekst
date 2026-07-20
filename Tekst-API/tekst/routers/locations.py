@@ -175,7 +175,7 @@ async def find_locations(
     ] = None,
     alias: Annotated[
         str | None,
-        StringConstraints(min_length=1, max_length=32),
+        StringConstraints(min_length=1, max_length=512),
         SingleLineString,
         FalsyToNone,
         Query(description="Alias of location(s) to find"),
