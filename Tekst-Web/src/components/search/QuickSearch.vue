@@ -52,8 +52,9 @@ const searchableResources = computed(
 );
 
 async function handleSearch() {
+  search.queryQuick = search.queryQuick.trim();
   // skip this for empty queries
-  if (!search.queryQuick.trim()) {
+  if (!search.queryQuick) {
     quickSearch(search.queryQuick);
     return;
   }
@@ -176,6 +177,12 @@ function handleSettingsSubmit() {
         :max-length="512"
         :loading="loading"
         @input="showLocationSelect = false"
+        @update:value="
+          search.queryQuick = search.queryQuick.substring(
+            0,
+            Math.min(512, search.queryQuick.length)
+          )
+        "
         @keydown.enter.stop.prevent="handleSearch"
       >
         <template #prefix>
