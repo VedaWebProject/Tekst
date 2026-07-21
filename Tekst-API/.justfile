@@ -23,12 +23,6 @@ check:
   uv run ruff check . --extend-select N
   uv run ty check
 
-# run static type checker
-# (this is a separate task for now because the
-# project's initial adaption to ty isn't finished, yet)
-typecheck:
-  uv run ty check
-
 # run tests
 tests ARGS="": install (services-up "test") && (services-down "test")
   -TEKST_CUSTOM_ENV_FILE=.env.test uv run pytest {{ARGS}}
