@@ -143,6 +143,10 @@ async function handleFreeFormInput(
   ].map((v) => v.trim());
 }
 
+function jumpToToken(index: number) {
+  document.querySelector(`#t_${index}`)?.scrollIntoView({ behavior: 'smooth' });
+}
+
 onMounted(async () => {
   aggregations.value = await resources.getAggregations(props.resource.id);
 });
@@ -154,10 +158,10 @@ onMounted(async () => {
     <span class="mr-md text-tiny b"
       >{{ $t('resources.types.textAnnotation.contentFields.jumpToToken') }}:</span
     >
-    <div v-for="(tf, i) in quickJumpData" :key="`t_${i}`">
+    <template v-for="(tf, i) in quickJumpData" :key="`t_${i}`">
       <span v-if="i !== 0" class="mx-sm">&bull;</span>
-      <a :href="`#t_${i}`">{{ tf }}</a>
-    </div>
+      <n-button text :focusable="false" @click="() => jumpToToken(i)">{{ tf }}</n-button>
+    </template>
   </n-flex>
 
   <!-- TOKENS -->
