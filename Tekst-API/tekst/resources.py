@@ -233,13 +233,7 @@ class ResourceTypeBase:
         """
         contents: list[dict] = []
         for c_id in content_ids:
-            content = await ContentBaseDocument.get(
-                c_id,
-                with_children=True,
-            )
-            if content is None:  # pragma: no cover
-                log.error("Could not find content with given ID for export.")
-                continue
+            content = ensure(await ContentBaseDocument.get(c_id, with_children=True))
             c_dict = camelize(
                 content.model_dump(
                     mode="json",
@@ -323,13 +317,7 @@ class ResourceTypeBase:
         # construct content objects
         contents: list[dict] = []
         for c_id in content_ids:
-            content = await ContentBaseDocument.get(
-                c_id,
-                with_children=True,
-            )
-            if content is None:  # pragma: no cover
-                log.error("Could not find content with given ID for export.")
-                continue
+            content = ensure(await ContentBaseDocument.get(c_id, with_children=True))
             c_dict = camelize(
                 content.model_dump(
                     mode="json",

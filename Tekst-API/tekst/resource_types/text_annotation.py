@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Annotated, Any, Literal
 from uuid import uuid4
 
 from beanie import PydanticObjectId
-from beanie.operators import Eq, In
+from beanie.operators import Eq
 from pydantic import BeforeValidator, Field, StringConstraints
 
 from tekst.logs import log, log_op_end, log_op_start
@@ -315,10 +315,7 @@ class TextAnnotation(ResourceTypeBase):
                     "COMMENTS",
                 ]
             )
-            async for content in ContentBaseDocument.find(
-                In(ContentBaseDocument.id, content_ids),
-                with_children=True,
-            ):
+            async for content in ContentBaseDocument.find_by_id_in_order(content_ids):
                 for i, token in enumerate(content.tokens):
                     token_annos = {
                         anno.key: anno.value for anno in token.annotations or []

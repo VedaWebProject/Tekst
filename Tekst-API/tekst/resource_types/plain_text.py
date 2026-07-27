@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import In
 from pydantic import AfterValidator, Field, StringConstraints
 
 from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
@@ -140,10 +139,7 @@ class PlainText(ResourceTypeBase):
                     "COMMENTS",
                 ]
             )
-            async for content in ContentBaseDocument.find(
-                In(ContentBaseDocument.id, content_ids),
-                with_children=True,
-            ):
+            async for content in ContentBaseDocument.find_by_id_in_order(content_ids):
                 csv_writer.writerow(
                     [
                         full_loc_labels.get(str(content.location_id), ""),

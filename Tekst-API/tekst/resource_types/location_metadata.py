@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import Eq, In
+from beanie.operators import Eq
 from pydantic import BeforeValidator, Field, StringConstraints
 
 from tekst.logs import log, log_op_end, log_op_start
@@ -216,10 +216,7 @@ class LocationMetadata(ResourceTypeBase):
                     "COMMENTS",
                 ]
             )
-            async for content in ContentBaseDocument.find(
-                In(ContentBaseDocument.id, content_ids),
-                with_children=True,
-            ):
+            async for content in ContentBaseDocument.find_by_id_in_order(content_ids):
                 entries_map = {entry.key: entry.value for entry in content.entries}
                 values = [";".join(entries_map.get(key, "")) for key in keys]
                 csv_writer.writerow(

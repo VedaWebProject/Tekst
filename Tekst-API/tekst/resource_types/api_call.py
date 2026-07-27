@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import In
 from pydantic import Field, StringConstraints, model_validator
 
 from tekst.models.common import (
@@ -120,10 +119,7 @@ class ApiCall(ResourceTypeBase):
                     "COMMENTS",
                 ]
             )
-            async for content in ContentBaseDocument.find(
-                In(ContentBaseDocument.id, content_ids),
-                with_children=True,
-            ):
+            async for content in ContentBaseDocument.find_by_id_in_order(content_ids):
                 for call in content.calls:
                     csv_writer.writerow(
                         [
