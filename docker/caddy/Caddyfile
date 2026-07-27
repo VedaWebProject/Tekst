@@ -5,6 +5,7 @@
 
 :8080 {
 	encode zstd gzip
+    header >Server "Tekst"
 
 	# constrain max request body size
 	request_body {
@@ -20,9 +21,7 @@
 
 	# proxy all API requests to API app
 	handle_path {$TEKST_WEB_PATH}/api/* {
-		reverse_proxy http://127.0.0.1:8000 {
-			header_down Server "Tekst"
-		}
+		reverse_proxy http://127.0.0.1:8000
 	}
 
 	# serve static files (custom assets)

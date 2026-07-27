@@ -87,8 +87,8 @@ RUN python3 -m pip install \
     rm -rf api
 
 RUN python3 -m pip install \
-    "uvicorn[standard]==0.32.0" \
-    "gunicorn==23.0.0"
+    "uvicorn[standard]==0.51.0" \
+    "gunicorn==26.0.0"
 
 COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
 COPY docker/gunicorn/gunicorn_conf.py /etc/gunicorn/
