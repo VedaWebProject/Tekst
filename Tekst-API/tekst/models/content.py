@@ -2,6 +2,7 @@ from datetime import UTC, datetime
 from typing import Annotated, Literal, NotRequired, TypedDict
 
 from beanie import PydanticObjectId
+from beanie.odm.queries.aggregation import AggregationQuery
 from pydantic import (
     AwareDatetime,
     Field,
@@ -172,6 +173,19 @@ class ContentBaseDocument(ContentBase, DocumentBase):
                 "archived",
             ]
         ]
+
+    @classmethod
+    def find_by_id_in_order(
+        cls, content_ids: list[PydanticObjectId]
+    ) -> AggregationQuery["ContentBaseDocument"]:
+        return ContentBaseDocument.find_all(with_children=True).aggregate(
+            [
+                {"$match": {"_id": {"$in": content_ids}}},
+                {"$addFields": {"__order": {"$indexOfArray": [content_ids, "$_id"]}}},
+                {"$sort": {"__order": 1}},
+            ],
+            projection_model=ContentBaseDocument,
+        )
 
     async def archive(self) -> "ContentBaseDocument":
         """

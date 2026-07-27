@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from beanie import PydanticObjectId
-from beanie.operators import In
 from pydantic import Field, StringConstraints
 
 from tekst.models.common import CreateBase, ModelBase, ReadBase, make_update_model
@@ -145,10 +144,7 @@ class Images(ResourceTypeBase):
                     "COMMENTS",
                 ]
             )
-            async for content in ContentBaseDocument.find(
-                In(ContentBaseDocument.id, content_ids),
-                with_children=True,
-            ):
+            async for content in ContentBaseDocument.find_by_id_in_order(content_ids):
                 for image_file in content.files:
                     csv_writer.writerow(
                         [
