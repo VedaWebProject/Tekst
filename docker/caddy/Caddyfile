@@ -20,14 +20,16 @@
 
 	# proxy all API requests to API app
 	handle_path {$TEKST_WEB_PATH}/api/* {
-		reverse_proxy http://127.0.0.1:8000
+		reverse_proxy http://127.0.0.1:8000 {
+			header_down Server "Tekst"
+		}
 	}
 
 	# serve static files (custom assets)
 	handle_path {$TEKST_WEB_PATH}/static/* {
 		root * /var/www/tekst/static
 		file_server
-        header Cache-Control max-age=604800
+		header Cache-Control max-age=604800
 	}
 
 	# help browsers to find the custom favicon at root
@@ -35,7 +37,7 @@
 	handle_path {$TEKST_WEB_PATH}/favicon.ico {
 		root /var/www/tekst/static/favicon.ico
 		file_server
-        header Cache-Control max-age=604800
+		header Cache-Control max-age=604800
 	}
 
 	# serve web client files
