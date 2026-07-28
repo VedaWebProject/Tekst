@@ -363,8 +363,8 @@ class AnnotationsConfig(ModelBase):
 
 
 class TextAnnotationSpecialConfig(ModelBase):
-    annotations: AnnotationsConfig = AnnotationsConfig()
     line_labelling: LineLabellingConfig = LineLabellingConfig()
+    annotations: AnnotationsConfig = AnnotationsConfig()
 
 
 class TextAnnotationResourceConfig(ResourceConfigBase):

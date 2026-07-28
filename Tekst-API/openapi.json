@@ -17569,16 +17569,16 @@
           "special": {
             "$ref": "#/components/schemas/TextAnnotationSpecialConfig",
             "default": {
+              "lineLabelling": {
+                "enabled": false,
+                "labellingType": "numbersOneBased"
+              },
               "annotations": {
                 "annoIntegration": {
                   "groups": [],
                   "itemProps": []
                 },
                 "multiValueDelimiter": "/"
-              },
-              "lineLabelling": {
-                "enabled": false,
-                "labellingType": "numbersOneBased"
               }
             }
           }
@@ -18193,6 +18193,13 @@
       },
       "TextAnnotationSpecialConfig": {
         "properties": {
+          "lineLabelling": {
+            "$ref": "#/components/schemas/LineLabellingConfig",
+            "default": {
+              "enabled": false,
+              "labellingType": "numbersOneBased"
+            }
+          },
           "annotations": {
             "$ref": "#/components/schemas/AnnotationsConfig",
             "default": {
@@ -18201,13 +18208,6 @@
                 "groups": [],
                 "itemProps": []
               }
-            }
-          },
-          "lineLabelling": {
-            "$ref": "#/components/schemas/LineLabellingConfig",
-            "default": {
-              "enabled": false,
-              "labellingType": "numbersOneBased"
             }
           }
         },
