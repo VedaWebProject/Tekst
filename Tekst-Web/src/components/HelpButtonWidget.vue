@@ -93,7 +93,7 @@ async function handleHelpButtonClick() {
       class="centered-spin"
       style="padding: 0"
     >
-      <div v-if="helpText" v-html="helpText.content"></div>
+      <div v-if="helpText" v-html="helpText.content" class="custom-html"></div>
       <n-empty v-else-if="!loading" :description="$t('errors.notFound')">
         <template #icon>
           <n-icon :component="ErrorIcon" />

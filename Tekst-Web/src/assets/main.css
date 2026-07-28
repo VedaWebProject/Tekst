@@ -159,14 +159,14 @@ pre > code {
   padding: 0.75rem 1rem;
 }
 
-table {
+.custom-html table {
   border-spacing: 4px;
   border-collapse: separate;
   word-break: normal;
 }
 
-table th,
-table td {
+.custom-html table th,
+.custom-html table td {
   text-align: left;
   vertical-align: top;
   padding: 0.2em 0.5em;

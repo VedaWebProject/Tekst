@@ -111,7 +111,12 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div v-bind="$attrs" ref="contentRef" :style="style" :class="nodeClass"></div>
+  <div
+    v-bind="$attrs"
+    ref="contentRef"
+    :style="style"
+    :class="`custom-html ${nodeClass || ''}`"
+  ></div>
   <generic-modal
     v-if="Object.keys(modalHtml).length"
     v-model:show="showModal"
