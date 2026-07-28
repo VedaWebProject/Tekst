@@ -6196,16 +6196,16 @@ export interface components {
       general: components['schemas']['GeneralResourceConfig'];
       /**
        * @default {
+       *       "lineLabelling": {
+       *         "enabled": false,
+       *         "labellingType": "numbersOneBased"
+       *       },
        *       "annotations": {
        *         "annoIntegration": {
        *           "groups": [],
        *           "itemProps": []
        *         },
        *         "multiValueDelimiter": "/"
-       *       },
-       *       "lineLabelling": {
-       *         "enabled": false,
-       *         "labellingType": "numbersOneBased"
        *       }
        *     }
        */
@@ -6525,6 +6525,13 @@ export interface components {
     TextAnnotationSpecialConfig: {
       /**
        * @default {
+       *       "enabled": false,
+       *       "labellingType": "numbersOneBased"
+       *     }
+       */
+      lineLabelling: components['schemas']['LineLabellingConfig'];
+      /**
+       * @default {
        *       "multiValueDelimiter": "/",
        *       "annoIntegration": {
        *         "groups": [],
@@ -6533,13 +6540,6 @@ export interface components {
        *     }
        */
       annotations: components['schemas']['AnnotationsConfig'];
-      /**
-       * @default {
-       *       "enabled": false,
-       *       "labellingType": "numbersOneBased"
-       *     }
-       */
-      lineLabelling: components['schemas']['LineLabellingConfig'];
     };
     /** TextAnnotationToken */
     TextAnnotationToken: {
