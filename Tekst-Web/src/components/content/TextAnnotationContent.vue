@@ -302,38 +302,36 @@ const contents = computed(() => {
   const out =
     props.resource.contents?.map((c) => {
       if (!c) return null;
-      const lineLabels = props.resource.config.special.lineLabelling.enabled
-        ? Object.fromEntries(
-            c.tokens
-              .map((_, i) =>
-                i === 0 || !!c.tokens[i - 1]?.annotations.find((a) => a.key === 'eol')
-                  ? { i }
-                  : null
-              )
-              .filter((it) => !!it)
-              .map((it, i) => [
-                it.i.toString(),
-                getLineLabel(i, props.resource.config.special.lineLabelling.labellingType),
-              ])
-          )
-        : undefined;
       const displays = applyDisplayTemplate(c.tokens);
-      return {
-        ...c,
-        tokens: c.tokens.map((t, i) => ({
-          id: t.id,
-          form:
-            t.annotations
-              .find((a) => a.key === 'form')
-              ?.value.join(props.resource.config.special.annotations.multiValueDelimiter) ||
-            _TOKEN_PLACEHOLDER,
-          annotations: t.annotations,
-          annoDisplay: displays[i],
-          comment: t.annotations.find((a) => a.key === 'comment')?.value,
-          eol: !!t.annotations.find((a) => a.key === 'eol'),
-          lineLabel: !!lineLabels && lineLabels[i.toString()],
-        })),
-      };
+      const tokens = c.tokens.map((t, i) => ({
+        id: t.id,
+        form:
+          t.annotations
+            .find((a) => a.key === 'form')
+            ?.value.join(props.resource.config.special.annotations.multiValueDelimiter) ||
+          _TOKEN_PLACEHOLDER,
+        annotations: t.annotations,
+        annoDisplay: displays[i],
+        comment: t.annotations.find((a) => a.key === 'comment')?.value,
+        eol: !!t.annotations.find((a) => a.key === 'eol'),
+      }));
+      // prepare first line
+      const lines: { label?: string; tokens: typeof tokens }[] = [{ label: undefined, tokens: [] }];
+      // fill in tokens
+      tokens.forEach((t, i) => {
+        lines[lines.length - 1].tokens.push(t);
+        if (t.annotations.find((a) => a.key === 'eol') && i < tokens.length - 1) {
+          lines.push({ label: undefined, tokens: [] });
+        }
+      });
+      // set line labels
+      if (props.resource.config.special.lineLabelling.enabled) {
+        lines.forEach((l, i) => {
+          l.label = getLineLabel(i, props.resource.config.special.lineLabelling.labellingType);
+        });
+      }
+      // compose contents array
+      return { ...c, lines };
     }) || [];
 
   // find lines that are empty in every annotation display of every content
@@ -342,7 +340,9 @@ const contents = computed(() => {
     (ln) =>
       !out
         .filter((c) => !!c)
-        .map((c) => c.tokens)
+        .map((c) => c.lines)
+        .flat()
+        .map((l) => l.tokens)
         .flat()
         .map((t) =>
           t.annoDisplay[ln].filter(
@@ -361,9 +361,12 @@ const contents = computed(() => {
       ? null
       : {
           ...c,
-          tokens: c.tokens.map((t) => ({
-            ...t,
-            annoDisplay: t.annoDisplay.filter((_, ln) => !emptyLines[ln]),
+          lines: c.lines.map((l) => ({
+            label: l.label,
+            tokens: l.tokens.map((t) => ({
+              ...t,
+              annoDisplay: t.annoDisplay.filter((_, ln) => !emptyLines[ln]),
+            })),
           })),
         }
   );
@@ -473,16 +476,19 @@ function generatePlaintextAnno(): string {
     }
     // preprocess data
     const tokenLines: { form: string; annoLines: string[]; maxLen: number }[][] = [[]];
-    c.tokens.forEach((t) => {
-      t.form = t.form.normalize('NFC');
-      const annoLines: string[] = t.annoDisplay.map((line) =>
-        line.map((anno) => anno.content?.normalize('NFC') || '').join('')
-      );
-      const maxLen = Math.max(t.form.length, ...annoLines.map((l) => l.length));
-      tokenLines[tokenLines.length - 1].push({ form: t.form, annoLines, maxLen });
-      if (t.eol) tokenLines.push([]); // push new line if token followed by line break
-    });
-    // "render" token lines
+    c.lines
+      .map((l) => l.tokens)
+      .flat()
+      .forEach((t) => {
+        t.form = t.form.normalize('NFC');
+        const annoLines: string[] = t.annoDisplay.map((line) =>
+          line.map((anno) => anno.content?.normalize('NFC') || '').join('')
+        );
+        const maxLen = Math.max(t.form.length, ...annoLines.map((l) => l.length));
+        tokenLines[tokenLines.length - 1].push({ form: t.form, annoLines, maxLen });
+        if (t.eol) tokenLines.push([]); // push new line if token followed by line break
+      });
+    // compose token lines
     tokenLines.forEach((l, lineIndex) => {
       l.forEach((t) => {
         out.push(t.form.padEnd(t.maxLen + 1, ' '));
@@ -505,7 +511,7 @@ function generatePlaintextAnno(): string {
 
 <template>
   <div>
-    <n-flex v-if="!focusView" class="mb-md">
+    <n-flex v-if="!focusView" class="mb-lg">
       <!-- ANNOTATION GROUP TOGGLES -->
       <template v-if="!!annoCfg.groups.length">
         <template v-for="group in annoCfg.groups">
@@ -560,12 +566,19 @@ function generatePlaintextAnno(): string {
         :font="fontStyle.fontFamily"
         :from-original-resource="content.resourceId == resource.patchFor"
       >
-        <n-flex :size="4" class="anno-content">
-          <template v-for="(t, tIndex) in content.tokens" :key="tIndex">
-            <div v-if="!!t.lineLabel" class="text-color-primary font-ui mr-sm">
-              {{ t.lineLabel }}
-            </div>
+        <n-flex
+          v-for="(line, lineIndex) in content.lines"
+          :key="lineIndex"
+          :wrap="false"
+          class="anno-line"
+        >
+          <div v-if="line.label" class="text-color-primary font-ui">
+            {{ line.label }}
+          </div>
+          <n-flex>
             <div
+              v-for="(t, tIndex) in line.tokens"
+              :key="tIndex"
               class="token-container"
               :class="{
                 'token-with-annos': !!t.annotations.length,
@@ -607,8 +620,7 @@ function generatePlaintextAnno(): string {
                 </div>
               </div>
             </div>
-            <hr v-if="t.eol" class="token-lb" />
-          </template>
+          </n-flex>
         </n-flex>
       </common-content-display>
       <missing-content v-else />
@@ -722,16 +734,16 @@ function generatePlaintextAnno(): string {
   padding-left: 4px;
 }
 
-.token-lb {
-  width: 100%;
-  border: none;
-  border-top: 1px solid var(--main-bg-color);
-  height: 0px;
-  margin: 4px 0;
-}
-
 .focus-view .token-lb {
   display: none;
+}
+
+.anno-line {
+  padding: var(--gap-sm) 0;
+}
+
+.anno-line:not(:last-child) {
+  border-bottom: 1px solid var(--main-bg-color);
 }
 
 .annotations {
