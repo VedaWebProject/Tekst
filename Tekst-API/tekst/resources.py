@@ -4,7 +4,6 @@ import json
 import pkgutil
 
 from collections.abc import Callable
-from functools import lru_cache
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -51,27 +50,21 @@ RES_EXCLUDE_EXP_IMP = {
 
 
 IMPORT_README_TXT = """
+This is a JSONL file (JSON lines). It contains one valid JSON object per line:
+(1.) A README object. It is purely for your informational purposes
+and can be omitted in the actual import file. You are reading it right now.
+(2.) A number of content template objects, one per subsequent line.
+You have to fill them with the actual content to import.
 Properties prefixed with an underscore are purely for informational purposes
-and can be omitted in the actual import file. The array 'contents' holds the
-data you want to import. Each content represents data for one location.
-The '_contentSchema' object gives you a schema and description each content
-has to follow to be valid. Every content you provide MUST keep the exact 'locationId'
-property from this template! For locations the resource already has contents for,
-the content's other properties (see '_contentSchema') are optional.
+and can be omitted in the actual import file.
+Important: The '_contentSchema' object in this very README object gives you
+a schema and description each content object has to follow to be valid.
+Additionally, every content you provide MUST keep the exact 'locationId'
+property from this template!
 Already existing contents will be archived. The imported content will become
-the current version. Contents targeting locations the resource has no contents
-for yet MUST follow '_contentSchema'! To skip data import for a specific location,
-just remove the respective content object from 'contents'.
+the current version. To skip import for specific locations,
+omit the respective contents/lines from the import file.
 """
-
-
-@lru_cache
-def get_resource_template_readme() -> dict[str, str]:
-    _template_readme_lines = IMPORT_README_TXT.splitlines()
-    return {
-        str(i + 1): _template_readme_lines[i]
-        for i in range(len(_template_readme_lines))
-    }
 
 
 async def call_resource_precompute_hooks(
@@ -106,6 +99,8 @@ class ResourceTypeBase:
         "id",
         "resource_id",
         "resource_type",
+        "archived",
+        "created_at",
     }
 
     @classmethod
@@ -196,31 +191,32 @@ class ResourceTypeBase:
         ]
 
     @classmethod
-    def prepare_import_template(cls) -> dict:
-        """Returns the base template for import data for this resource type"""
-        schema = jsonref.replace_refs(
+    def get_res_import_readme_obj(cls) -> dict:
+        """Returns the "README" object for import data for this resource type"""
+        content_schema = jsonref.replace_refs(
             cls.content_model().create_model().model_json_schema(),
             proxies=False,
             lazy_load=False,
         )
         schema_excludes = camelize(["id", "resource_id", "resource_type"])
-        template = {
-            "__README": get_resource_template_readme(),
+        return {
+            "__README": " ".join(IMPORT_README_TXT.splitlines()).strip(),
             "_contentSchema": {
                 "properties": {
                     k: v
-                    for k, v in schema.get("properties", {}).items()
+                    for k, v in content_schema.get("properties", {}).items()
                     if k not in schema_excludes
                 },
                 "required": [
-                    k for k in schema.get("required", []) if k not in schema_excludes
+                    k
+                    for k in content_schema.get("required", [])
+                    if k not in schema_excludes
                 ],
             },
         }
-        return template
 
     @classmethod
-    async def export_tekst_json(
+    async def export_tekst_jsonl(
         cls,
         *,
         resource: ResourceBaseDocument,
@@ -228,43 +224,47 @@ class ResourceTypeBase:
         file_path: Path,
     ) -> None:
         """
-        Exports the given contents of the given resource as JSON, compatible for
-        re-import in Tekst.
+        Exports the given contents of the given resource as JSON lines,
+        compatible for re-import in Tekst.
         """
-        contents: list[dict] = []
-        for c_id in content_ids:
-            content = ensure(await ContentBaseDocument.get(c_id, with_children=True))
-            c_dict = camelize(
-                content.model_dump(
-                    mode="json",
-                    by_alias=True,
-                    exclude_unset=True,
-                    exclude_none=True,
-                    exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
-                )
-            )
-            contents.append(c_dict)
-        del content_ids
-
-        # serialize resource data and use as root object
-        data = camelize(
-            resource.model_dump(
-                mode="json",
-                by_alias=True,
-                exclude_none=True,
-                exclude_unset=True,
-                exclude=RES_EXCLUDE_EXP_IMP,
-            )
-        )
-        data.update(contents=contents)
-        # write to file
         with open(file_path, "w") as fp:
-            json.dump(
-                data,
-                fp=fp,
+            # write resource metadata to first line
+            res_json = json.dumps(
+                camelize(
+                    resource.model_dump(
+                        mode="json",
+                        by_alias=True,
+                        exclude_none=True,
+                        exclude_unset=True,
+                        exclude=RES_EXCLUDE_EXP_IMP,
+                    )
+                ),
                 ensure_ascii=False,
                 default=str,
+                indent=None,
             )
+            fp.write(f"{res_json}\n")
+            # write contents to file, line by line
+            for i, c_id in enumerate(content_ids):
+                content = ensure(
+                    await ContentBaseDocument.get(c_id, with_children=True)
+                )
+                c_json = json.dumps(
+                    camelize(
+                        content.model_dump(
+                            mode="json",
+                            by_alias=True,
+                            exclude_unset=True,
+                            exclude_none=True,
+                            exclude=cls._EXCLUDE_FROM_CONTENT_EXPORT_DATA,
+                        )
+                    ),
+                    ensure_ascii=False,
+                    default=str,
+                    indent=None,
+                )
+                fp.write(f"{c_json}{'\n' if i < len(content_ids) - 1 else ''}")
+        del content_ids
 
     @classmethod
     async def export_universal_json(

@@ -2342,7 +2342,7 @@ export interface components {
     Body_importResource: {
       /**
        * File
-       * @description JSON file containing the resource content data
+       * @description JSONL (JSON lines) file containing the resource data
        */
       file: Blob;
     };
@@ -5351,7 +5351,7 @@ export interface components {
       translation: string;
     };
     /** @enum {string} */
-    ResourceExportFormat: 'json' | 'tekst-json' | 'csv';
+    ResourceExportFormat: 'json' | 'tekst-jsonl' | 'csv';
     /** ResourceMetadataKey */
     ResourceMetadataKey: {
       /** Key */
@@ -10218,24 +10218,6 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['TaskRead'];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
-        };
-      };
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['TekstErrorModel'];
         };
       };
       /** @description Validation Error */
