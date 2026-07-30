@@ -637,24 +637,7 @@ function generatePlaintextAnno(): string {
       }"
       @after-leave="() => (tokenDetails = undefined)"
     >
-      <n-alert
-        v-if="tokenDetails?.comment"
-        type="default"
-        :title="$t('common.comment')"
-        class="mb-lg"
-      >
-        <template #icon>
-          <n-icon :component="CommentIcon" size="medium" />
-        </template>
-        <div
-          class="text-small"
-          :style="{ fontFamily: resource.contentFont, whiteSpace: 'pre-line' }"
-        >
-          {{ tokenDetails.comment }}
-        </div>
-      </n-alert>
-
-      <!-- ANNOTATIONS TABLES -->
+      <!-- ANNOTATIONS TABLE -->
       <n-table :bordered="false" :bottom-bordered="false" size="small">
         <template
           v-for="(group, index) in tokenDetails?.annotations"
@@ -679,6 +662,24 @@ function generatePlaintextAnno(): string {
           </template>
         </template>
       </n-table>
+
+      <!-- TOKEN COMMENT -->
+      <n-alert
+        v-if="tokenDetails?.comment"
+        type="default"
+        :title="$t('common.comment')"
+        class="mt-lg"
+      >
+        <template #icon>
+          <n-icon :component="CommentIcon" size="medium" />
+        </template>
+        <div
+          class="text-small"
+          :style="{ fontFamily: resource.contentFont, whiteSpace: 'pre-line' }"
+        >
+          {{ tokenDetails.comment }}
+        </div>
+      </n-alert>
 
       <div v-if="tokenDetails?.id" class="mt-lg text-mini translucent" style="text-align: center">
         <b>ID:</b> {{ tokenDetails.id }}
