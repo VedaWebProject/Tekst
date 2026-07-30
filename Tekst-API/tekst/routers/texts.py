@@ -194,7 +194,7 @@ async def download_structure_template(
     responses=errors.responses(
         [
             errors.E_409_TEXT_IMPORT_LOCATIONS_EXIST,
-            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
+            errors.E_400_UPLOAD_INVALID_MIME_TYPE,
             errors.E_422_UPLOAD_INVALID_DATA,
             errors.E_404_TEXT_NOT_FOUND,
             errors.E_401_UNAUTHORIZED,
@@ -214,7 +214,7 @@ async def import_text_structure(
     """
     # test upload file MIME type
     if file.content_type and file.content_type.lower() != "application/json":
-        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
+        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE
 
     # find text
     text = await TextDocument.get(text_id)
@@ -335,7 +335,7 @@ async def _update_text_structure_task(
     status_code=status.HTTP_202_ACCEPTED,
     responses=errors.responses(
         [
-            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
+            errors.E_400_UPLOAD_INVALID_MIME_TYPE,
             errors.E_400_UPLOAD_INVALID_JSON,
             errors.E_404_TEXT_NOT_FOUND,
             errors.E_400_IMPORT_ID_NON_EXISTENT,
@@ -358,7 +358,7 @@ async def update_text_structure(
     """
     # test upload file MIME type
     if file.content_type and file.content_type.lower() != "application/json":
-        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
+        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE
 
     # find text
     text = await TextDocument.get(text_id)

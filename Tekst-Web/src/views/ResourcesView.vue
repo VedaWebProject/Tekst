@@ -367,7 +367,7 @@ async function handleDownloadTemplateClick(resource: AnyResourceRead) {
       .substring(0, 32)
       .trim()
       .replace(/\W+/g, '_');
-    const filename = `${resSaveName}_${resource.id}_template.json`.toLowerCase();
+    const filename = `${resSaveName}_${resource.id}_template.jsonl`.toLowerCase();
     message.info($t('common.downloadSaved', { filename }));
     downloadData(data, filename);
   }

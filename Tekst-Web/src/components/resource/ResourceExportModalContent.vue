@@ -18,8 +18,8 @@ const allFormatOptions: { label: string; value: ResourceExportFormat; [key: stri
     restricted: false,
   },
   {
-    label: 'Tekst-JSON',
-    value: 'tekst-json',
+    label: 'Tekst-JSONL',
+    value: 'tekst-jsonl',
     restricted: true,
   },
   {
