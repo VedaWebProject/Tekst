@@ -223,10 +223,10 @@ E_400_RESOUCE_PATCH_PUBLISH = _error_instance(
     msg="Cannot publish a resource patch",
 )
 
-E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON = _error_instance(
+E_400_UPLOAD_INVALID_MIME_TYPE = _error_instance(
     status_code=status.HTTP_400_BAD_REQUEST,
-    key="uploadInvalidMimeTypeNotJson",
-    msg="Invalid file MIME type (must be 'application/json')",
+    key="uploadInvalidMimeType",
+    msg="Invalid file MIME type",
 )
 
 E_400_UPLOAD_INVALID_JSON = _error_instance(

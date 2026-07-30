@@ -5351,7 +5351,7 @@ export interface components {
       translation: string;
     };
     /** @enum {string} */
-    ResourceExportFormat: 'json' | 'tekst-json' | 'csv';
+    ResourceExportFormat: 'json' | 'tekst-jsonl' | 'csv';
     /** ResourceMetadataKey */
     ResourceMetadataKey: {
       /** Key */
