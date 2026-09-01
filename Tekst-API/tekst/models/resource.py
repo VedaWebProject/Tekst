@@ -730,16 +730,16 @@ class ResourceCoverage(ModelBase):
     details: list[ParentCoverage]
 
 
-type ResourceExportFormat = Literal["json", "tekst-json", "csv"]
+type ResourceExportFormat = Literal["json", "tekst-jsonl", "csv"]
 
 res_exp_fmt_info = {
     "json": {
         "extension": "json",
         "mimetype": "application/json",
     },
-    "tekst-json": {
-        "extension": "json",
-        "mimetype": "application/json",
+    "tekst-jsonl": {
+        "extension": "jsonl",
+        "mimetype": "application/json-lines",
     },
     "csv": {
         "extension": "csv",

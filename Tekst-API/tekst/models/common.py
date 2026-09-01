@@ -114,7 +114,7 @@ class DocumentBase(Document):
 
     async def apply_updates(
         self,
-        updates_model: ModelBase,
+        updates_model: ModelBase | None,
         *,
         insert: bool = False,
         update_created_at: bool = False,
@@ -124,6 +124,8 @@ class DocumentBase(Document):
         - not set in `updates_model`
         - equal to the default value of the respective field in `updates_model`
         """
+        if updates_model is None:
+            return self
         for field in updates_model.model_fields_set:
             # we have to always preserve `resource_type`, so skip updating it
             if field == "resource_type":

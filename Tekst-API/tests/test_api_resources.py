@@ -1,5 +1,7 @@
 import json
 
+from typing import Any
+
 import pytest
 
 from beanie import PydanticObjectId
@@ -1210,7 +1212,7 @@ async def test_get_resource_template(
         f"/resources/{resource_id}/template",
     )
     assert_status(200, resp)
-    assert isinstance(resp.json(), dict)
+    assert "__README" in resp.text
 
     # get resource template w/ wrong ID
     resp = await test_client.get(
@@ -1219,11 +1221,14 @@ async def test_get_resource_template(
     assert_status(404, resp)
 
 
+def _get_import_jsonl(contents: list[dict[str, Any]]) -> str:
+    return "\n".join([json.dumps(x) for x in contents])
+
+
 @pytest.mark.anyio
 async def test_import_resource(
     test_client: AsyncClient,
     insert_test_data,
-    get_test_data_path,
     assert_status,
     login,
     wrong_id,
@@ -1251,43 +1256,34 @@ async def test_import_resource(
 
     # define sample data
     resource_id = "67c043c0906e79b9062e22f4"
-    import_sample = {
-        "contents": [
-            {
-                "locationId": "67c040a0906e79b9062e22e8",
-                "text": "FOO",
-                "comments": [
-                    {"by": "Tekst", "comment": "foo\n\nbar\n\nbaz\n\nqux"},
-                    {"by": "Tekst", "comment": "quux\n\nquuux\n\nquuuxx\n\nquuuxxx"},
-                ],
-            },
-            {"locationId": "67c040bb906e79b9062e22e9", "text": "BAR"},
-            {"locationId": additional_location_id, "text": "QUUX"},
-        ],
-        "resourceId": resource_id,
-    }
-    import_sample_string = json.dumps(import_sample)
+    import_sample = [
+        {"__README": "foo"},
+        {
+            "locationId": "67c040a0906e79b9062e22e8",
+            "text": "FOO",
+            "comments": [
+                {"by": "Tekst", "comment": "foo\n\nbar\n\nbaz\n\nqux"},
+                {"by": "Tekst", "comment": "quux\n\nquuux\n\nquuuxx\n\nquuuxxx"},
+            ],
+        },
+        {"locationId": "67c040bb906e79b9062e22e9", "text": "BAR"},
+        {"locationId": additional_location_id, "text": "QUUX"},
+    ]
+    import_sample_string = _get_import_jsonl(import_sample)
 
-    # upload invalid resource data file (invalid JSON)
+    # upload invalid resource data file (invalid JSONL)
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", r"{foo: bar}", "application/json")},
+        files={"file": ("foo.json", "{\n  foo: bar\n}", "application/json-lines")},
     )
     assert_status(202, resp)
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
-    # fail to upload with wrong mime type
-    resp = await test_client.post(
-        f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", import_sample_string, "text/plain")},
-    )
-    assert_status(400, resp)
-
     # fail to upload resource data file for wrong resource ID
     resp = await test_client.post(
         f"/resources/{wrong_id}/import",
-        files={"file": ("foo.json", import_sample_string, "application/json")},
+        files={"file": ("foo.jsonl", import_sample_string, "application/json-lines")},
     )
     assert_status(202, resp)
     assert "id" in resp.json()
@@ -1298,18 +1294,15 @@ async def test_import_resource(
         f"/resources/{resource_id}/import",
         files={
             "file": (
-                "foo.json",
-                json.dumps(
-                    {
-                        "contents": [
-                            {"locationId": "67c040a0906e79b9062e22e8", "text": "FOO"},
-                            {"locationId": wrong_id, "text": "BAR"},
-                            {"locationId": additional_location_id, "text": "BAZ"},
-                        ],
-                        "resourceId": resource_id,
-                    }
+                "foo.jsonl",
+                _get_import_jsonl(
+                    [
+                        {"locationId": "67c040a0906e79b9062e22e8", "text": "FOO"},
+                        {"locationId": wrong_id, "text": "BAR"},
+                        {"locationId": additional_location_id, "text": "BAZ"},
+                    ]
                 ),
-                "application/json",
+                "application/json-lines",
             )
         },
     )
@@ -1323,20 +1316,17 @@ async def test_import_resource(
         files={
             "file": (
                 "foo.json",
-                json.dumps(
-                    {
-                        "contents": [
-                            {"locationId": "67c040a0906e79b9062e22e8", "text": 1},
-                            {"locationId": "67c040a0906e79b9062e22e9", "text": True},
-                            {
-                                "locationId": additional_location_id,
-                                "text": ["foo", "bar"],
-                            },
-                        ],
-                        "resourceId": resource_id,
-                    }
+                _get_import_jsonl(
+                    [
+                        {"locationId": "67c040a0906e79b9062e22e8", "text": 1},
+                        {"locationId": "67c040a0906e79b9062e22e9", "text": True},
+                        {
+                            "locationId": additional_location_id,
+                            "text": ["foo", "bar"],
+                        },
+                    ]
                 ),
-                "application/json",
+                "application/json-lines",
             )
         },
     )
@@ -1349,14 +1339,9 @@ async def test_import_resource(
         f"/resources/{resource_id}/import",
         files={
             "file": (
-                "foo.json",
-                json.dumps(
-                    {
-                        "contents": {"foo": "bar"},
-                        "resourceId": resource_id,
-                    }
-                ),
-                "application/json",
+                "foo.jsonl",
+                r'{"foo": "bar"}',
+                "application/json-lines",
             )
         },
     )
@@ -1368,7 +1353,7 @@ async def test_import_resource(
     await login()
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", import_sample_string, "application/json")},
+        files={"file": ("foo.jsonl", import_sample_string, "application/json-lines")},
     )
     assert_status(202, resp)
     assert "id" in resp.json()
@@ -1377,11 +1362,15 @@ async def test_import_resource(
 
     # upload incomplete content data (one content without location ID)
     invalid_import_sample = import_sample.copy()
-    del invalid_import_sample["contents"][0]["locationId"]  # ty:ignore[not-subscriptable]
+    del invalid_import_sample[1]["locationId"]
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={
-            "file": ("foo.json", json.dumps(invalid_import_sample), "application/json")
+            "file": (
+                "foo.jsonl",
+                _get_import_jsonl(invalid_import_sample),
+                "application/json-lines",
+            )
         },
     )
     assert_status(202, resp)
@@ -1390,11 +1379,15 @@ async def test_import_resource(
 
     # upload invalid content data (text is list[int])
     invalid_import_sample = import_sample.copy()
-    invalid_import_sample["contents"][0]["text"] = [1, 2, 3]  # ty:ignore[invalid-assignment]
+    invalid_import_sample[0]["text"] = [1, 2, 3]  # ty:ignore[invalid-assignment]
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
         files={
-            "file": ("foo.json", json.dumps(invalid_import_sample), "application/json")
+            "file": (
+                "foo.jsonl",
+                _get_import_jsonl(invalid_import_sample),
+                "application/json-lines",
+            )
         },
     )
     assert_status(202, resp)
@@ -1404,7 +1397,16 @@ async def test_import_resource(
     # upload valid resource data file
     resp = await test_client.post(
         f"/resources/{resource_id}/import",
-        files={"file": ("foo.json", import_sample_string, "application/json")},
+        files={"file": ("foo.jsonl", import_sample_string, "application/json-lines")},
+    )
+    assert_status(202, resp)
+    assert "id" in resp.json()
+    assert await wait_for_task_success(resp.json()["id"])
+
+    # upload empty resource data file
+    resp = await test_client.post(
+        f"/resources/{resource_id}/import",
+        files={"file": ("foo.jsonl", "  \n  ", "application/json-lines")},
     )
     assert_status(202, resp)
     assert "id" in resp.json()
@@ -1415,19 +1417,16 @@ async def test_import_resource(
         f"/resources/{resource_id}/import",
         files={
             "file": (
-                "foo.json",
-                json.dumps(
-                    {
-                        "contents": [
-                            {
-                                "locationId": additional_location_id,
-                                "text": "Frustrationstoleranz",
-                            },
-                        ],
-                        "resourceId": resource_id,
-                    }
+                "foo.jsonl",
+                _get_import_jsonl(
+                    [
+                        {
+                            "locationId": additional_location_id,
+                            "text": "Frustrationstoleranz",
+                        },
+                    ]
                 ),
-                "application/json",
+                "application/json-lines",
             )
         },
     )
@@ -1468,7 +1467,7 @@ async def test_export_content(
     formats = [
         "json",
         "csv",
-        "tekst-json",
+        "tekst-jsonl",
     ]
     target_res_ids = [
         "67c043c0906e79b9062e22f4",
@@ -1505,15 +1504,15 @@ async def test_export_content(
             )
             assert_status(200, resp)
 
-            # if format is Tekst-JSON, make sure re-import works
-            if fmt == "tekst-json":
+            # if format is Tekst-JSONL, make sure re-import works
+            if fmt == "tekst-jsonl":
                 resp = await test_client.post(
                     f"/resources/{target_res_id}/import",
                     files={
                         "file": (
-                            "foo.json",
-                            json.dumps(resp.json()),
-                            "application/json",
+                            "foo.jsonl",
+                            resp.text,
+                            "application/json-lines",
                         )
                     },
                 )
@@ -1537,11 +1536,11 @@ async def test_export_content(
     assert "id" in resp.json()
     assert not await wait_for_task_success(resp.json()["id"])
 
-    # fail to export tekst-json as non-user
+    # fail to export tekst-jsonl as non-user
     resp = await test_client.get(
         f"/resources/{target_res_ids[0]}/export",
         params={
-            "format": "tekst-json",
+            "format": "tekst-jsonl",
             "from": from_loc_id,
             "to": to_loc_id,
         },

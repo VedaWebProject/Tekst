@@ -815,12 +815,11 @@ async def download_resource_template(
     text = ensure(await TextDocument.get(resource_doc.text_id))
 
     # import content type for the requested resource
-    template = resource_types_mgr.get(
+    readme = resource_types_mgr.get(
         resource_doc.resource_type
-    ).prepare_import_template()
+    ).get_res_import_readme_obj()
     # apply data from resource instance
-    template["resourceId"] = str(resource_doc.id)
-    template["_resourceTitle"] = pick_translation(
+    readme["_resourceTitle"] = pick_translation(
         resource_doc.title,
         user.locale or "enUS",
     )
@@ -829,7 +828,7 @@ async def download_resource_template(
     full_loc_labels = await text.full_location_labels(resource_doc.level)
 
     # fill in content templates with IDs and some informational fields
-    template["contents"] = [
+    content_templates = [
         dict(
             locationId=str(location.id),
             _position=location.position,
@@ -845,7 +844,8 @@ async def download_resource_template(
 
     # create temporary file and stream it as a file response
     tempfile = NamedTemporaryFile(mode="w")  # noqa: SIM115 (intentional)
-    tempfile.write(json.dumps(template, indent=2, sort_keys=True))
+    tempfile.write(json.dumps(readme, indent=None, sort_keys=True) + "\n")
+    tempfile.writelines([json.dumps(t, indent=None) + "\n" for t in content_templates])
     tempfile.flush()
 
     # prepare headers ... according to
@@ -854,7 +854,7 @@ async def download_resource_template(
     # with a quoted filename :(
     headers = {
         "Content-Disposition": (
-            f"attachment; filename={text.slug}_{resource_doc.id}_template.json"
+            f"attachment; filename={text.slug}_{resource_doc.id}_template.jsonl"
         )
     }
 
@@ -862,7 +862,7 @@ async def download_resource_template(
     return FileResponse(
         path=tempfile.name,
         headers=headers,
-        media_type="application/json",
+        media_type="application/json-lines",
         background=BackgroundTask(tempfile.close),
     )
 
@@ -872,150 +872,136 @@ async def _import_resource_task(
     file_bytes: bytes,
     user: UserRead,
 ) -> dict[str, Any]:
-    # check if resource exists
-    if not await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id, with_children=True
-    ).exists():
-        raise errors.E_404_RESOURCE_NOT_FOUND
-
     # check if user has permission to write to this resource, if so, fetch from DB
     resource_doc = await ResourceBaseDocument.find_one(
-        ResourceBaseDocument.id == resource_id,
+        Eq(ResourceBaseDocument.id, resource_id),
         await ResourceBaseDocument.query_criteria_write(user),
         with_children=True,
     )
     if not resource_doc:
-        raise errors.E_403_FORBIDDEN
-
-    # parse data and validate import file format
-    try:
-        import_data = json.loads(file_bytes)
-    except Exception as e:
-        raise errors.update_values(
-            exc=errors.E_400_UPLOAD_INVALID_JSON,
-            values={"errors": str(e)},
-        )
-    finally:
-        del file_bytes
-
-    # normalize resource ID key to allow following the import template as well as
-    # re-importing a Tekst-JSON-exported resource
-    import_data["_id"] = (
-        import_data.pop("resourceId", None)
-        or import_data.pop("resource_id", None)
-        or import_data.pop("id", None)
-        or import_data.pop("_id", None)
-    )
-
-    # check if resource_id matches ID in import_data
-    if str(resource_id) != str(import_data.get("_id")):
-        raise errors.E_400_IMPORT_ID_MISMATCH  # pragma: no cover
-
-    # check if "contents" is a list
-    if not isinstance(import_data.get("contents", []), list):
-        raise errors.E_422_UPLOAD_INVALID_DATA
+        raise errors.E_404_RESOURCE_NOT_FOUND
 
     # get content models
     content_model = resource_types_mgr.get(resource_doc.resource_type).content_model()
     content_doc_model: type[ContentBase] = content_model.document_model()
     assert issubclass(content_doc_model, DocumentBase)  # for type checker
     content_create_model: type[ContentBase] = content_model.create_model()
-    content_update_model: type[ContentBase] = content_model.update_model()
 
-    # prepare lists to collect contents to update and insert separately,
-    # as they are handled differently
-    updates: list[tuple] = []  # (existing_content_doc, import_content: dict)
-    inserts: list[ContentBaseDocument] = []
+    if not file_bytes.decode("utf-8").strip():
+        return {
+            "created": 0,
+            "updated": 0,
+        }
+
+    lines = file_bytes.strip().split(b"\n")
+    res_updates: AnyResourceUpdate | None = None
+
+    ### prepare input data
 
     try:
-        # check import data
-        while import_data.get("contents"):
-            import_content = import_data["contents"].pop()
-
-            # check if location ID is valid
-            if not import_content.get("locationId") or not PydanticObjectId.is_valid(
-                import_content["locationId"]
-            ):
-                raise errors.E_400_IMPORT_ID_NON_EXISTENT
-            loc_id = PydanticObjectId(import_content["locationId"])
-            # remove location ID from content data
-            # to pass update model validation
-            del import_content["locationId"]
-
-            # check if location exists
-            if not await LocationDocument.find_one(
-                LocationDocument.id == loc_id
-            ).exists():
-                raise errors.E_400_IMPORT_ID_NON_EXISTENT
-
-            # fetch possible existing content
-            existing_content_doc = await ContentBaseDocument.find_one(
-                Eq(ContentBaseDocument.resource_id, resource_doc.id),
-                Eq(ContentBaseDocument.location_id, loc_id),
-                Eq(ContentBaseDocument.archived, False),
-                with_children=True,
-            )
-
-            # create updates and inserts "todo" lists
-            # and validate contents against model
-            try:
-                if existing_content_doc:
-                    # this is an update to an existing content document
-                    content_updates = content_update_model(
-                        resource_type=existing_content_doc.resource_type,
-                        **import_content,
-                    )
-                    updates.append((existing_content_doc, content_updates.model_dump()))
-                else:
-                    # this is a new content document
-                    inserts.append(
-                        content_doc_model.model_from(
-                            content_create_model(
-                                resource_id=resource_doc.id,
-                                location_id=loc_id,
-                                resource_type=resource_doc.resource_type,
-                                **import_content,
-                            )
-                        )
-                    )
-            except Exception as e:
-                print(e)
-                raise errors.update_values(
-                    exc=errors.E_422_UPLOAD_INVALID_DATA,
-                    values={"errors": str(e)},
-                )
-
-        # create resource update model instance and make sure to exclude
-        # fields that are not allowed to be updated on resource import
-        # (do it before writing any content data because we want this to fail fast)
-        import_data["resource_type"] = resource_doc.resource_type
-        res_updates = (
-            resource_types_mgr.get(resource_doc.resource_type)
-            .resource_model()
-            .update_model()(
-                **{
-                    k: v for k, v in import_data.items() if k not in RES_EXCLUDE_EXP_IMP
-                },
-                resource_type=resource_doc.resource_type,
-            )
+        # remove possible README object from first line
+        first_obj = json.loads(lines[0].decode("utf-8"))
+        if "__README" in first_obj:
+            lines.pop(0)
+        # get possible resource metadata from first (/second) line
+        first_obj = json.loads(lines[0].decode("utf-8"))
+    except Exception as e:
+        raise errors.update_values(
+            exc=errors.E_400_INVALID_REQUEST_DATA,
+            values={"errors": str(e)},
         )
-        del import_data
-
-        # process inserts
-        if inserts:
-            inserted_count = len(
-                (await content_doc_model.insert_many(inserts)).inserted_ids
+    # normalize resource ID key to allow following the import template as well as
+    # re-importing a Tekst-JSONL-exported resource
+    first_obj["_id"] = first_obj.pop("id", first_obj.pop("_id", None))
+    # if it really seems to be resource metadata, validate it
+    if first_obj.get("_id"):
+        if first_obj["_id"] == str(resource_id):
+            first_obj["resource_type"] = resource_doc.resource_type
+            res_updates = (
+                resource_types_mgr.get(resource_doc.resource_type)
+                .resource_model()
+                .update_model()(
+                    **{
+                        k: v
+                        for k, v in first_obj.items()
+                        if k not in RES_EXCLUDE_EXP_IMP
+                    },
+                    resource_type=resource_doc.resource_type,
+                )
             )
-        else:
-            inserted_count = 0
-        del inserts
+        else:  # pragma: no cover
+            raise errors.E_400_INVALID_REQUEST_DATA
+        lines.pop(0)
 
-        # process updates
-        updated_count = len(updates)
-        updates_stack = []
-        while updates:
-            existing_content_doc, content_updates = updates.pop()
-            loc_id = existing_content_doc.location_id
+    ### validate contents
+    ### (without doing anything with them yet, we just want to
+    ### fail early on errors before writing anything to the DB)
+
+    contents_data = []
+    for line in lines:
+        if not line.strip():  # pragma: no cover
+            continue
+
+        # decode and parse line
+        try:
+            c_obj = json.loads(line.decode("utf-8"))
+        except Exception as e:  # pragma: no cover
+            raise errors.update_values(
+                exc=errors.E_400_UPLOAD_INVALID_JSON,
+                values={"errors": str(e)},
+            )
+
+        # handle content
+        # check if location ID is valid
+        if not c_obj.get("locationId") or not PydanticObjectId.is_valid(
+            c_obj["locationId"]
+        ):
+            raise errors.E_400_IMPORT_ID_NON_EXISTENT
+        loc_id = PydanticObjectId(c_obj["locationId"])
+
+        # check if location exists
+        if not await LocationDocument.find_one(LocationDocument.id == loc_id).exists():
+            raise errors.E_400_IMPORT_ID_NON_EXISTENT
+
+        # validate agains content data models
+        try:
+            # validate against create model
+            content_create_model(
+                resource_id=resource_doc.id,
+                resource_type=resource_doc.resource_type,
+                **c_obj,
+            )
+            contents_data.append(c_obj)
+        except Exception as e:
+            raise errors.update_values(
+                exc=errors.E_422_UPLOAD_INVALID_DATA,
+                values={"errors": str(e)},
+            )
+
+    del lines
+
+    ### process content updates
+
+    updates_count = 0
+    inserts_count = 0
+    todo_stack = []
+
+    while contents_data:
+        content_import_doc = content_doc_model(
+            resource_id=resource_id,
+            resource_type=resource_doc.resource_type,
+            **contents_data.pop(),
+        )
+        existing_content_doc = await ContentBaseDocument.find_one(
+            Eq(ContentBaseDocument.resource_id, resource_doc.id),
+            Eq(ContentBaseDocument.location_id, content_import_doc.location_id),
+            Eq(ContentBaseDocument.archived, False),
+            with_children=True,
+        )
+
+        # handle existing content deletion / archival
+        if existing_content_doc:
+            updates_count += 1
             if resource_doc.public and not resource_doc.patch_for:
                 # archive the existing content doc if the resource
                 # is public (and not a resource patch)
@@ -1023,37 +1009,31 @@ async def _import_resource_task(
             else:
                 # otherwise, delete it
                 await existing_content_doc.delete()  # pragma: no cover
-            updates_stack.append(
-                content_doc_model(
-                    resource_id=resource_doc.id,
-                    location_id=loc_id,
-                    **content_updates,
-                )
-            )
-            if len(updates_stack) > 500:  # pragma: no cover
-                await content_doc_model.insert_many(updates_stack)
-                updates_stack = []
+        else:
+            inserts_count += 1
 
-        if len(updates_stack):
-            await content_doc_model.insert_many(updates_stack)
+        todo_stack.append(content_import_doc)
+        if len(todo_stack) > 100:  # pragma: no cover
+            await content_doc_model.insert_many(todo_stack)
+            todo_stack = []
 
-        del updates
-        del updates_stack
+    if len(todo_stack):
+        await content_doc_model.insert_many(todo_stack)
 
-        # write resource props and config import data
-        # (will be skipped if anything went wrong with content import)
-        await resource_doc.apply_updates(res_updates)
-    except Exception as e:
-        raise e
-    finally:
-        # call the resource's hook for changed contents
-        await resource_doc.contents_changed_hook()
-        # mark the text's index as out-of-date
-        await resource_doc.set_index_ood()
+    del contents_data
+    del todo_stack
+
+    # write resource props and config import data
+    # (skipped if anything went wrong with content import)
+    await resource_doc.apply_updates(res_updates)
+    # call the resource's hook for changed contents
+    await resource_doc.contents_changed_hook()
+    # mark the text's index as out-of-date
+    await resource_doc.set_index_ood()
 
     return {
-        "created": inserted_count,
-        "updated": updated_count,
+        "created": inserts_count,
+        "updated": updates_count,
     }
 
 
@@ -1061,12 +1041,6 @@ async def _import_resource_task(
     "/{id}/import",
     status_code=status.HTTP_202_ACCEPTED,
     response_model=tasks.TaskRead,
-    responses=errors.responses(
-        [
-            errors.E_401_UNAUTHORIZED,
-            errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON,
-        ]
-    ),
 )
 async def import_resource(
     user: UserDep,
@@ -1077,15 +1051,11 @@ async def import_resource(
     file: Annotated[
         UploadFile,
         File(
-            description="JSON file containing the resource content data",
-            media_type="application/json",
+            description="JSONL (JSON lines) file containing the resource data",
+            media_type="application/json-lines",
         ),
     ],
 ) -> tasks.TaskDocument:
-    # test upload file MIME type
-    if file.content_type and file.content_type.lower() != "application/json":
-        raise errors.E_400_UPLOAD_INVALID_MIME_TYPE_NOT_JSON
-
     file_bytes = await file.read()
     await file.close()
     return await tasks.create_task(
@@ -1185,8 +1155,8 @@ async def export_resource_contents_task(
     tempfile_path: PathObj = cfg.temp_files_dir / tempfile_name
 
     # create export data
-    if export_format == "tekst-json":
-        await target_res_type.export_tekst_json(
+    if export_format == "tekst-jsonl":
+        await target_res_type.export_tekst_jsonl(
             resource=resource,
             content_ids=content_ids,
             file_path=tempfile_path,
@@ -1261,8 +1231,8 @@ async def export_resource_contents(
         ),
     ] = None,
 ) -> tasks.TaskDocument:
-    # allow export format "tekst-json" only for logged-in users
-    if not user and export_format == "tekst-json":
+    # allow export format "tekst-jsonl" only for logged-in users
+    if not user and export_format == "tekst-jsonl":
         raise errors.E_403_FORBIDDEN
     # create and return background task
     return await tasks.create_task(

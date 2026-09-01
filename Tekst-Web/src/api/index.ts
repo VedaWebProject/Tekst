@@ -74,7 +74,7 @@ export const optionsPresets = {
 
 export async function withSelectedFile(
   cb: (file: File | null) => void | Promise<void>,
-  contentType: string = 'application/json,.json',
+  contentType: string = 'application/json,application/json-lines,.json,.jsonl',
   multiple?: boolean
 ) {
   const input = document.createElement('input');
