@@ -929,7 +929,7 @@ async def _import_resource_task(
                     resource_type=resource_doc.resource_type,
                 )
             )
-        else:  # pragme: no cover
+        else:  # pragma: no cover
             raise errors.E_400_INVALID_REQUEST_DATA
         lines.pop(0)
 
