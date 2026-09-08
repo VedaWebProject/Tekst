@@ -10,7 +10,7 @@ services:
       - dev
 
   mongo:
-    image: mongo:8.0.4 # we use this in dev - atm the latest version to support Linux 7
+    image: mongo:8.3.8 # we use this in dev - atm the latest version to support Linux 7
     restart: unless-stopped
     init: true
     volumes:
