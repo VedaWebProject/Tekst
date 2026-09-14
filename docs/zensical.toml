@@ -2,7 +2,7 @@
 
 docs_dir = "content"
 repo_url = "https://github.com/VedaWebProject/Tekst"
-edit_uri = "edit/main/docs/"
+edit_uri = "edit/main/docs/content/"
 
 # The site_name is shown in the page header and the browser window title
 #
