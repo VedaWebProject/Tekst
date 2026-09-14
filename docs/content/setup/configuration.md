@@ -108,7 +108,7 @@ All the configuration related to app-level security
 Secret to use for token generation (String – default: `must_change_this`)
 
 ### `TEKST_SECURITY__CLOSED_MODE`
-Disallow public user signups/applications (Boolean – default: `false`)
+Disallow public user signups/applications; goto `/login` to log in as an existing user (Boolean – default: `false`)
 
 ### `TEKST_SECURITY__USERS_ACTIVE_BY_DEFAULT`
 Whether new user accounts are active by default (otherwise have to be activated by admins) (Boolean – default: `false`)

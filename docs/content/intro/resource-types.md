@@ -1,0 +1,96 @@
+# Resource Types
+
+### Plain Text
+
+This very simple resource type may be used for plain (unstyled) textual data.
+
+![](../assets/screen_res_type_plaintext.png)
+
+/// caption
+Example screenshot taken from [VedaWeb](https://vedaweb.uni-koeln.de).
+///
+
+### Rich Text
+
+This resource type is also meant for text, but with added formatting/styling capabilities. It is useful for longer sequences of textual data that have their own internal structure, like a short analysis, or, like in the screenshot below, a chord progression aligned to a song's lyrics.
+
+![](../assets/screen_res_type_richtext.png)
+
+/// caption
+Example screenshot taken from the Tekst development demo.
+///
+
+### Text Annotation
+
+The Text Annotation resource type offers powerful functionality for annotating a sequence of tokens. Annotations can be grouped, colored and selectively displayed via a custom display template. The full set of annotations on a token can be viewed by clicking on the token itself, allowing for high-priority annotations to be displayed inline while less important ones are hidden.
+
+![](../assets/screen_res_type_anno.png)
+
+/// caption
+Example screenshot taken from [VedaWeb](https://vedaweb.uni-koeln.de).
+///
+
+### External References
+
+A simple way to link to external resources that are relevant to a certain text location.
+
+![](../assets/screen_res_type_ext_ref.png)
+
+/// caption
+Example screenshot taken from [VedaWeb](https://vedaweb.uni-koeln.de).
+///
+
+### Images
+
+The "images" resource type is for displaying captioned images in a clean way. It offers a non-obtrusive lightbox/carousel view with zoom and rotation functionality.
+
+![](../assets/screen_res_type_images.png)
+
+/// caption
+Example screenshot taken from the Tekst development demo. Images are Public Domain.
+///
+
+### Audio
+
+This resource type shows one or more audio players per content that can be used to play audio files. If a resource content references multiple audio files, multiple players are shown and will play sequentially.
+
+![](../assets/screen_res_type_audio.png)
+
+/// caption
+Example screenshot taken from the Tekst development demo.
+///
+
+### Video
+
+Will be implemented in the future if needed.
+
+### 3D
+
+Will be implemented in the future if needed.
+
+### Location Metadata
+
+This resource type is meant for holding basic key-value metadata on certain text locations. The data can be displayed as a normal resource content block (along all the other resource types' contents) or as tags embedded in the reading view's header.
+
+![](../assets/screen_res_type_loc_meta_2.png)
+
+![](../assets/screen_res_type_loc_meta_1.png)
+
+/// caption
+Example screenshots taken from [VedaWeb](https://vedaweb.uni-koeln.de).
+///
+
+### API Call
+
+The API Call resource type is meant to display the response of an API call after it has been transformed to HTML in a custom transformation funtion. This way, arbitrary data from remote APIs can be integrated into the platform.
+
+!!! tip
+    The API Call resource type is very powerful and meant to be used by advanced users with knowledge about HTTP APIs, JavaScript and/or other web technologies. Due to the potential harm that can be caused by misusing this resource type, its usage can be restricted to privileged users by the platform operator.
+
+![](../assets/screen_res_type_api_call_1.png)
+
+![](../assets/screen_res_type_api_call_2.png)
+
+/// caption
+Example screenshots taken from [VedaWeb](https://vedaweb.uni-koeln.de).
+///

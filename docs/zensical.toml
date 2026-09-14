@@ -30,7 +30,7 @@ site_url = "https://vedawebproject.github.io/Tekst/"
 # Read more: https://zensical.org/docs/setup/basics/#copyright
 copyright = """
 Tekst was initially developed in the scope of the
-<a href="https://vedaweb.uni-koeln.de" target="_blank" rel="noreferrer">VedaWeb</a>
+<a href="https://vedaweb.uni-koeln.de" target="_blank" rel="noreferrer">VedaWeb 2.0</a>
 research project.
 """
 
@@ -46,15 +46,23 @@ research project.
 #   { "Markdown in 5min" = "markdown.md" },
 # ]
 nav = [
-    "index.md",
-    "concepts.md",
+    { "Intro" = [
+        "intro/introduction.md",
+        "intro/concepts.md",
+        "intro/resource-types.md",
+        "intro/publications.md"
+    ]},
     { "Setup" = [
         "setup/installation.md",
         "setup/configuration.md",
         "setup/customization.md"
     ]},
     { "User Guide" = [
-        "usage/resources_overview.md"
+        "user-guide/general-guidance.md",
+        "user-guide/browse-view.md",
+        "user-guide/quick-search.md",
+        "user-guide/search-view.md",
+        "user-guide/resources-view.md"
     ]},
     { "Administration" = [
         "administration/maintenance.md",
@@ -194,11 +202,6 @@ features = [
     # https://zensical.org/docs/setup/footer/#navigation
     "navigation.footer",
 
-    # When section index pages are enabled, documents can be directly attached
-    # to sections, which is particularly useful for providing overview pages.
-    # https://zensical.org/docs/setup/navigation/#section-index-pages
-    "navigation.indexes",
-
     # When instant navigation is enabled, clicks on all internal links will be
     # intercepted and dispatched via XHR without fully reloading the page.
     # https://zensical.org/docs/setup/navigation/#instant-navigation
@@ -233,7 +236,7 @@ features = [
     # When tabs are enabled, top-level sections are rendered in a menu layer
     # below the header for viewports above 1220px, but remain as-is on mobile.
     # https://zensical.org/docs/setup/navigation/#navigation-tabs
-    # "navigation.tabs",
+    "navigation.tabs",
 
     # When sticky tabs are enabled, navigation tabs will lock below the header
     # and always remain visible when scrolling down.
@@ -328,6 +331,9 @@ accent = "light blue"
 icon = "fontawesome/brands/github"
 link = "https://github.com/VedaWebProject/Tekst"
 
+
+[project.plugins.redirects.redirect_maps]
+"index.md" = "intro/introduction.md"
 
 
 [project.markdown_extensions.admonition]

@@ -1,4 +1,4 @@
-# Reading View
+# Browse View
 
 This is the main view of the platform. Here, the contents of any combination of resources can be displayed, browsed, and compared — aligned with the structure of the selected working text. Additionally, the reading view offers numerous quick access options to various functions associated with the respective contents.
 

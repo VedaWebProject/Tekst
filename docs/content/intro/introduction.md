@@ -1,6 +1,6 @@
 # Introduction
 
-!!! warning "Work-in-progress"
+!!! info "Work-in-progress"
     While the Tekst platform software is already in its open beta phase, this manual is still very much work-in-progress. We'll try to complete it as soon as possible, but please bear with us if you encounter any incomplete information.
 
 ## What is Tekst?
@@ -9,13 +9,13 @@ Tekst is a collaborative, web-based research platform for aligning, displaying, 
 
 But its design is not limited to the study of any particular language or text type as it is meant to be project-agnostic and handle multimodal resources on arbitrary texts.
 
-## Use cases
+## Use Cases
 
 Tekst is primarily meant as a platform software for philological research projects. The original task for Tekst was to provide a central research community platform for the VedaWeb project and its research data, including text versions, translations, annotations, audio recordings of recitations and references to external sources, which are all aligned to the structure of their respective reference texts.
 
 Therefore, the main use cases for Tekst are comparable research projects that either want to publish and showcase their research data, simply curate a set of established resources on certain reference texts, or even encourage the research community to participate and contribute to a central platform dedicated to provide relevant resources.
 
-In the end, giving it a try on your local machine [is relatively easy](setup/installation.md#docker-based-deployment-recommended).
+In the end, giving it a try on your local machine [is relatively easy](../setup/installation.md#docker-based-deployment-recommended).
 
 ## Features
 
@@ -59,8 +59,3 @@ Depending on your requirements, you might want to consider the following list of
 - SEO: The web client is a [SPA](https://en.wikipedia.org/wiki/Single-page_application) that is rendered in the browser (no SSR). As a result, visibility to search engines is somewhat limited.
 - No built-in functionality for uploading and managing media files. If you want to integrate multimedia resources, you will have to host the respective files yourself and reference them by URL in your resources.
 - _...get in touch if you find anything that should be added to this list, we mean it!_
-
-## Publications
-
-- **DHd 2026**: We talked about Tekst's concept of integrating multimodal data alongside textual resources using the structure of reference texts in a [talk at the **DHd 2026** conference](https://doi.org/10.5281/zenodo.18696589) (Digital Humanities im deutschsprachigen Raum 2026: Nicht nur Text, nicht nur Daten. Vienna, Austria, 23-27 February 2026).
-- **DH 2023**: We presented our vision for a collaborative text research platform in [a talk at the international **DH 2023** conference](https://doi.org/10.5281/zenodo.8107794) (Digital Humanities 2023: Collaboration as Opportunity. Graz, Austria, 10-14 July 2023).
