@@ -71,6 +71,7 @@ nav = [
         "administration/upgrades.md"
     ]},
     { "Development" = [
+        "development/state.md",
         "development/contributing.md"
     ]}
 ]
