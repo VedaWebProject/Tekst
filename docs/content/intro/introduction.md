@@ -28,8 +28,8 @@ This list is far from exhaustive, but includes some features that might be decis
 - [x] Manage multiple independent, potentially **differently structured texts**
 - [x] Run it as a **closed, internally curated** publishing platform **or as an open platform** for a selected research **community** to encourage user **contributions**
 - [x] Built-in **user management** with authentication and a combination of role-based and ownership-based authorization
-- [x] Built-in [i18n](https://en.wikipedia.org/wiki/Internationalization_and_localization) with an extensible set of languages (contributions are welcome!)
-- [x] Encouraging **user contributons and collaboration** by enabling user to
+- [x] Built-in [i18n](https://en.wikipedia.org/wiki/Internationalization_and_localization) for the entire Tekst user interface with an extensible set of languages (currently, English and German are integrated – contributions are welcome!)
+- [x] Encouraging **user contributons and collaboration** by enabling registered users to
     - [x] submit quick correction notes
     - [x] create versions of existing resources to compose and propose deviating data
     - [x] create own resources, propose them for publication and have them reviewed by the community
