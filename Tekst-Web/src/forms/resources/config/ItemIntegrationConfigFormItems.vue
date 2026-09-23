@@ -2,6 +2,7 @@
 import type { components } from '@/api/schema';
 import { dynInputCreateBtnProps } from '@/common';
 import FormSection from '@/components/FormSection.vue';
+import SelectAddWithEnterHint from '@/components/SelectAddWithEnterHint.vue';
 import { useMessages } from '@/composables/messages';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { commonResourceConfigFormRules } from '@/forms/formRules';
@@ -184,7 +185,11 @@ function generateItemProps() {
                 tag
                 filterable
                 :options="itemNameOptions"
-              />
+              >
+                <template #header>
+                  <select-add-with-enter-hint />
+                </template>
+              </n-select>
             </n-form-item>
             <!-- ITEM TRANSLATION -->
             <translation-form-item
@@ -216,7 +221,11 @@ function generateItemProps() {
                 filterable
                 clearable
                 :options="itemGroupOptions"
-              />
+              >
+                <template #header>
+                  <select-add-with-enter-hint />
+                </template>
+              </n-select>
             </n-form-item>
           </n-flex>
         </template>
