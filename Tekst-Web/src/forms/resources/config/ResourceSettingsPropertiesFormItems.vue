@@ -3,6 +3,7 @@ import { type AnyResourceRead } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import CollapsibleContent from '@/components/CollapsibleContent.vue';
 import FormSection from '@/components/FormSection.vue';
+import SelectAddWithEnterHint from '@/components/SelectAddWithEnterHint.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { resourceSettingsFormRules } from '@/forms/formRules';
 import TranslationFormItem from '@/forms/TranslationFormItem.vue';
@@ -125,7 +126,11 @@ const metadataKeysOptions = computed(() =>
                 clearable
                 :placeholder="$t('common.key')"
                 :options="metadataKeysOptions"
-              />
+              >
+                <template #header>
+                  <select-add-with-enter-hint />
+                </template>
+              </n-select>
             </n-form-item>
             <n-form-item
               ignore-path-changechange

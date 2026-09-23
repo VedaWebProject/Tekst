@@ -6,11 +6,12 @@ import type {
 } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
 import OskInput from '@/components/OskInput.vue';
+import SelectAddWithEnterHint from '@/components/SelectAddWithEnterHint.vue';
 import { usePrompt } from '@/composables/prompt';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
-import { InfoIcon, KeyboardIcon } from '@/icons';
+import { KeyboardIcon } from '@/icons';
 import { useResourcesStore, useStateStore } from '@/stores';
 import { groupAndSortItems, pickTranslation } from '@/utils';
 import {
@@ -208,7 +209,11 @@ onMounted(async () => {
                       :options="annoOptions[tokenItemIndex][annotationItemIndex].keysOptions"
                       :placeholder="$t('common.annotation')"
                       @update:value="() => (annotationItem.value = '')"
-                    />
+                    >
+                      <template #header>
+                        <select-add-with-enter-hint />
+                      </template>
+                    </n-select>
                   </n-form-item>
 
                   <!-- VALUES -->
@@ -234,10 +239,7 @@ onMounted(async () => {
                         class="taggable-select"
                       >
                         <template #header>
-                          <n-flex align="baseline" class="text-small translucent" :wrap="false">
-                            <n-icon :component="InfoIcon" />
-                            {{ $t('resources.types.textAnnotation.contentFields.valueEnterHint') }}
-                          </n-flex>
+                          <select-add-with-enter-hint />
                         </template>
                       </n-select>
                     </n-form-item>

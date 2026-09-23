@@ -2,6 +2,7 @@
 import { DELETE, PATCH, POST, type ClientSegmentCreate, type ClientSegmentUpdate } from '@/api';
 import { commonDialogOptions } from '@/common';
 import HelpButtonWidget from '@/components/HelpButtonWidget.vue';
+import SelectAddWithEnterHint from '@/components/SelectAddWithEnterHint.vue';
 import HtmlEditor from '@/components/editors/HtmlEditor.vue';
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import IconHeading from '@/components/generic/IconHeading.vue';
@@ -125,6 +126,13 @@ const systemSegmentKeyOptions = systemSegmentKeys.map((key) => ({
   label: () => $t(`admin.segments.systemKeys.${key}`),
   value: key,
 }));
+
+const infoPagesKeyOptions = computed(() =>
+  state.pf?.infoSegments.map((s) => ({
+    label: s.key,
+    value: s.key,
+  }))
+);
 
 async function getSegmentModel(segmentId?: string): Promise<ClientSegmentUpdate> {
   if (!segmentId) {
@@ -353,12 +361,18 @@ onMounted(() => {
 
         <!-- KEY -->
         <n-form-item v-if="segmentType === 'info'" path="key" :label="$t('common.key')">
-          <n-input
+          <n-select
             v-model:value="segmentModel.key"
-            type="text"
-            :placeholder="$t('common.key')"
-            @keydown.enter.prevent
-          />
+            :options="infoPagesKeyOptions"
+            :consistent-menu-width="false"
+            clearable
+            filterable
+            tag
+          >
+            <template #header>
+              <select-add-with-enter-hint />
+            </template>
+          </n-select>
         </n-form-item>
         <n-form-item v-else path="key" :label="$t('common.type')">
           <n-select

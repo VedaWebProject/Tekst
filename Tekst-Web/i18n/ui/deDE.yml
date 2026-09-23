@@ -107,6 +107,7 @@ common:
   always: immer
   never: niemals
   localStorageHint: Diese Einstellungen werden im lokalen Speicher Ihres Browsers gespeichert.
+  enterAddsNewEl: Andere mit ↵ einfügen
 
 announcements:
   announcement: Bekanntmachung | Bekanntmachungen
@@ -578,7 +579,6 @@ resources:
         lb: Dieses Token schließt eine Zeile ab
         freeFormInputTip: Geben Sie mehrere Komma-getrennte Werte ein oder verwenden Sie die Bildschirmtastatur
         commaSepHint: Durch Kommata getrennte Werte werden aufgeteilt und als mehrere separate Annotations-Werte behandelt!
-        valueEnterHint: Um Werte hinzuzufügen, die hier nicht aufgelistet sind, geben Sie diese ein und drücken Sie ENTER!
         jumpToToken: Zu Token springen
       copyTokenAction: Token kopieren
       copyTokenFullAction: Token und Annotationen kopieren
@@ -814,7 +814,7 @@ texts:
     lblBtnAddLocationFirstLevel: Hinzufügen
     tipBtnAddLocationFirstLevel: Belegstelle auf oberster Ebene hinzufügen
     lblBtnDownloadTemplate: Vorlage für Textstruktur
-    tipBtnDownloadTemplate: '@:admin.text.locations.lblBtnDownloadTemplate herunterladen'
+    tipBtnDownloadTemplate: Vorlage für Textstruktur herunterladen
     lblBtnUploadStructure: Textstruktur importieren
     tipBtnUploadStructure: Vorbereitete Daten für neue Textstruktur importieren
     lblBtnUploadUpdates: Änderungen importieren
