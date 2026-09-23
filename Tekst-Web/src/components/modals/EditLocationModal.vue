@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ButtonShelf from '@/components/generic/ButtonShelf.vue';
 import GenericModal from '@/components/generic/GenericModal.vue';
+import SelectAddWithEnterHint from '@/components/SelectAddWithEnterHint.vue';
 import { useMessages } from '@/composables/messages';
 import { locationFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -105,7 +106,11 @@ defineExpose({ open });
           filterable
           multiple
           max-tag-count="responsive"
-        />
+        >
+          <template #header>
+            <select-add-with-enter-hint />
+          </template>
+        </n-select>
       </n-form-item>
     </n-form>
     <button-shelf class="mt-lg">

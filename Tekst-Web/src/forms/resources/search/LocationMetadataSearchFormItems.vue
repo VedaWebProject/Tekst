@@ -5,6 +5,7 @@ import type {
   LocationMetadataSearchQuery,
 } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
+import SelectAddWithEnterHint from '@/components/SelectAddWithEnterHint.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { searchFormRules } from '@/forms/formRules';
 import { $t } from '@/i18n';
@@ -128,7 +129,11 @@ onMounted(async () => {
                 :style="getEntryValueSelectStyle(value.v)"
                 :options="entryOptions[index].valuesOptions"
                 :placeholder="$t('common.value')"
-              />
+              >
+                <template #header>
+                  <select-add-with-enter-hint />
+                </template>
+              </n-select>
             </n-form-item>
 
             <!-- VALUE QUERY WILDCARDS -->

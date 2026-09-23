@@ -5,6 +5,7 @@ import type {
   LocationMetadataResourceRead,
 } from '@/api';
 import { dynInputCreateBtnProps } from '@/common';
+import SelectAddWithEnterHint from '@/components/SelectAddWithEnterHint.vue';
 import DynamicInputControls from '@/forms/DynamicInputControls.vue';
 import { contentFormRules } from '@/forms/formRules';
 import { useResourcesStore } from '@/stores';
@@ -88,7 +89,11 @@ onMounted(async () => {
               :options="entriesOptions[index].keysOptions"
               :placeholder="$t('common.key')"
               @update:value="() => (model.entries[index].value = [])"
-            />
+            >
+              <template #header>
+                <select-add-with-enter-hint />
+              </template>
+            </n-select>
           </n-form-item>
           <n-form-item
             style="flex: 2 100px"
@@ -108,7 +113,11 @@ onMounted(async () => {
               :placeholder="$t('common.value')"
               :style="metaValueStyle"
               :render-label="renderValueLabel"
-            />
+            >
+              <template #header>
+                <select-add-with-enter-hint />
+              </template>
+            </n-select>
           </n-form-item>
         </n-flex>
       </template>
