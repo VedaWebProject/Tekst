@@ -264,7 +264,7 @@ async def get_user_tasks(
     status_code=status.HTTP_200_OK,
     responses=errors.responses(
         [
-            errors.E_404_EXPORT_NOT_FOUND,
+            errors.E_404_FILE_NOT_FOUND,
         ]
     ),
 )
@@ -284,7 +284,7 @@ async def download_task_artifact(
             await tasks.get_tasks(None, pickup_keys=[pickup_key])
         )[0]
     except Exception:
-        raise errors.E_404_EXPORT_NOT_FOUND
+        raise errors.E_404_FILE_NOT_FOUND
 
     if (
         not task
@@ -295,7 +295,7 @@ async def download_task_artifact(
         or not task.result.get("artifact")
         or not task.result.get("mimetype")
     ):  # pragma: no cover
-        raise errors.E_404_EXPORT_NOT_FOUND
+        raise errors.E_404_FILE_NOT_FOUND
 
     filename, tempfile_name, mimetype = itemgetter("filename", "artifact", "mimetype")(
         task.result

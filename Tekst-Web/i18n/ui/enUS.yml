@@ -126,6 +126,7 @@ init:
 errors:
   error: Error
   init: Error initializing the application. It seems the API isn't ready or unreachable.
+  invalidRequestData: Invalid request data.
   invalidSlug: There is no text with the identifier "{slug}".
   loadData: There was an error loading data from the server.
   notFound: The requested data could not be found.
@@ -144,17 +145,15 @@ errors:
   verifyUserBadToken: This verification link is either invalid or already expired.
   verifyUserAlreadyVerified: This email address is already verified.
   resourcesLimitReached: Reached limit of {limit} resources for this user
-  bookmarkExists: You already have a bookmark for this location.
   uploadInvalidMimeTypeNotJson: Invalid file type (MIME type).
   uploadInvalidJson: The uploaded file is not a valid JSON file.
   uploadInvalidData: The uploaded data does not follow the required schema.
   importIdMismatch: An ID in the import data does not match the respective ID in the request.
   importIdNonExistent: An ID in the import data could not be found in the database.
   importInvalidContentData: Some contents in the import data don't follow the required schema.
-  segmentKeyLocaleConflict: A segment with this key and language already exists.
   textSameTitleOrSlug: There is already a text with the same title or slug.
   locked: There is already an active background task for this operation.
-  exportNotFound: The requested export could not be found.
+  fileNotFound: The requested file could not be found.
 
 osk:
   label: On-screen keyboard

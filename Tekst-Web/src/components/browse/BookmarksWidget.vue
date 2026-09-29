@@ -3,7 +3,6 @@ import { type BookmarkRead } from '@/api';
 import GenericModal from '@/components/generic/GenericModal.vue';
 import LocationLabel from '@/components/LocationLabel.vue';
 import { useBookmarks } from '@/composables/bookmarks';
-import { useMessages } from '@/composables/messages';
 import { usePrompt } from '@/composables/prompt';
 import { $t } from '@/i18n';
 import {
@@ -36,7 +35,6 @@ defineProps<{
 const browse = useBrowseStore();
 const state = useStateStore();
 const theme = useThemeStore();
-const { message } = useMessages();
 const { bookmarks, loadBookmarks, createBookmark, deleteBookmark } = useBookmarks();
 const router = useRouter();
 const prompt = usePrompt();
@@ -69,10 +67,6 @@ async function handleDeleteBookmark(bookmarkId: string) {
 
 async function handleCreateBookmarkClick() {
   if (loading.value || maxCountReached.value) {
-    return;
-  }
-  if (bookmarkAlreadyExists.value) {
-    message.error($t('errors.bookmarkExists'));
     return;
   }
   loading.value = true;
