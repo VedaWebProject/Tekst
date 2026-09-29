@@ -1,6 +1,6 @@
 services:
   zensical:
-    image: zensical/zensical:0.0.64
+    image: zensical/zensical:0.0.66
     volumes:
       - .:/docs
     ports:
