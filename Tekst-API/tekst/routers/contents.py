@@ -272,14 +272,14 @@ async def archive_content(
     if not resource:
         raise errors.E_403_FORBIDDEN
     if not resource.public:  # pragma: no cover
-        raise errors.update_values(
+        raise errors.mod(
             errors.E_400_INVALID_REQUEST_DATA,
-            {"detail": "Content archival only allowed for published resources"},
+            values={"detail": "Content archival only allowed for published resources"},
         )
     if resource.patch_for:  # pragma: no cover
-        raise errors.update_values(
+        raise errors.mod(
             errors.E_400_INVALID_REQUEST_DATA,
-            {"detail": "Content archival not possible for resource patches"},
+            values={"detail": "Content archival not possible for resource patches"},
         )
 
     # call the resource's hook for changed contents
@@ -334,9 +334,9 @@ async def restore_archived_content(
 
     # check if content is archived at all
     if not archived_content_doc.archived:
-        raise errors.update_values(
+        raise errors.mod(
             errors.E_400_INVALID_REQUEST_DATA,
-            {
+            values={
                 "detail": f"Content {content_id} is not archived, "
                 "so it cannot be restored from archive."
             },

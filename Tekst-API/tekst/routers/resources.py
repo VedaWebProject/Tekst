@@ -906,8 +906,8 @@ async def _import_resource_task(
         # get possible resource metadata from first (/second) line
         first_obj = json.loads(lines[0].decode("utf-8"))
     except Exception as e:
-        raise errors.update_values(
-            exc=errors.E_400_INVALID_REQUEST_DATA,
+        raise errors.mod(
+            errors.E_400_INVALID_REQUEST_DATA,
             values={"errors": str(e)},
         )
     # normalize resource ID key to allow following the import template as well as
@@ -946,8 +946,8 @@ async def _import_resource_task(
         try:
             c_obj = json.loads(line.decode("utf-8"))
         except Exception as e:  # pragma: no cover
-            raise errors.update_values(
-                exc=errors.E_400_UPLOAD_INVALID_JSON,
+            raise errors.mod(
+                errors.E_400_UPLOAD_INVALID_JSON,
                 values={"errors": str(e)},
             )
 
@@ -973,8 +973,8 @@ async def _import_resource_task(
             )
             contents_data.append(c_obj)
         except Exception as e:
-            raise errors.update_values(
-                exc=errors.E_422_UPLOAD_INVALID_DATA,
+            raise errors.mod(
+                errors.E_422_UPLOAD_INVALID_DATA,
                 values={"errors": str(e)},
             )
 

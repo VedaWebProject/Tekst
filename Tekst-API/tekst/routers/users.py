@@ -64,8 +64,9 @@ async def delete_me(
         user.is_superuser
         and (await UserDocument.find(Eq(UserDocument.is_superuser, True)).count()) == 1
     ):
-        raise errors.update_values(
-            exc=errors.E_403_FORBIDDEN,
+        raise errors.mod(
+            errors.E_403_FORBIDDEN,
+            msg="Cannot delete the only superuser!",
             values={"errors": "Cannot delete the only superuser!"},
         )
     await user_mgr.delete(ensure(await UserDocument.get(user.id)), request)

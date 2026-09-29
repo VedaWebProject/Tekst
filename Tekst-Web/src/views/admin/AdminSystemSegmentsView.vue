@@ -65,7 +65,9 @@ const segmentOptions = computed(() =>
           groupSegments[0];
         return {
           type: 'group',
-          label: currLocaleSegment.title || currLocaleSegment.key,
+          label: currLocaleSegment.title
+            ? `${currLocaleSegment.title} (${currLocaleSegment.key})`
+            : currLocaleSegment.key,
           key,
           children: groupSegments.map((s) => ({
             label: (getLocaleProfile(s.locale)?.icon || '🌐') + ' ' + (s.title || s.key),
@@ -188,6 +190,7 @@ async function handleSaveClick() {
       } else {
         await createSegment();
       }
+      clearForm();
     })
     .catch(() => {
       message.error($t('errors.followFormRules'));

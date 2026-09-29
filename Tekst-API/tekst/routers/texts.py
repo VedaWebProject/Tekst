@@ -284,14 +284,14 @@ async def _update_text_structure_task(
         try:
             doc_id = PydanticObjectId(loc["id"])
         except Exception:
-            raise errors.update_values(
-                exc=errors.E_400_IMPORT_ID_NON_EXISTENT,
+            raise errors.mod(
+                errors.E_400_IMPORT_ID_NON_EXISTENT,
                 values={"errors": f"Location ID {loc['id']} is not a valid ID"},
             )
         loc_doc: LocationDocument | None = await LocationDocument.get(doc_id)
         if loc_doc is None:
-            raise errors.update_values(
-                exc=errors.E_400_IMPORT_ID_NON_EXISTENT,
+            raise errors.mod(
+                errors.E_400_IMPORT_ID_NON_EXISTENT,
                 values={"errors": f"Location with ID {loc['id']} does not exist"},
             )
 
@@ -300,8 +300,8 @@ async def _update_text_structure_task(
             loc_doc.text_id == last_text_id or last_text_id is None
         )
         if not all_locs_same_text:
-            raise errors.update_values(
-                exc=errors.E_422_UPLOAD_INVALID_DATA,
+            raise errors.mod(
+                errors.E_422_UPLOAD_INVALID_DATA,
                 values={"errors": "Updates contain location IDs from different texts"},
             )
         last_text_id = loc_doc.text_id
@@ -315,8 +315,8 @@ async def _update_text_structure_task(
                 aliases_field_adapter.validate_python(loc["aliases"])
                 loc_doc.aliases = loc["aliases"]
         except ValidationError as e:
-            raise errors.update_values(
-                exc=errors.E_422_UPLOAD_INVALID_DATA,
+            raise errors.mod(
+                errors.E_422_UPLOAD_INVALID_DATA,
                 values={"errors": str(e)},
             )
         updated_docs.append(loc_doc)
@@ -372,8 +372,8 @@ async def update_text_structure(
         raise errors.E_400_UPLOAD_INVALID_JSON
     # check if we got a list (at least)
     if not isinstance(location_updates, list):
-        http_err = errors.update_values(
-            exc=errors.E_422_UPLOAD_INVALID_DATA,
+        http_err = errors.mod(
+            errors.E_422_UPLOAD_INVALID_DATA,
             values={"errors": "Expected list of location updates"},
         )
         raise http_err
