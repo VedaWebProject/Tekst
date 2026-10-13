@@ -141,10 +141,17 @@ Usage: python -m tekst export [OPTIONS]
 Options:
   -r, --resource TEXT  ID(s) of resource(s) to export, all if not set
   -f, --format TEXT    Format(s) to export, all if not set  [default: json,
-                       tekst-json, csv]
+                       tekst-jsonl, csv]
   -o, --output TEXT    Output directory to write to  [default:
                        /tmp/tekst_resource_export/]
   -q, --quiet          Don't output anything (except errors and warnings)
-  -d, --delete         Delete all existing files in the output directory
+  -d, --delete         Delete all existing files and directories in the output
+                       directory
+  -s, --structured     Create meaningful output directory structure instead of
+                       flat output
+  -w, --web-safe       Avoid non-web-safe characters in file names or path
+                       components
+  -b, --browsable      Creates index.html files listing contents in output
+                       directories (recursive, enforces --web-safe)
   --help               Show this message and exit.
 ```
