@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+import unicodedata
 import zipfile
 
 from datetime import datetime
@@ -27,6 +28,19 @@ from tekst.models.text import TextDocument
 from tekst.routers.resources import export_resource_contents_task
 from tekst.state import get_state
 from tekst.utils import ensure
+
+
+_ASCIIFY = str.maketrans(
+    {
+        "ä": "ae",
+        "ö": "oe",
+        "ü": "ue",
+        "Ä": "Ae",
+        "Ö": "Oe",
+        "Ü": "Ue",
+        "ß": "ss",
+    }
+)
 
 
 def _make_dir_browsable(
@@ -309,6 +323,7 @@ def _make_dir_browsable(
         last_modified = "-"
         last_modified_human_readable = "-"
         last_modified_iso = ""
+
         try:
             if entry.is_file():
                 size_bytes = entry.stat().st_size
@@ -320,8 +335,7 @@ def _make_dir_browsable(
                 )
                 last_modified_iso = last_modified.isoformat()
                 last_modified_human_readable = last_modified.strftime("%c")
-
-        except Exception as e:
+        except OSError as e:
             print("ERROR accessing file name:", e, entry)
             continue
 
@@ -374,6 +388,12 @@ def _make_dir_browsable(
     output_file.write_text(html, encoding="utf-8")
 
 
+def _to_ascii(text: str) -> str:
+    text = text.translate(_ASCIIFY)
+    normalized = unicodedata.normalize("NFKD", text)
+    return normalized.encode("ascii", "ignore").decode("ascii")
+
+
 def _safe_name(
     name: str,
     *,
@@ -382,8 +402,9 @@ def _safe_name(
     web_safe: bool = True,
     max_len: int = 255,
 ) -> str:
+    name = _to_ascii(name)
     if web_safe:
-        safe = re.sub(r"[^a-zA-Z0-9\-_.]+", replacement, name)
+        safe = re.sub(r"[^a-zA-Z0-9\-_]+", replacement, name)
     else:
         safe = "".join(char if char.isalpha() else " " for char in name)
         safe = re.sub(r" +", replacement, safe)
@@ -557,7 +578,7 @@ async def run(
             target_path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(source_path, target_path)
             os.remove(source_path)
-            click.echo(f"Exported resource {res_id_str} as {str(target_path)}.")
+            click.echo(f"Exported resource {res_id_str} as {target_path!s}.")
 
     if browsable:
         pf = await get_state()
