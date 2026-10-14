@@ -2,13 +2,13 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "schedule:weekly",
+    "schedule:monthly",
     "schedule:automergeDaily"
   ],
   "baseBranchPatterns": [
     "main"
   ],
-  "prHourlyLimit": 10,
+  "prHourlyLimit": 20,
   "labels": [
     "dependencies"
   ],
