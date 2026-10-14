@@ -1,8 +1,9 @@
-import datetime
 import os
 import re
 import shutil
+import zipfile
 
+from datetime import datetime
 from pathlib import Path
 from typing import cast
 from urllib.parse import quote
@@ -245,7 +246,7 @@ def _make_dir_browsable(
     </svg>
 <header>
     <h1>"""  # noqa: E501
-    html += f"{title if is_root_dir else path.name}"
+    html += title if is_root_dir else f"{title} / {path.name}"
     html += """</h1>
                  </header>
                  <main>
@@ -293,6 +294,7 @@ def _make_dir_browsable(
                 output_file=entry / output_file.name,
                 filename_glob=filename_glob,
                 is_root_dir=False,
+                title=title,
             )
 
         # From Python 3.6, os.access() accepts path-like objects
@@ -313,9 +315,9 @@ def _make_dir_browsable(
                 size_pretty = humanize.naturalsize(size_bytes, binary=True)
 
             if entry.is_dir() or entry.is_file():
-                last_modified = datetime.datetime.fromtimestamp(
-                    entry.stat().st_mtime
-                ).replace(microsecond=0)
+                last_modified = datetime.fromtimestamp(entry.stat().st_mtime).replace(
+                    microsecond=0
+                )
                 last_modified_iso = last_modified.isoformat()
                 last_modified_human_readable = last_modified.strftime("%c")
 
@@ -432,27 +434,70 @@ async def run(
     resource_ids: list[PydanticObjectId] | None,
     *,
     formats: list[ResourceExportFormat],
-    output_dir_path: Path,
-    quiet: bool = False,
+    out_dir: Path,
     delete: bool = False,
+    archive: int | None = None,
     structured: bool = True,
     web_safe: bool = False,
     browsable: bool = False,
 ) -> None:
-    if not output_dir_path.exists():
-        output_dir_path.mkdir(parents=True)
-    if not output_dir_path.is_dir():
-        click.echo(f"Output directory {output_dir_path} is not a directory", err=True)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if not out_dir.is_dir():
+        click.echo(f"Output directory {out_dir} is not a directory.", err=True)
         exit(1)
-
     await db.init_odm()
 
-    if delete:
-        if not quiet:
-            click.echo(
-                f"Deleting all existing files and directories in {output_dir_path} ..."
-            )
-        for child in output_dir_path.iterdir():
+    # handle archiving
+    if archive is not None:
+        archive_ts_fmt = "%Y-%m-%d_%H-%M-%S"
+        archive_dir = out_dir / "_archive"
+        old_export_files = [
+            f
+            for f in out_dir.iterdir()
+            if not (f.is_dir() and f.name == archive_dir.name)
+        ]
+
+        ts_str = datetime.now().strftime(archive_ts_fmt)
+        pf = await get_state()
+        pf_name = _safe_name(pf.platform_name, web_safe=True)
+        zip_prefix = f"{pf_name}_exports_"
+        zip_ext = ".zip"
+        zip_path = archive_dir / f"{zip_prefix}{ts_str}{zip_ext}"
+
+        # archive existing files
+        if old_export_files:
+            click.echo(f"Archiving existing files in {out_dir} ...")
+            archive_dir.mkdir(parents=True, exist_ok=True)
+            # create zip archive of everything in "existing" list
+            with zipfile.ZipFile(zip_path, "w") as zipf:
+                for f in old_export_files:
+                    if f.is_file() and f.name != "index.html":
+                        zipf.write(f, arcname=f.name)
+                        f.unlink()
+                    elif f.is_dir():
+                        for root, _dirs, files in os.walk(f):
+                            for file in files:
+                                if file == "index.html":
+                                    continue
+                                file_path = os.path.join(root, file)
+                                arcname = os.path.relpath(file_path, out_dir)
+                                zipf.write(file_path, arcname=arcname)
+                        shutil.rmtree(f)
+        else:
+            click.echo("No existing files to archive.")
+
+        # delete old archives
+        if archive > 0 and archive_dir.exists():
+            for f in archive_dir.iterdir():
+                if f.is_file() and f.suffix == zip_ext:
+                    ts_str = f.name[len(zip_prefix) : -len(zip_ext)]
+                    ts = datetime.strptime(ts_str, archive_ts_fmt)
+                    if (datetime.now() - ts).days > archive:
+                        f.unlink()
+
+    if delete and archive is None:
+        click.echo(f"Deleting old export data in {out_dir} ...")
+        for child in out_dir.iterdir():
             if child.is_file():
                 child.unlink()
             elif child.is_dir():
@@ -480,8 +525,7 @@ async def run(
     for res in target_resources:
         res_id_str = str(res.id)
         for fmt in formats:
-            if not quiet:
-                click.echo(f"Exporting resource {res_id_str} as {fmt} ...")
+            click.echo(f"Exporting resource {res_id_str} as {fmt} ...")
             try:
                 export_props = await export_resource_contents_task(
                     user=None,
@@ -504,7 +548,7 @@ async def run(
             ext = res_exp_fmt_info[fmt]["extension"]
             target_path = await _get_target_path(
                 res,
-                base_path=output_dir_path,
+                base_path=out_dir,
                 fmt=fmt,
                 ext=ext,
                 structured=structured,
@@ -513,16 +557,15 @@ async def run(
             target_path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(source_path, target_path)
             os.remove(source_path)
-            if not quiet:
-                click.echo(f"Exported resource {res_id_str} as {str(target_path)}.")
-
-    await db.close()
+            click.echo(f"Exported resource {res_id_str} as {str(target_path)}.")
 
     if browsable:
         pf = await get_state()
         _make_dir_browsable(
-            output_dir_path,
-            output_file=output_dir_path / "index.html",
-            title=pf.platform_name or "Exports",
+            out_dir,
+            output_file=out_dir / "index.html",
+            title=f"{pf.platform_name} Exports",
             filename_glob="*",
         )
+
+    await db.close()
