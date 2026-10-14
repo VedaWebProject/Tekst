@@ -736,6 +736,9 @@ async def publish_resource(
         raise errors.E_400_RESOURCE_PUBLISH_UNPROPOSED
     if resource_doc.patch_for:
         raise errors.E_400_RESOUCE_PATCH_PUBLISH
+    text_doc = ensure(await TextDocument.get(resource_doc.text_id))
+    if not text_doc.is_active:
+        raise errors.E_403_FORBIDDEN
 
     # all fine, publish resource
     await resource_doc.set(

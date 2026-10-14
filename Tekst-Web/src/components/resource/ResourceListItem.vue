@@ -75,6 +75,7 @@ const showExport = ref(false);
 
 const isOwner = computed(() => !!props.resource.ownerIds?.includes(props.user?.id ?? 'noid'));
 const isOwnerOrAdmin = computed(() => isOwner.value || !!props.user?.isSuperuser);
+const text = computed(() => state.textById(props.resource.textId));
 
 const { users } = useUsers(props.resource.supporters ?? undefined);
 
@@ -236,7 +237,7 @@ const actionOptions = computed<DropdownOption[]>(() => [
             {
               label: $t('resources.publishAction'),
               key: 'publish',
-              disabled: !!props.resource.patchFor,
+              disabled: !!props.resource.patchFor || !text.value?.isActive,
               icon: renderIcon(PublicIcon),
               action: () => emit('publishClick', props.resource),
               statusType: 'success',
