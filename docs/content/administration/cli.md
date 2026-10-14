@@ -139,19 +139,20 @@ Usage: python -m tekst export [OPTIONS]
   (or all) to the given output directory
 
 Options:
-  -r, --resource TEXT  ID(s) of resource(s) to export, all if not set
-  -f, --format TEXT    Format(s) to export, all if not set  [default: json,
-                       tekst-jsonl, csv]
-  -o, --output TEXT    Output directory to write to  [default:
-                       /tmp/tekst_resource_export/]
-  -q, --quiet          Don't output anything (except errors and warnings)
-  -d, --delete         Delete all existing files and directories in the output
-                       directory
-  -s, --structured     Create meaningful output directory structure instead of
-                       flat output
-  -w, --web-safe       Avoid non-web-safe characters in file names or path
-                       components
-  -b, --browsable      Creates index.html files listing contents in output
-                       directories (recursive, enforces --web-safe)
-  --help               Show this message and exit.
+  -r, --resource TEXT    ID(s) of resource(s) to export, all if not set
+  -f, --format TEXT      Format(s) to export, all if not set  [default: json,
+                         tekst-jsonl, csv]
+  -o, --out-dir TEXT     Output directory to write to  [default:
+                         /tmp/tekst_resource_export/]
+  -d, --delete           Delete all existing files and directories in the
+                         output directory
+  -a, --archive INTEGER  Archive existing export data, keep old archives for n
+                         days (n<=0: keep all; ignores --delete)
+  -s, --structured       Create meaningful output directory structure instead
+                         of flat output
+  -w, --web-safe         Avoid non-web-safe characters in file names or path
+                         components
+  -b, --browsable        Creates index.html files listing contents in output
+                         directories (recursive, enforces --web-safe)
+  --help                 Show this message and exit.
 ```

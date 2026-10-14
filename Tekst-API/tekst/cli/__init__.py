@@ -161,7 +161,7 @@ def schema_cmd(
     help="Format(s) to export, all if not set",
 )
 @click.option(
-    "--output",
+    "--out-dir",
     "-o",
     required=False,
     default="/tmp/tekst_resource_export/",
@@ -169,18 +169,23 @@ def schema_cmd(
     help="Output directory to write to",
 )
 @click.option(
-    "--quiet",
-    "-q",
-    is_flag=True,
-    default=False,
-    help="Don't output anything (except errors and warnings)",
-)
-@click.option(
     "--delete",
     "-d",
     is_flag=True,
     default=False,
     help="Delete all existing files and directories in the output directory",
+)
+@click.option(
+    "--archive",
+    "-a",
+    type=int,
+    required=False,
+    default=None,
+    show_default=True,
+    help=(
+        "Archive existing export data, keep old archives for n days "
+        "(n<=0: keep all; ignores --delete)"
+    ),
 )
 @click.option(
     "--structured",
@@ -209,9 +214,9 @@ def schema_cmd(
 def export_cmd(
     resource: list[str] | None,
     format: list[ResourceExportFormat],
-    output: str,
-    quiet: bool = False,
+    out_dir: str,
     delete: bool = False,
+    archive: int | None = None,
     structured: bool = True,
     web_safe: bool = False,
     browsable: bool = False,
@@ -224,9 +229,9 @@ def export_cmd(
         export.run(
             [PydanticObjectId(res_id) for res_id in resource] if resource else None,
             formats=format,
-            output_dir_path=Path(output),
-            quiet=quiet,
+            out_dir=Path(out_dir),
             delete=delete,
+            archive=archive,
             structured=structured,
             web_safe=web_safe,
             browsable=browsable,
