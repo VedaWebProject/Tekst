@@ -5,53 +5,35 @@
     "schedule:monthly",
     "schedule:automergeDaily"
   ],
-  "baseBranchPatterns": [
-    "main"
-  ],
+  "baseBranchPatterns": ["main"],
   "prHourlyLimit": 20,
-  "labels": [
-    "dependencies"
-  ],
-  "assignees": [
-    "bkis"
-  ],
+  "labels": ["dependencies"],
+  "assignees": ["bkis"],
   "assigneesSampleSize": 1,
-  "reviewers": [
-    "bkis"
-  ],
+  "reviewers": ["bkis"],
   "reviewersSampleSize": 1,
   "automerge": true,
   "packageRules": [
     {
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "labels": [
-        "possibly breaking"
-      ],
-      "automerge": false
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["possibly breaking"]
     },
     {
-      "matchUpdateTypes": [
-        "major",
-        "minor"
-      ],
       "matchCurrentVersion": "<1.0.0",
-      "labels": [
-        "possibly breaking"
-      ],
+      "matchUpdateTypes": ["major", "minor"],
+      "automerge": false,
+      "labels": ["possibly breaking"]
+    },
+    {
+      "matchPackageNames": ["typescript", "python"],
+      "matchUpdateTypes": ["major", "minor"],
       "automerge": false
     },
     {
-      "matchUpdateTypes": [
-        "major",
-        "minor"
-      ],
-      "matchPackageNames": [
-        "typescript",
-        "python"
-      ],
-      "automerge": false
+      "matchPackageNames": ["mongo"],
+      "matchFileNames": ["dev/compose.yml"],
+      "enabled": false
     }
   ]
 }

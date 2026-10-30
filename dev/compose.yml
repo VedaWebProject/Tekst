@@ -10,7 +10,7 @@ services:
       - dev
 
   mongo:
-    image: mongo:8.0.4
+    image: mongo:8.0.4 # use this in dev - atm the latest ver to support Linux > 6.19
     restart: unless-stopped
     init: true
     volumes:
