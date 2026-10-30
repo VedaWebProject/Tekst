@@ -714,4 +714,11 @@ async def update_text(
     text = await TextDocument.get(text_id)
     if not text:
         raise errors.E_404_TEXT_NOT_FOUND
+    # unpublish all resources
+    if text.is_active and not updates.is_active:
+        await ResourceBaseDocument.find(
+            Eq(ResourceBaseDocument.text_id, text_id),
+            Eq(ResourceBaseDocument.public, True),
+            with_children=True,
+        ).update(Set({ResourceBaseDocument.public: False}))
     return await text.apply_updates(updates)

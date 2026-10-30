@@ -1,6 +1,6 @@
 [project]
 name = "tekst"
-version = "0.54.2b0"
+version = "0.56.2b0"
 description = "An online text research platform"
 readme = "README.md"
 authors = [
@@ -25,6 +25,7 @@ dependencies = [
     "fastapi>=0.115.6",
     "elasticsearch[async]>=9.0.1",
     "deepdiff>=8.6.2",
+    "humanize>=4.16.0",
 ]
 keywords = [
     "text",
@@ -121,6 +122,7 @@ source = ["tekst"]
 branch = false
 omit = [
     "tekst/__main__.py",
+    "tekst/cli/**/*.py"
 ]
 
 [tool.coverage.report]
