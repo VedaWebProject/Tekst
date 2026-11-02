@@ -10,7 +10,7 @@ services:
       - dev
 
   mongo:
-    image: mongo:8.0.4 # use this in dev - atm the latest ver to support Linux > 6.19
+    image: mongo:8.3.13 # use this in dev - atm the latest ver to support Linux > 6.19
     restart: unless-stopped
     init: true
     volumes:
@@ -23,6 +23,12 @@ services:
     profiles:
       - dev
       - test
+    environment:
+      # The GLIBC_TUNABLES env var can be removed if a Linux kernel of version
+      # <= 6.18 or >= 7.0.14 or a MongoDB Version <= 8.0.4 is used. See
+      # https://www.mongodb.com/docs/manual/release-notes/8.0/ and
+      # https://jira.mongodb.org/browse/SERVER-121912 for details.
+      GLIBC_TUNABLES: glibc.cpu.hwcaps=-SHSTK
     command: mongod --setParameter diagnosticDataCollectionEnabled=false
 
   es:

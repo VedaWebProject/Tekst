@@ -20,11 +20,16 @@ services:
       - es
 
   mongo:
-    image: mongo:8.3.11
+    image: mongo:8.3.13
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${TEKST_DB__USER}
       MONGO_INITDB_ROOT_PASSWORD: ${TEKST_DB__PASSWORD}
+      # The GLIBC_TUNABLES env var can be removed if a Linux kernel of version
+      # <= 6.18 or >= 7.0.14 or a MongoDB Version <= 8.0.4 is used. See
+      # https://www.mongodb.com/docs/manual/release-notes/8.0/ and
+      # https://jira.mongodb.org/browse/SERVER-121912 for details.
+      GLIBC_TUNABLES: glibc.cpu.hwcaps=-SHSTK
     volumes:
       - mongo_configdb:/data/configdb
       - mongo_db:/data/db
